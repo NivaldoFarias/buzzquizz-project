@@ -1,1 +1,121 @@
 @import "./resets";
+
+$default-red: rgba(236, 54, 45, 1);
+$image-gradient: linear-gradient(
+  180deg,
+  rgba(255, 255, 255, 0) 0%,
+  rgba(0, 0, 0, 0.5) 64.58%,
+  rgb(0, 0, 0) 100%
+);
+
+@mixin flex-column {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+
+  overflow-y: scroll;
+  background-color: white;
+}
+header {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+
+  height: 69px;
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 37px;
+  font-weight: 700;
+  color: white;
+
+  background-color: $default-red;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+main {
+  @include flex-column();
+
+  height: 100%;
+  width: 100%;
+  margin-top: 69px;
+  padding: 0px 18px;
+}
+article {
+  position: relative;
+  height: fit-content;
+  width: 100%;
+
+  margin-bottom: 14px;
+
+  > img {
+    height: auto;
+    width: 100%;
+
+    border-radius: 5px;
+  }
+  > p {
+    position: absolute;
+    bottom: 15px;
+    left: 17px;
+
+    font-size: 19px;
+    font-weight: 400;
+    color: white;
+  }
+}
+.no-quizz-available {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+
+  min-height: 181px;
+  width: 100%;
+
+  margin-top: 31px;
+  margin-bottom: 35px;
+  padding: 0 45px;
+
+  border: 2px dashed #d5d5d5;
+  box-sizing: border-box;
+  border-radius: 5px;
+
+  > p {
+    font-size: 19px;
+    font-weight: 400;
+    color: rgba(185, 185, 185, 1);
+    text-align: center;
+  }
+  > button {
+    height: 40px;
+    width: 151px;
+
+    background-color: white;
+    border: 2px dashed $default-red;
+    border-radius: 50px;
+
+    font-size: 20px;
+    color: $default-red;
+  }
+}
+.all-quizzes {
+  height: 100%;
+  width: 100%;
+
+  > p {
+    font-weight: 700;
+    text-align: start;
+    text-decoration: none;
+
+    margin-bottom: 14px;
+  }
+}
+

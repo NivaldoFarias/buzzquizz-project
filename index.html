@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, user-scalable=no"
+    />
     <title>Projeto 6 - Buzz Quizz</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -18,6 +21,24 @@
   </head>
 
   <body>
-    <script src="js/script.js"></script>
+    <header>BuzzQuizz</header>
+    <main>
+      <section class="no-quizz-available">
+        <p>Você não criou nenhum quizz ainda :(</p>
+        <button id="create-quizz-btn">Criar Quizz</button>
+      </section>
+      <section class="all-quizzes">
+        <p>Todos os Quizzes</p>
+        <article>
+          <img src="../../../dist/img/simpsons.png" alt="the simpsons" />
+          <p>Acerte os personagens corretos dos Simpsons e prove seu amor!</p>
+        </article>
+        <article>
+          <img src="../../../dist/img/bicho-preguica.png" alt="bicho preguiça" />
+          <p>Você é o tipo de pessoa preguiçosa ou procastinadora?</p>
+        </article>
+      </section>
+    </main>
+    <script src="scripts/script.js"></script>
   </body>
 </html>
