@@ -66,18 +66,23 @@ main.second-screen {
 }
 
 figure.second-screen {
+  display: none;
+}
+
+figure.second-screen.second-screen {
+  display: initial;
   position: relative;
   height: 142px;
   width: 100vw;
 }
 
-figure.second-screen > img {
+figure.second-screen.second-screen > img {
   height: auto;
   width: 100%;
   border: none;
 }
 
-figure.second-screen > p {
+figure.second-screen.second-screen > p {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -89,14 +94,14 @@ figure.second-screen > p {
   color: white;
 }
 
-figure.second-screen .cover {
+figure.second-screen.second-screen .cover {
   -o-object-fit: cover;
      object-fit: cover;
   height: inherit;
   width: 100%;
 }
 
-figure.second-screen .gradient {
+figure.second-screen.second-screen .gradient {
   background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.5)));
   background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
 }
@@ -142,6 +147,10 @@ figure.second-screen .gradient {
   border-radius: 5px;
 }
 
+.no-quizz-available {
+  display: none;
+}
+
 .no-quizz-available.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -183,6 +192,10 @@ figure.second-screen .gradient {
   color: #ec362d;
 }
 
+.all-quizzes {
+  display: none;
+}
+
 .all-quizzes.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -205,6 +218,10 @@ figure.second-screen .gradient {
   -ms-flex-item-align: start;
       align-self: flex-start;
   text-decoration: none;
+}
+
+.user-quizzes {
+  display: none;
 }
 
 .user-quizzes.first-screen {
@@ -237,7 +254,7 @@ figure.second-screen .gradient {
   right: 0px;
 }
 
-.no-quizz-available.second-screen {
+.quizz-question {
   display: none;
 }
 
@@ -257,8 +274,8 @@ figure.second-screen .gradient {
   height: 436px;
   width: 100vw;
   background-color: white;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
-          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
 .quizz-question.second-screen .question {
@@ -302,6 +319,10 @@ figure.second-screen .gradient {
   background-color: #a0438d;
 }
 
+.quizz-end {
+  display: none;
+}
+
 .quizz-end.second-screen {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -318,8 +339,8 @@ figure.second-screen .gradient {
   height: 500px;
   width: 100vw;
   background-color: white;
-  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
-          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
 .quizz-end.second-screen .level-title {
@@ -350,19 +371,34 @@ figure.second-screen .gradient {
   font-weight: 700;
 }
 
+button {
+  display: none;
+}
+
 button.second-screen {
+  display: initial;
   font-size: 18px;
   text-transform: uppercase;
 }
 
+.home-btn {
+  display: none;
+}
+
 .home-btn.second-screen {
+  margin-bottom: 30px;
   font-size: 15px;
   color: #818181;
   border-style: none;
   background-color: inherit;
 }
 
+.restart-quizz-btn {
+  display: none;
+}
+
 .restart-quizz-btn.second-screen {
+  display: initial;
   position: relative;
   left: 0px;
   top: 0px;
@@ -381,7 +417,12 @@ button.second-screen {
   background-color: white;
 }
 
-.restart-quizz-btn.second-screen:hover {
+.restart-quizz-btn:hover {
+  display: none;
+}
+
+.restart-quizz-btn:hover.second-screen {
+  display: initial;
   left: 4px;
   top: 4px;
   -webkit-box-shadow: white 0px 0px 0px 0px;
