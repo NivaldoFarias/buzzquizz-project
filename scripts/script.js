@@ -89,22 +89,23 @@ function loadQuizzes(quizzes) {
 
 function renderAllQuizzes(quizzes) {
   const all_Quizzes = document.querySelector(".all-quizzes");
-
-  all_Quizzes.innerHTML = "<p>Todos os Quizzes</p>";
-  quizzes.forEach((quizz, index) => {
-    if (index > 0 && quizz.image !== quizzes[index - 1].image) {
-      all_Quizzes.innerHTML += `
-      <article>
-        <img src="${quizz.image}" alt="imagem do quizz" />
-        <div class="gradient"></div>
-        <p>${quizz.title}</p>
-      </article>`;
-    }
-  });
+  if (all_Quizzes.classList.contains('first-screen')){
+    all_Quizzes.innerHTML = "<p>Todos os Quizzes</p>";
+    quizzes.forEach((quizz, index) => {
+      if (index > 0 && quizz.image !== quizzes[index - 1].image) {
+        all_Quizzes.innerHTML += `
+        <article>
+          <img src="${quizz.image}" alt="imagem do quizz" />
+          <div class="gradient"></div>
+          <p>${quizz.title}</p>
+        </article>`;
+      }
+    });
+  }
 }
 
 function renderUserQuizzes() {
-  const user_Quizzes = document.querySelector(".user-quizzes");
+  const user_Quizzes = document.querySelector(".user-quizzes.first-screen");
   const no_Quizzes = document.querySelector(".no-quizz-available");
   no_Quizzes.classList.add("hidden");
   user_Quizzes.classList.remove("hidden");

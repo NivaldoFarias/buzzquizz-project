@@ -11,7 +11,7 @@ body {
   height: 100vh;
   width: 100vw;
   overflow-y: scroll;
-  background-color: white;
+  background-color: #fafafa;
 }
 
 header {
@@ -49,14 +49,71 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 35px;
   height: 100%;
   width: 100%;
   margin-top: 69px;
   padding: 0px 18px;
 }
 
-article {
+main.first-screen {
+  gap: 35px;
+}
+
+main.second-screen {
+  gap: 24px;
+}
+
+figure.second-screen {
+  position: relative;
+  height: 142px;
+  width: 100vw;
+}
+
+figure.second-screen > img {
+  height: auto;
+  width: 100%;
+  border: none;
+}
+
+figure.second-screen > p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 19px;
+  font-weight: 400;
+  white-space: nowrap;
+  color: white;
+}
+
+figure.second-screen .cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: inherit;
+  width: 100%;
+}
+
+figure.second-screen .gradient {
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.5)));
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
+}
+
+*.hidden {
+  display: none !important;
+}
+
+.gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(64.58%, rgba(0, 0, 0, 0.5)), to(black));
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, black 100%);
+}
+
+.first-screen article {
   position: relative;
   height: -webkit-fit-content;
   height: -moz-fit-content;
@@ -64,13 +121,13 @@ article {
   width: 100%;
 }
 
-article > img {
+.first-screen article > img {
   height: 181px;
   width: 100%;
   border-radius: 5px;
 }
 
-article > p {
+.first-screen article > p {
   position: absolute;
   bottom: 15px;
   left: 17px;
@@ -79,22 +136,11 @@ article > p {
   color: white;
 }
 
-article .gradient {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
+.first-screen article .gradient {
   border-radius: 5px;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(64.58%, rgba(0, 0, 0, 0.5)), to(black));
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, black 100%);
 }
 
-*.hidden {
-  display: none !important;
-}
-
-.no-quizz-available {
+.no-quizz-available.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -118,14 +164,14 @@ article .gradient {
   border-radius: 5px;
 }
 
-.no-quizz-available > p {
+.no-quizz-available.first-screen > p {
   font-size: 19px;
   font-weight: 400;
   color: #b9b9b9;
   text-align: center;
 }
 
-.no-quizz-available > button {
+.no-quizz-available.first-screen > button {
   height: 40px;
   width: 151px;
   background-color: white;
@@ -135,7 +181,7 @@ article .gradient {
   color: #ec362d;
 }
 
-.all-quizzes {
+.all-quizzes.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -151,7 +197,7 @@ article .gradient {
   width: 100%;
 }
 
-.all-quizzes > p {
+.all-quizzes.first-screen > p {
   font-size: 20px;
   font-weight: 700;
   -ms-flex-item-align: start;
@@ -159,7 +205,7 @@ article .gradient {
   text-decoration: none;
 }
 
-.user-quizzes {
+.user-quizzes.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -175,7 +221,7 @@ article .gradient {
   width: 100%;
 }
 
-.user-quizzes > p {
+.user-quizzes.first-screen > p {
   font-size: 20px;
   font-weight: 700;
   -ms-flex-item-align: start;
@@ -183,8 +229,73 @@ article .gradient {
   text-decoration: none;
 }
 
-.user-quizzes > ion-icon {
+.user-quizzes.first-screen > ion-icon {
   position: absolute;
   top: 0px;
   right: 0px;
+}
+
+.no-quizz-available.second-screen {
+  display: none;
+}
+
+.quizz-question.second-screen {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 13px;
+  padding: 18px;
+  height: 436px;
+  width: 100vw;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.quizz-question.second-screen .question {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 89px;
+  width: 100%;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+  color: white;
+}
+
+.quizz-question.second-screen .answers {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -ms-grid-rows: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+  gap: 12px;
+  width: 337px;
+  height: 293px;
+}
+
+.quizz-question.second-screen figure {
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+}
+
+.quizz-question.second-screen #Q1 {
+  background-color: #434ca0;
+}
+
+.quizz-question.second-screen #Q2 {
+  background-color: #a0438d;
 }
