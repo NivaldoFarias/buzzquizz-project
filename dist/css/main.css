@@ -49,10 +49,12 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: 100%;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
   width: 100%;
   margin-top: 69px;
-  padding: 0px 18px;
+  padding: 0 18px;
 }
 
 main.first-screen {
@@ -298,4 +300,90 @@ figure.second-screen .gradient {
 
 .quizz-question.second-screen #Q2 {
   background-color: #a0438d;
+}
+
+.quizz-end.second-screen {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 13px;
+  padding: 18px 18px 0;
+  height: 500px;
+  width: 100vw;
+  background-color: white;
+  -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+          box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+}
+
+.quizz-end.second-screen .level-title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 16px;
+  min-height: 99px;
+  width: 100%;
+  font-size: 19px;
+  font-weight: 700;
+  text-align: center;
+  color: white;
+  background-color: #ec362d;
+}
+
+.quizz-end.second-screen img {
+  height: 255px;
+  width: 100%;
+}
+
+.quizz-end.second-screen p {
+  font-size: 17px;
+  line-height: 20px;
+  font-weight: 700;
+}
+
+button.second-screen {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.home-btn.second-screen {
+  font-size: 15px;
+  color: #818181;
+  border-style: none;
+  background-color: inherit;
+}
+
+.restart-quizz-btn.second-screen {
+  position: relative;
+  left: 0px;
+  top: 0px;
+  padding: 15px;
+  width: 180px;
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #ec362d;
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+  border: 1px solid #ec362d;
+  -webkit-box-shadow: #ec362d 4px 4px 0px 0px;
+          box-shadow: #ec362d 4px 4px 0px 0px;
+  background-color: white;
+}
+
+.restart-quizz-btn.second-screen:hover {
+  left: 4px;
+  top: 4px;
+  -webkit-box-shadow: white 0px 0px 0px 0px;
+          box-shadow: white 0px 0px 0px 0px;
 }

@@ -48,10 +48,12 @@ header {
 main {
   @include flex-column();
 
-  height: 100%;
+  height: min-content;
   width: 100%;
+
   margin-top: 69px;
-  padding: 0px 18px;
+  padding: 0 18px;
+
   &.first-screen {
     gap: 35px;
   }
@@ -243,3 +245,77 @@ figure.second-screen {
     background-color: rgba(160, 67, 141, 1);
   }
 }
+.quizz-end.second-screen {
+  @include flex-column();
+  gap: 13px;
+  padding: 18px 18px 0;
+
+  height: 500px;
+  width: 100vw;
+
+  background-color: white;
+  box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.05);
+
+  .level-title {
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+
+    min-height: 99px;
+    width: 100%;
+
+    font-size: 19px;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+
+    background-color: $default-red;
+  }
+  img {
+    height: 255px;
+    width: 100%;
+  }
+  p {
+    font-size: 17px;
+    line-height: 20px;
+    font-weight: 700;
+  }
+}
+button.second-screen {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+.home-btn.second-screen {
+  font-size: 15px;
+  color: rgba(129, 129, 129, 1);
+  
+  border-style: none;
+  background-color: inherit;
+}
+//button css referenced at https://enjeck.com/btns/ (modified)
+.restart-quizz-btn.second-screen{
+  position: relative;
+  left: 0px;
+  top: 0px;
+
+  padding: 15px;
+  width: 180px;
+  
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: $default-red;
+  
+  transition: all 0.3s ease-in-out 0s;
+  
+  border: 1px solid $default-red;
+  box-shadow: $default-red 4px 4px 0px 0px;
+  background-color: rgb(255, 255, 255);
+}
+.restart-quizz-btn.second-screen:hover {
+  left: 4px;
+  top: 4px;
+  box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
+}
+
