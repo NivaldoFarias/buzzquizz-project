@@ -4,8 +4,8 @@ if (!myQuizzes){
     myQuizzes=[]
 }
 let quizz = {
-	title: "Título do quizz",
-	image: "https://http.cat/411.jpg",
+	title: "Quem é você na fila do pão?",
+	image: "https://miro.medium.com/max/1400/1*CT3u9Zejnbzdg36CI5zxDg.jpeg",
 	questions: [
 		{
 			title: "Título da pergunta 1",
@@ -75,7 +75,22 @@ let quizz = {
 
 function getAllQuizzes () {
     const promise = axios.get(QUIZZ_API);
-    promise.then(response => console.log(response));
+    promise.then(response => {
+		console.log(response)
+		renderAllQuizzes(response.data)
+	});
+}
+
+function renderAllQuizzes(quizzes){
+	const all_Quizzes = document.querySelector(".all-quizzes");
+	all_Quizzes.innerHTML = '<p>Todos os Quizzes</p>'
+	quizzes.forEach(quizz => {
+		all_Quizzes.innerHTML+=`<article>
+		<img src="${quizz.image}" alt="" />
+		<div class="gradient"></div>
+		<p>${quizz.title}</p>
+	  </article>`
+	})
 }
 
 function getQuizz (ID){
