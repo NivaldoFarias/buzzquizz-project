@@ -1,5 +1,6 @@
 @import "./resets";
 
+$default-font-size: 20px;
 $default-red: rgba(236, 54, 45, 1);
 $image-gradient: linear-gradient(
   180deg,
@@ -23,6 +24,7 @@ body {
 }
 header {
   position: fixed;
+  z-index: 1;
   top: 0px;
   left: 0px;
 
@@ -42,6 +44,7 @@ header {
 }
 main {
   @include flex-column();
+  gap: 35px;
 
   height: 100%;
   width: 100%;
@@ -53,13 +56,20 @@ article {
   height: fit-content;
   width: 100%;
 
-  margin-bottom: 14px;
-
   > img {
-    height: auto;
+    height: 181px;
     width: 100%;
 
     border-radius: 5px;
+  }
+  > p {
+    position: absolute;
+    bottom: 15px;
+    left: 17px;
+    
+    font-size: 19px;
+    font-weight: 400;
+    color: white;
   }
   .gradient{
     position: absolute;
@@ -67,17 +77,14 @@ article {
     bottom: 0;
     left: 0;
     right: 0;
+
+    border-radius: 5px;
+
     background-image:linear-gradient(180deg,rgba(255, 255, 255, 0) 0%,rgba(0, 0, 0, 0.5) 64.58%,rgb(0, 0, 0) 100%);
   }
-  > p {
-    position: absolute;
-    bottom: 15px;
-    left: 17px;
-
-    font-size: 19px;
-    font-weight: 400;
-    color: white;
-  }
+}
+*.hidden {
+  display: none !important;
 }
 .no-quizz-available {
   display: flex;
@@ -89,7 +96,6 @@ article {
   width: 100%;
 
   margin-top: 31px;
-  margin-bottom: 35px;
   padding: 0 45px;
 
   border: 2px dashed #d5d5d5;
@@ -110,20 +116,40 @@ article {
     border: 2px dashed $default-red;
     border-radius: 50px;
 
-    font-size: 20px;
+    font-size: $default-font-size;
     color: $default-red;
   }
 }
 .all-quizzes {
+  @include flex-column();
+  gap: 14px;
   height: 100%;
   width: 100%;
 
   > p {
+    font-size: $default-font-size;
     font-weight: 700;
-    text-align: start;
+    align-self: flex-start;
     text-decoration: none;
-
-    margin-bottom: 14px;
   }
 }
+.user-quizzes {
+  @include flex-column();
+  gap: 14px;
+  height: 100%;
+  width: 100%;
+
+  > p {
+    font-size: $default-font-size;
+    font-weight: 700;
+    align-self: flex-start;
+    text-decoration: none;
+  }
+  > ion-icon {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+  }
+}
+
 
