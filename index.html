@@ -23,7 +23,7 @@
   <body>
     <header>BuzzQuizz</header>
     <main>
-      <div class="first-screen">
+      <div id="first-screen" class="hidden">
         <section class="no-quizz-available">
           <p>Você não criou nenhum quizz ainda :(</p>
           <button id="create-quizz-btn">Criar Quizz</button>
@@ -37,8 +37,8 @@
           <!--Dynamically loaded via JavaScript-->
         </section>
       </div>
-      <div class="second-screen hidden">
-        <figure class="second-screen">
+      <div id="second-screen">
+        <article>
           <img
             src="dist/img/portterhead.png"
             class="cover"
@@ -46,8 +46,8 @@
           />
           <div class="gradient"></div>
           <p>O quão Potterhead é você?</p>
-        </figure>
-        <section class="quizz-question second-screen">
+        </article>
+        <section class="quizz-question">
           <div class="question" id="Q1">
             Em qual animal Olho-Tonto Moody transfigurou Malfoy?
           </div>
@@ -70,7 +70,7 @@
             </figure>
           </div>
         </section>
-        <section class="quizz-question second-screen">
+        <section class="quizz-question">
           <div class="question" id="Q2">
             Qual dos objetos abaixo NÃO é uma horcrux?
           </div>
@@ -93,12 +93,13 @@
             </figure>
           </div>
         </section>
-        <section class="quizz-end second-screen">
+        <section class="quizz-end">
           <div class="level-title">
             88% de acerto: Você é praticamente um aluno de Hogwarts!
           </div>
           <img
             src="dist/img/harry-potter-quiz/dumbledore-meme.png"
+            class="cover"
             alt="gatinho"
           />
           <p>
@@ -107,8 +108,8 @@
             reiniciar este teste.
           </p>
         </section>
-        <button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
-        <button class="home-btn second-screen">Voltar para home</button>
+        <button class="restart-quizz-btn">Reiniciar Quizz</button>
+        <button class="home-btn">Voltar para home</button>
       </div>
     </main>
     <script

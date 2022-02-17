@@ -1,16 +1,5 @@
 @import "./resets";
-
-$default-font-size: 20px;
-$small-font-size: 13px;
-$default-red: rgba(236, 54, 45, 1);
-$right-answer-color: rgba(0, 156, 34, 1);
-$wrong-answer-color: rgba(255, 75, 75, 1);
-$image-gradient: linear-gradient(
-  180deg,
-  rgba(255, 255, 255, 0) 0%,
-  rgba(0, 0, 0, 0.5) 64.58%,
-  rgb(0, 0, 0) 100%
-);
+@import "./variables";
 
 @mixin flex-column {
   display: flex;
@@ -26,7 +15,9 @@ body {
   background-color: rgb(250, 250, 250);
 
   @media screen and (min-height: 980px) {
-    overflow-y: hidden;
+    #first-screen {
+      overflow-y: hidden;
+    }
   }
 }
 header {
@@ -57,26 +48,24 @@ main {
 
   padding: 69px 18px 0;
 }
-.first-screen {
+#first-screen {
   @include flex-column();
   gap: 35px;
 
-  article {
-    position: relative;
-    height: fit-content;
-    width: 340px;
-  }
   @media screen and (min-width: 480px) {
     gap: 48px;
     width: 73vw;
   }
 }
-.first-screen article {
+#first-screen article {
+  position: relative;
+  height: fit-content;
+  width: $default-box-width;
   > img {
-    height: 181px;
-    width: 340px;
+    height: $default-box-height;
+    width: $default-box-width;
 
-    border-radius: 5px;
+    border-radius: $default-border-radius;
   }
   > p {
     position: absolute;
@@ -86,17 +75,17 @@ main {
     width: 90%;
 
     font-size: 19px;
-    font-weight: 400;
+    font-weight: $font-weight-regular;
     word-break: normal;
     color: white;
   }
   .gradient {
-    height: 181px;
-    width: 340px;
-    border-radius: 5px;
+    height: $default-box-height;
+    width: $default-box-width;
+    border-radius: $default-border-radius;
   }
 }
-.first-screen .user-quizzes {
+#first-screen .user-quizzes {
   @include flex-column();
   gap: 14px;
 
@@ -137,7 +126,7 @@ main {
     }
   }
 }
-.second-screen {
+#second-screen {
   @include flex-column();
 
   gap: 24px;
@@ -146,31 +135,34 @@ main {
     font-size: 18px;
     text-transform: uppercase;
   }
-  figure {
-    position: relative;
-    height: 142px;
-    width: 100vw;
+}
+#second-screen article {
+  position: relative;
+  height: 142px;
+  width: 100vw;
 
-    > img {
-      height: auto;
-      width: 100%;
+  > img {
+    height: inherit;
+    width: 100%;
 
-      border: none;
-    }
-    > p {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    border: none;
+  }
+  > p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 
-      font-size: 19px;
-      font-weight: 400;
-      white-space: nowrap;
-      color: white;
-    }
-    .gradient {
-      background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
-    }
+    font-size: 19px;
+    font-weight: $font-weight-regular;
+    white-space: nowrap;
+    color: white;
+  }
+  .gradient {
+    height: inherit;
+    width: 100%;
+
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
   }
 }
 *.hidden {
@@ -201,8 +193,8 @@ main {
   align-items: center;
   flex-direction: column;
 
-  min-height: 181px;
-  width: 340px;
+  min-height: $default-box-height;
+  width: $default-box-width;
 
   margin-top: 31px;
   margin-bottom: 33px;
@@ -210,15 +202,13 @@ main {
 
   border: 2px dashed #d5d5d5;
   box-sizing: border-box;
-  border-radius: 5px;
-  /* .no-quizz-available {
-  
-} */
+  border-radius: $default-border-radius;
+
   > p {
     width: 240px;
 
     font-size: 19px;
-    font-weight: 400;
+    font-weight: $font-weight-regular;
     line-height: 24px;
     color: rgba(185, 185, 185, 1);
     text-align: center;
@@ -272,7 +262,7 @@ main {
   padding: 18px;
 
   height: 436px;
-  width: 100vw;
+  width: 100%;
 
   background-color: white;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
@@ -282,7 +272,7 @@ main {
     align-items: center;
 
     height: 89px;
-    width: 100%;
+    width: $default-box-width;
 
     font-size: 19px;
     font-weight: 700;
@@ -309,6 +299,10 @@ main {
   #Q2 {
     background-color: rgba(160, 67, 141, 1);
   }
+  /* @media screen and (min-width: 480px) {
+    height: 616px;
+    width: 52.7vw;
+  } */
 }
 .quizz-end {
   @include flex-column();
@@ -327,7 +321,7 @@ main {
     padding: 0 16px;
 
     min-height: 99px;
-    width: 100%;
+    width: $default-box-width;
 
     font-size: 19px;
     font-weight: 700;
@@ -338,9 +332,10 @@ main {
   }
   img {
     height: 255px;
-    width: 100%;
+    width: $default-box-width;
   }
   p {
+    width: $default-box-width;
     font-size: 17px;
     line-height: 20px;
     font-weight: 700;
