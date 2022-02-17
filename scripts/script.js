@@ -5,7 +5,8 @@ if (!myQuizzes) {
 }
 let myQuizzesId = myQuizzes.map((quizz) => quizz.id);
 let apiQuizzes = [];
-let quizzExists = [];
+let quizzImgExists = [];
+let quizzTitleExists = [];
 
 const quizz = {
   title:
@@ -149,13 +150,7 @@ function renderAllQuizzes(quizzes) {
 
   all_Quizzes.innerHTML = "<p>Todos os Quizzes</p>";
   quizzes.forEach((quizz, index) => {
-    if (
-      validURL(quizz.image) &&
-      (!quizzExists.includes(quizz.image) || index === 0)
-    ) {
-      quizzExists.push(quizz.image);
-      printQuizz(all_Quizzes, quizz);
-    }
+    checkQuizz(quizz, index, all_Quizzes);
   });
   const all_QuizzesRenderedes = [
     ...document.querySelectorAll(".all-quizzes article"),
@@ -164,6 +159,19 @@ function renderAllQuizzes(quizzes) {
     // console.log(quizz);
     quizz.addEventListener("click", selectQuizz);
   });
+}
+
+function checkQuizz(quizz, index, all_Quizzes) {
+  if (
+    (validURL(quizz.image) &&
+      (index === 0 || !quizzImgExists.includes(quizz.image))) ||
+    (quizzImgExists.includes(quizz.image) &&
+      !quizzTitleExists.includes(quizz.title))
+  ) {
+    quizzImgExists.push(quizz.image);
+    quizzTitleExists.push(quizz.title);
+    printQuizz(all_Quizzes, quizz);
+  }
 }
 
 function printQuizz(quizzesArray, quizz) {

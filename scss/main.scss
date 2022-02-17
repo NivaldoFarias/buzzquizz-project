@@ -24,6 +24,10 @@ body {
 
   overflow-y: scroll;
   background-color: rgb(250, 250, 250);
+
+  @media screen and (min-height: 980px) {
+    overflow-y: hidden;
+  }
 }
 header {
   position: fixed;
@@ -46,21 +50,25 @@ header {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 main {
-  height: min-content;
+  @include flex-column();
+
+  height: calc(100vh - 69px);
   width: 100%;
 
-  margin-top: 69px;
-  padding: 0 18px;
+  padding: 69px 18px 0;
 }
 .first-screen {
   @include flex-column();
-
   gap: 35px;
 
   article {
     position: relative;
     height: fit-content;
-    width: 100%;
+    width: 340px;
+  }
+  @media screen and (min-width: 480px) {
+    gap: 48px;
+    width: 73vw;
   }
 }
 .first-screen article {
@@ -75,8 +83,11 @@ main {
     bottom: 15px;
     left: 17px;
 
+    width: 90%;
+
     font-size: 19px;
     font-weight: 400;
+    word-break: normal;
     color: white;
   }
   .gradient {
@@ -95,18 +106,35 @@ main {
   height: 100%;
   width: 100%;
 
-  p {
-    font-size: $default-font-size;
-    font-weight: 700;
+  > p {
     align-self: flex-start;
+    width: 100%;
+
+    line-height: 22px;
+    font-weight: 700;
     text-decoration: none;
+    font-size: $default-font-size;
   }
   ion-icon {
     position: absolute;
-    top: 0px;
+    top: -11px;
     right: 0px;
+
     color: $default-red;
     font-size: 40px;
+  }
+  @media screen and (min-width: 480px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+
+    ion-icon {
+      left: 180px;
+      font-size: 44px;
+    }
+    > p {
+      font-size: 27px;
+      width: 100%;
+    }
   }
 }
 .second-screen {
@@ -177,15 +205,21 @@ main {
   width: 340px;
 
   margin-top: 31px;
+  margin-bottom: 33px;
   padding: 10px 45px;
 
   border: 2px dashed #d5d5d5;
   box-sizing: border-box;
   border-radius: 5px;
-
+  /* .no-quizz-available {
+  
+} */
   > p {
+    width: 240px;
+
     font-size: 19px;
     font-weight: 400;
+    line-height: 24px;
     color: rgba(185, 185, 185, 1);
     text-align: center;
   }
@@ -200,6 +234,11 @@ main {
     font-size: $default-font-size;
     color: $default-red;
   }
+  @media screen and (min-width: 480px) {
+    width: 100%;
+    margin-top: 77px;
+    padding: 10px 0;
+  }
 }
 .all-quizzes {
   @include flex-column();
@@ -207,11 +246,24 @@ main {
   height: 100%;
   width: 100%;
 
+  margin-bottom: 14px;
+
   > p {
     font-size: $default-font-size;
     font-weight: 700;
     align-self: flex-start;
     text-decoration: none;
+  }
+  @media screen and (min-width: 480px) {
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+
+    > p {
+      font-size: 27px;
+      margin-bottom: 5px;
+      width: 100%;
+    }
   }
 }
 .quizz-question {
