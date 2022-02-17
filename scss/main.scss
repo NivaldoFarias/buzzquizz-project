@@ -1,7 +1,10 @@
 @import "./resets";
 
 $default-font-size: 20px;
+$small-font-size: 13px;
 $default-red: rgba(236, 54, 45, 1);
+$right-answer-color: rgba(0, 156, 34, 1);
+$wrong-answer-color: rgba(255, 75, 75, 1);
 $image-gradient: linear-gradient(
   180deg,
   rgba(255, 255, 255, 0) 0%,
@@ -20,7 +23,7 @@ body {
   width: 100vw;
 
   overflow-y: scroll;
-  background-color: white;
+  background-color: rgb(250, 250, 250);
 }
 header {
   position: fixed;
@@ -44,14 +47,74 @@ header {
 }
 main {
   @include flex-column();
-  gap: 35px;
 
-  height: 100%;
+  height: min-content;
   width: 100%;
+
   margin-top: 69px;
-  padding: 0px 18px;
+  padding: 0 18px;
+
+  &.first-screen {
+    gap: 35px;
+  }
+  &.second-screen {
+    gap: 24px;
+  }
 }
-article {
+figure.second-screen {
+  display: none;
+
+  &.second-screen {
+    display: initial;
+    position: relative;
+    height: 142px;
+    width: 100vw;
+
+    > img {
+      height: auto;
+      width: 100%;
+
+      border: none;
+    }
+    > p {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      font-size: 19px;
+      font-weight: 400;
+      white-space: nowrap;
+      color: white;
+    }
+    .cover {
+      object-fit: cover;
+      height: inherit;
+      width: 100%;
+    }
+    .gradient {
+      background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
+    }
+  }
+}
+*.hidden {
+  display: none !important;
+}
+.gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  background-image: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(0, 0, 0, 0.5) 64.58%,
+    rgb(0, 0, 0) 100%
+  );
+}
+.first-screen article {
   position: relative;
   height: fit-content;
   width: 100%;
@@ -66,90 +129,238 @@ article {
     position: absolute;
     bottom: 15px;
     left: 17px;
-    
+
     font-size: 19px;
     font-weight: 400;
     color: white;
   }
-  .gradient{
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
+  .gradient {
     border-radius: 5px;
-
-    background-image:linear-gradient(180deg,rgba(255, 255, 255, 0) 0%,rgba(0, 0, 0, 0.5) 64.58%,rgb(0, 0, 0) 100%);
   }
-}
-*.hidden {
-  display: none !important;
 }
 .no-quizz-available {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  flex-direction: column;
+  display: none;
 
-  min-height: 181px;
-  width: 100%;
+  &.first-screen {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
 
-  margin-top: 31px;
-  padding: 0 45px;
+    min-height: 181px;
+    width: 100%;
 
-  border: 2px dashed #d5d5d5;
-  box-sizing: border-box;
-  border-radius: 5px;
+    margin-top: 31px;
+    padding: 0 45px;
 
-  > p {
-    font-size: 19px;
-    font-weight: 400;
-    color: rgba(185, 185, 185, 1);
-    text-align: center;
-  }
-  > button {
-    height: 40px;
-    width: 151px;
+    border: 2px dashed #d5d5d5;
+    box-sizing: border-box;
+    border-radius: 5px;
 
-    background-color: white;
-    border: 2px dashed $default-red;
-    border-radius: 50px;
+    > p {
+      font-size: 19px;
+      font-weight: 400;
+      color: rgba(185, 185, 185, 1);
+      text-align: center;
+    }
+    > button {
+      height: 40px;
+      width: 151px;
 
-    font-size: $default-font-size;
-    color: $default-red;
+      background-color: white;
+      border: 2px dashed $default-red;
+      border-radius: 50px;
+
+      font-size: $default-font-size;
+      color: $default-red;
+    }
   }
 }
 .all-quizzes {
-  @include flex-column();
-  gap: 14px;
-  height: 100%;
-  width: 100%;
+  display: none;
 
-  > p {
-    font-size: $default-font-size;
-    font-weight: 700;
-    align-self: flex-start;
-    text-decoration: none;
+  &.first-screen {
+    @include flex-column();
+    gap: 14px;
+    height: 100%;
+    width: 100%;
+
+    > p {
+      font-size: $default-font-size;
+      font-weight: 700;
+      align-self: flex-start;
+      text-decoration: none;
+    }
   }
 }
 .user-quizzes {
-  @include flex-column();
-  gap: 14px;
-  height: 100%;
-  width: 100%;
+  display: none;
 
-  > p {
-    font-size: $default-font-size;
-    font-weight: 700;
-    align-self: flex-start;
-    text-decoration: none;
-  }
-  > ion-icon {
-    position: absolute;
-    top: 0px;
-    right: 0px;
+  &.first-screen {
+    @include flex-column();
+    gap: 14px;
+    height: 100%;
+    width: 100%;
+
+    > p {
+      font-size: $default-font-size;
+      font-weight: 700;
+      align-self: flex-start;
+      text-decoration: none;
+    }
+    > ion-icon {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+    }
   }
 }
+.quizz-question {
+  display: none;
 
+  &.second-screen {
+    @include flex-column();
+    gap: 13px;
+    padding: 18px;
 
+    height: 436px;
+    width: 100vw;
+
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+
+    .question {
+      display: flex;
+      align-items: center;
+
+      height: 89px;
+      width: 100%;
+
+      font-size: 19px;
+      font-weight: 700;
+      text-align: center;
+      color: white;
+    }
+    .answers {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      gap: 12px;
+
+      width: 337px;
+      height: 293px;
+    }
+    figure {
+      font-size: $small-font-size;
+      font-weight: 700;
+      line-height: 18px;
+    }
+    #Q1 {
+      background-color: rgba(67, 76, 160, 1);
+    }
+    #Q2 {
+      background-color: rgba(160, 67, 141, 1);
+    }
+  }
+}
+.quizz-end {
+  display: none;
+
+  &.second-screen {
+    @include flex-column();
+    gap: 13px;
+    padding: 18px 18px 0;
+
+    height: 500px;
+    width: 100vw;
+
+    background-color: white;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
+
+    .level-title {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+
+      min-height: 99px;
+      width: 100%;
+
+      font-size: 19px;
+      font-weight: 700;
+      text-align: center;
+      color: white;
+
+      background-color: $default-red;
+    }
+    img {
+      height: 255px;
+      width: 100%;
+    }
+    p {
+      font-size: 17px;
+      line-height: 20px;
+      font-weight: 700;
+    }
+  }
+}
+button {
+  display: none;
+
+  &.second-screen {
+    display: initial;
+
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+}
+.home-btn {
+  display: none;
+
+  &.second-screen {
+    margin-bottom: 30px;
+
+    font-size: 15px;
+    color: rgba(129, 129, 129, 1);
+
+    border-style: none;
+    background-color: inherit;
+  }
+}
+.restart-quizz-btn {
+  display: none;
+
+  &.second-screen {
+    display: initial;
+
+    position: relative;
+    left: 0px;
+    top: 0px;
+
+    padding: 15px;
+    width: 180px;
+
+    font-size: 0.9em;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: $default-red;
+
+    transition: all 0.3s ease-in-out 0s;
+
+    border: 1px solid $default-red;
+    box-shadow: $default-red 4px 4px 0px 0px;
+    background-color: rgb(255, 255, 255);
+  }
+}
+.restart-quizz-btn:hover {
+  display: none;
+
+  &.second-screen {
+    display: initial;
+
+    left: 4px;
+    top: 4px;
+    box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
+  }
+}
+//button css referenced at https://enjeck.com/btns/ (modified)

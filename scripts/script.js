@@ -151,7 +151,7 @@ function renderAllQuizzes(quizzes) {
 }
 
 function renderUserQuizzes() {
-  const user_Quizzes = document.querySelector(".user-quizzes");
+  const user_Quizzes = document.querySelector(".user-quizzes.first-screen");
   const no_Quizzes = document.querySelector(".no-quizz-available");
   no_Quizzes.classList.add("hidden");
   user_Quizzes.classList.remove("hidden");
