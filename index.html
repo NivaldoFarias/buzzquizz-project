@@ -23,89 +23,94 @@
   <body>
     <header>BuzzQuizz</header>
     <main class="second-screen">
-      <figure class="second-screen">
-        <img
-          src="dist/img/portterhead.png"
-          class="cover"
-          alt="image displaying landscape view of hogwarts"
-        />
-        <div class="gradient"></div>
-        <p>O quão Potterhead é você?</p>
-      </figure>
-      <section class="quizz-question second-screen">
-        <div class="question" id="Q1">
-          Em qual animal Olho-Tonto Moody transfigurou Malfoy?
-        </div>
-        <div class="answers">
-          <figure>
-            <img src="dist/img/harry-potter-quiz/gato.png" alt="gatinho" />
-            <figcaption>Gatíneo</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/rato.png" alt="ratinho" />
-            <figcaption>Ratata</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/sapo.png" alt="sapinho" />
-            <figcaption>Sapo Gordo</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/furao.png" alt="furão" />
-            <figcaption>Mustela putorius (o Furão)</figcaption>
-          </figure>
-        </div>
-      </section>
-      <section class="quizz-question second-screen">
-        <div class="question" id="Q2">
-          Qual dos objetos abaixo NÃO é uma horcrux?
-        </div>
-        <div class="answers">
-          <figure>
-            <img src="dist/img/harry-potter-quiz/harry.png" alt="gatinho" />
-            <figcaption>The boy who lived</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/livro.png" alt="ratinho" />
-            <figcaption>O livro monstruoso dos monstros</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/anel.png" alt="sapinho" />
-            <figcaption>Anel velho</figcaption>
-          </figure>
-          <figure>
-            <img src="dist/img/harry-potter-quiz/diadema.png" alt="furão" />
-            <figcaption>Diadema da Ravenclaw</figcaption>
-          </figure>
-        </div>
-      </section>
-      <section class="quizz-end second-screen">
-        <div class="level-title">
-          88% de acerto: Você é praticamente um aluno de Hogwarts!
-        </div>
-        <img
-          src="dist/img/harry-potter-quiz/dumbledore-meme.png"
-          alt="gatinho"
-        />
-        <p>
-          Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito
-          de comida e clique no botão abaixo para usar o vira-tempo e reiniciar
-          este teste.
-        </p>
-      </section>
-      <button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
-      <button class="home-btn second-screen">Voltar para home</button>
-      <section class="no-quizz-available second-screen">
-        <p>Você não criou nenhum quizz ainda :(</p>
-        <button id="create-quizz-btn">Criar Quizz</button>
-      </section>
-      <section class="user-quizzes hidden second-screen">
-        <!--Dynamically loaded via JavaScript-->
-        <p>Seus Quizzes</p>
-        <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>
-      </section>
-      <section class="all-quizzes second-screen">
-        <!--Dynamically loaded via JavaScript-->
-      </section>
+      <div class="container second-screen hidden">
+        <figure class="second-screen">
+          <img
+            src="dist/img/portterhead.png"
+            class="cover"
+            alt="image displaying landscape view of hogwarts"
+          />
+          <div class="gradient"></div>
+          <p>O quão Potterhead é você?</p>
+        </figure>
+        <section class="quizz-question second-screen">
+          <div class="question" id="Q1">
+            Em qual animal Olho-Tonto Moody transfigurou Malfoy?
+          </div>
+          <div class="answers">
+            <figure>
+              <img src="dist/img/harry-potter-quiz/gato.png" alt="gatinho" />
+              <figcaption>Gatíneo</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/rato.png" alt="ratinho" />
+              <figcaption>Ratata</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/sapo.png" alt="sapinho" />
+              <figcaption>Sapo Gordo</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/furao.png" alt="furão" />
+              <figcaption>Mustela putorius (o Furão)</figcaption>
+            </figure>
+          </div>
+        </section>
+        <section class="quizz-question second-screen">
+          <div class="question" id="Q2">
+            Qual dos objetos abaixo NÃO é uma horcrux?
+          </div>
+          <div class="answers">
+            <figure>
+              <img src="dist/img/harry-potter-quiz/harry.png" alt="gatinho" />
+              <figcaption>The boy who lived</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/livro.png" alt="ratinho" />
+              <figcaption>O livro monstruoso dos monstros</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/anel.png" alt="sapinho" />
+              <figcaption>Anel velho</figcaption>
+            </figure>
+            <figure>
+              <img src="dist/img/harry-potter-quiz/diadema.png" alt="furão" />
+              <figcaption>Diadema da Ravenclaw</figcaption>
+            </figure>
+          </div>
+        </section>
+        <section class="quizz-end second-screen">
+          <div class="level-title">
+            88% de acerto: Você é praticamente um aluno de Hogwarts!
+          </div>
+          <img
+            src="dist/img/harry-potter-quiz/dumbledore-meme.png"
+            alt="gatinho"
+          />
+          <p>
+            Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito
+            de comida e clique no botão abaixo para usar o vira-tempo e reiniciar
+            este teste.
+          </p>
+        </section>
+        <button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
+        <button class="home-btn second-screen">Voltar para home</button>
+      </div>
+      <div class="container first-screen">
+        <section class="no-quizz-available first-screen">
+          <p>Você não criou nenhum quizz ainda :(</p>
+          <button id="create-quizz-btn">Criar Quizz</button>
+        </section>
+        <section class="user-quizzes hidden first-screen">
+          <!--Dynamically loaded via JavaScript-->
+          <p>Seus Quizzes</p>
+          <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>
+        </section>
+        <section class="all-quizzes first-screen">
+          <!--Dynamically loaded via JavaScript-->
+        </section>
+      </div>
+
     </main>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./scripts/script.js"></script>

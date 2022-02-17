@@ -7,53 +7,53 @@ let myQuizzesId = myQuizzes.map(quizz => quizz.id);
 let apiQuizzes =[]
 
 const quizz = {
-  title: "teste 6?",
-  image: "https://miro.medium.com/max/1400/1*CT3u9Zejnbzdg36CI5zxDg.jpeg",
+  title: "Só uma pessoa que assistiu todos os filmes da Marvel vai gabaritar esse teste",
+  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
   questions: [
     {
-      title: "Título da pergunta 1",
+      title: "Que ator é conhecido pelo seu papel como O Hulk?",
       color: "#123456",
       answers: [
         {
-          text: "Texto da resposta 1",
-          image: "https://http.cat/411.jpg",
+          text: "Mark Ruffalo",
+          image: "https://ogimg.infoglobo.com.br/in/25320231-3fa-ec0/FT1086A/33973739_Marvels-AvengersAge-Of-UltronHulk-Bruce-Banner-Mark-RuffaloPhFilm-FrameMarvel.jpg",
           isCorrectAnswer: true,
         },
         {
-          text: "Texto da resposta 2",
-          image: "https://http.cat/412.jpg",
+          text: "Vincent D'Onofrio",
+          image: "https://nerdhits.com.br/wp-content/uploads/2021/11/hulk-1.jpg",
           isCorrectAnswer: false,
         },
       ],
     },
     {
-      title: "Título da pergunta 2",
+      title: "Qual é o nome do martelo encantado do Thor?",
       color: "#123456",
       answers: [
         {
-          text: "Texto da resposta 1",
-          image: "https://http.cat/411.jpg",
+          text: "Mjölnir",
+          image: "https://exame.com/wp-content/uploads/2018/10/thor-ragnarok-filme-cultura-vip.jpg",
           isCorrectAnswer: true,
         },
         {
-          text: "Texto da resposta 2",
-          image: "https://http.cat/412.jpg",
+          text: "Mnajas",
+          image: "https://mega.ibxk.com.br/2013/11/04/04135704362.jpg",
           isCorrectAnswer: false,
         },
       ],
     },
     {
-      title: "Título da pergunta 3",
+      title: "Em que ano foi lançado o primeiro filme do Homem de Ferro?",
       color: "#123456",
       answers: [
         {
-          text: "Texto da resposta 1",
-          image: "https://http.cat/411.jpg",
+          text: "2008",
+          image: "https://sm.ign.com/ign_br/news/m/marvels-ir/marvels-iron-man-vr-release-date-now-set-for-july-2020_8h12.jpg",
           isCorrectAnswer: true,
         },
         {
-          text: "Texto da resposta 2",
-          image: "https://http.cat/412.jpg",
+          text: "2010",
+          image: "https://conteudo.imguol.com.br/c/entretenimento/96/2020/08/07/iron-man-1596813808466_v2_615x300.jpg",
           isCorrectAnswer: false,
         },
       ],
@@ -141,12 +141,17 @@ function renderAllQuizzes(quizzes) {
   quizzes.forEach((quizz, index) => {
     // if (index > 0 && quizz.image !== quizzes[index - 1].image) {
       all_Quizzes.innerHTML += `
-      <article>
+      <article id="${quizz.id}">
         <img src="${quizz.image}" alt="imagem do quizz" />
         <div class="gradient"></div>
         <p>${quizz.title}</p>
       </article>`;
     // }
+  });
+  const all_QuizzesRenderedes = [...document.querySelectorAll(".all-quizzes article")];
+  all_QuizzesRenderedes.forEach(quizz => {
+    // console.log(quizz);
+    quizz.addEventListener("click",selectQuizz)
   });
 }
 
@@ -161,13 +166,18 @@ function renderUserQuizzes() {
   apiQuizzes.forEach((quizz) => {
     if(myQuizzesId.includes(quizz.id)){
       user_Quizzes.innerHTML += `
-      <article>
+      <article id="${quizz.id}">
         <img src="${quizz.image}" alt="imagem do quizz" />
         <div class="gradient"></div>
         <p>${quizz.title}</p>
       </article>`;
     }
   });
+  const user_QuizzesRenderedes = [...document.querySelectorAll(".user-quizzes.first-screen article")];
+  user_QuizzesRenderedes.forEach(quizz => {
+    // console.log(quizz);
+    quizz.addEventListener("click",selectQuizz)
+  })
 }
 
 function getQuizz(ID) {
@@ -196,8 +206,82 @@ function deleteQuizz(ID) {
   promise.then((response) => console.log(response));
 }
 
+function selectQuizz () {
+  // body
+  let firstScreen = document.querySelector(".container.first-screen");
+  let secondScreen = document.querySelector(".container.second-screen");
+  firstScreen.classList.add("hidden");
+  secondScreen.classList.remove("hidden");
+  console.log(this.id);
+  const promise = axios.get(`${QUIZZ_API}/${this.id}`);
+  promise.then(renderQuizz);
+}
+
+function renderQuizz (quizz){
+  console.log(quizz.data)
+  let secondScreen = document.querySelector(".container.second-screen");
+  secondScreen.innerHTML=""
+  secondScreen.innerHTML+=`<figure class="second-screen">
+  <img
+    src="${quizz.data.image}"
+    class="cover"
+    alt="image displaying landscape view of hogwarts"
+  />
+  <div class="gradient"></div>
+  <p>${quizz.data.title}</p>
+</figure>`
+
+  quizz.data.questions.forEach(renderQuestion)
+
+  secondScreen.innerHTML+=`<button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
+  <button class="home-btn second-screen">Voltar para home</button>`
+
+  let home_btn = document.querySelector(".home-btn.second-screen");
+  home_btn.addEventListener("click",() => {
+    let firstScreen = document.querySelector(".container.first-screen");
+  let secondScreen = document.querySelector(".container.second-screen");
+  firstScreen.classList.remove("hidden");
+  secondScreen.classList.add("hidden");
+  })
+}
+
+function renderQuestion (question) {
+  // body
+  let secondScreen = document.querySelector(".container.second-screen");
+  secondScreen.innerHTML+=`<section class="quizz-question second-screen">
+  <div class="question" id="Q1">
+    ${question.title}
+  </div>
+  <div class="answers">`
+
+  question.answers.forEach(renderAnswer)
+
+  secondScreen.innerHTML+=`</div>
+  </section>`
+  
+}
+
+function renderAnswer (answer) {
+  let secondScreen = document.querySelector(".container.second-screen");
+  secondScreen.innerHTML+=`<figure>
+  <img src="${answer.image}" alt="Answer Image" />
+  <figcaption>${answer.text}</figcaption>
+</figure>`
+}
+
+getAllQuizzes();
+
+//         testes: 
+
+
 // createQuizz(quizz)
-// getQuizz(2182);
-  // const promise = axios.post(QUIZZ_API, quizz);
-  // promise.then(getAllQuizzes())
-// getAllQuizzes();
+// const promise = axios.post(QUIZZ_API, quizz);
+// promise.then(getAllQuizzes)
+
+// setTimeout(() => {
+//   const all_Quizzes = [...document.querySelectorAll(".all-quizzes article")];
+//   all_Quizzes.forEach(quizz => {
+//     // console.log(quizz);
+//     quizz.addEventListener("click",selectQuizz)
+//   })
+// },3000)
