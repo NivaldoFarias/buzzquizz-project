@@ -198,6 +198,6 @@ function deleteQuizz(ID) {
 
 // createQuizz(quizz)
 // getQuizz(2182);
-  const promise = axios.post(QUIZZ_API, quizz);
-  promise.then(getAllQuizzes())
+  // const promise = axios.post(QUIZZ_API, quizz);
+  // promise.then(getAllQuizzes())
 // getAllQuizzes();
