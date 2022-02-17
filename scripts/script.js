@@ -254,7 +254,10 @@ function renderQuestion (question) {
   </div>
   <div class="answers">`
 
-  question.answers.forEach(renderAnswer)
+  let currentAnswers = question.answers;
+  currentAnswers.sort(() => Math.random() - 0.5) 
+
+  currentAnswers.forEach(renderAnswer)
 
   secondScreen.innerHTML+=`</div>
   </section>`
