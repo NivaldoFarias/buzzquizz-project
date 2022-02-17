@@ -3,12 +3,15 @@ let myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
 if (!myQuizzes) {
   myQuizzes = [];
 }
-let myQuizzesId = myQuizzes.map(quizz => quizz.id);
-let apiQuizzes =[]
+let myQuizzesId = myQuizzes.map((quizz) => quizz.id);
+let apiQuizzes = [];
+let quizzExists = [];
 
 const quizz = {
-  title: "Só uma pessoa que assistiu todos os filmes da Marvel vai gabaritar esse teste",
-  image: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
+  title:
+    "Só uma pessoa que assistiu todos os filmes da Marvel vai gabaritar esse teste",
+  image:
+    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
   questions: [
     {
       title: "Que ator é conhecido pelo seu papel como O Hulk?",
@@ -16,12 +19,14 @@ const quizz = {
       answers: [
         {
           text: "Mark Ruffalo",
-          image: "https://ogimg.infoglobo.com.br/in/25320231-3fa-ec0/FT1086A/33973739_Marvels-AvengersAge-Of-UltronHulk-Bruce-Banner-Mark-RuffaloPhFilm-FrameMarvel.jpg",
+          image:
+            "https://ogimg.infoglobo.com.br/in/25320231-3fa-ec0/FT1086A/33973739_Marvels-AvengersAge-Of-UltronHulk-Bruce-Banner-Mark-RuffaloPhFilm-FrameMarvel.jpg",
           isCorrectAnswer: true,
         },
         {
           text: "Vincent D'Onofrio",
-          image: "https://nerdhits.com.br/wp-content/uploads/2021/11/hulk-1.jpg",
+          image:
+            "https://nerdhits.com.br/wp-content/uploads/2021/11/hulk-1.jpg",
           isCorrectAnswer: false,
         },
       ],
@@ -32,7 +37,8 @@ const quizz = {
       answers: [
         {
           text: "Mjölnir",
-          image: "https://exame.com/wp-content/uploads/2018/10/thor-ragnarok-filme-cultura-vip.jpg",
+          image:
+            "https://exame.com/wp-content/uploads/2018/10/thor-ragnarok-filme-cultura-vip.jpg",
           isCorrectAnswer: true,
         },
         {
@@ -48,12 +54,14 @@ const quizz = {
       answers: [
         {
           text: "2008",
-          image: "https://sm.ign.com/ign_br/news/m/marvels-ir/marvels-iron-man-vr-release-date-now-set-for-july-2020_8h12.jpg",
+          image:
+            "https://sm.ign.com/ign_br/news/m/marvels-ir/marvels-iron-man-vr-release-date-now-set-for-july-2020_8h12.jpg",
           isCorrectAnswer: true,
         },
         {
           text: "2010",
-          image: "https://conteudo.imguol.com.br/c/entretenimento/96/2020/08/07/iron-man-1596813808466_v2_615x300.jpg",
+          image:
+            "https://conteudo.imguol.com.br/c/entretenimento/96/2020/08/07/iron-man-1596813808466_v2_615x300.jpg",
           isCorrectAnswer: false,
         },
       ],
@@ -75,15 +83,15 @@ const quizz = {
   ],
 };
 
-function getMyQuizzesOnLocalStorage(){
+function getMyQuizzesOnLocalStorage() {
   myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
   if (!myQuizzes) {
     myQuizzes = [];
   }
-  return myQuizzes
+  return myQuizzes;
 }
 
-function addQuizzOnLocalStorage(ID,key){
+function addQuizzOnLocalStorage(ID, key) {
   myQuizzes.push({ id: ID, key: key });
   localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
 }
@@ -100,38 +108,40 @@ function addQuizzOnLocalStorage(ID,key){
 
 // }
 
-
 function getAllQuizzes() {
   const promise = axios.get(QUIZZ_API);
   promise.then((response) => {
-    apiQuizzes = response.data
+    apiQuizzes = response.data;
     console.log(response);
     loadQuizzes(apiQuizzes);
+  });
+  promise.catch((error) => {
+    console.log(error.reponse.status);
   });
 }
 
 function loadQuizzes(quizzes) {
-  myQuizzesId = myQuizzes.map(quizz => quizz.id);
-  if (checkMyQuizzesOnAPI (myQuizzesId)){
+  myQuizzesId = myQuizzes.map((quizz) => quizz.id);
+  if (checkMyQuizzesOnAPI(myQuizzesId)) {
     renderUserQuizzes();
   }
   // if (myQuizzes.length >= 1) {
   //   renderUserQuizzes();
   // }
-  
+
   renderAllQuizzes(quizzes);
 }
 
-function checkMyQuizzesOnAPI (myQuizzesId) {
+function checkMyQuizzesOnAPI(myQuizzesId) {
   // retorna verdadeiro caso exista algum quizz na API salvo no LocalStorage
   // e falso caso contrario
-  let quizzesId = apiQuizzes.map(quizz => quizz.id)
-  for (id of quizzesId){
-    if ( myQuizzesId.includes(id)){
-      return true
+  let quizzesId = apiQuizzes.map((quizz) => quizz.id);
+  for (id of quizzesId) {
+    if (myQuizzesId.includes(id)) {
+      return true;
     }
   }
-  return false
+  return false;
 }
 
 function renderAllQuizzes(quizzes) {
@@ -139,50 +149,60 @@ function renderAllQuizzes(quizzes) {
 
   all_Quizzes.innerHTML = "<p>Todos os Quizzes</p>";
   quizzes.forEach((quizz, index) => {
-    // if (index > 0 && quizz.image !== quizzes[index - 1].image) {
-      all_Quizzes.innerHTML += `
-      <article id="${quizz.id}">
-        <img src="${quizz.image}" alt="imagem do quizz" />
-        <div class="gradient"></div>
-        <p>${quizz.title}</p>
-      </article>`;
-    // }
+    if (
+      validURL(quizz.image) &&
+      (!quizzExists.includes(quizz.image) || index === 0)
+    ) {
+      quizzExists.push(quizz.image);
+      printQuizz(all_Quizzes, quizz);
+    }
   });
-  const all_QuizzesRenderedes = [...document.querySelectorAll(".all-quizzes article")];
-  all_QuizzesRenderedes.forEach(quizz => {
+  const all_QuizzesRenderedes = [
+    ...document.querySelectorAll(".all-quizzes article"),
+  ];
+  all_QuizzesRenderedes.forEach((quizz) => {
     // console.log(quizz);
-    quizz.addEventListener("click",selectQuizz)
+    quizz.addEventListener("click", selectQuizz);
   });
 }
 
+function printQuizz(quizzesArray, quizz) {
+  quizzesArray.innerHTML += `
+    <article id="${quizz.id}">
+      <img src="${quizz.image}" class="cover" alt="imagem do quizz" />
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>`;
+}
+
 function renderUserQuizzes() {
-  const user_Quizzes = document.querySelector(".user-quizzes.first-screen");
+  const user_Quizzes = document.querySelector(".user-quizzes");
   const no_Quizzes = document.querySelector(".no-quizz-available");
   no_Quizzes.classList.add("hidden");
   user_Quizzes.classList.remove("hidden");
-  user_Quizzes.innerHTML=`<p>Seus Quizzes</p>
-        <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>`
+  user_Quizzes.innerHTML = `<p>Seus Quizzes</p>
+        <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>`;
 
   apiQuizzes.forEach((quizz) => {
-    if(myQuizzesId.includes(quizz.id)){
-      user_Quizzes.innerHTML += `
-      <article id="${quizz.id}">
-        <img src="${quizz.image}" alt="imagem do quizz" />
-        <div class="gradient"></div>
-        <p>${quizz.title}</p>
-      </article>`;
+    if (myQuizzesId.includes(quizz.id)) {
+      printQuizz(user_Quizzes, quizz);
     }
   });
-  const user_QuizzesRenderedes = [...document.querySelectorAll(".user-quizzes.first-screen article")];
-  user_QuizzesRenderedes.forEach(quizz => {
+  const user_QuizzesRenderedes = [
+    ...document.querySelectorAll(".user-quizzes article"),
+  ];
+  user_QuizzesRenderedes.forEach((quizz) => {
     // console.log(quizz);
-    quizz.addEventListener("click",selectQuizz)
-  })
+    quizz.addEventListener("click", selectQuizz);
+  });
 }
 
 function getQuizz(ID) {
   const promise = axios.get(`${QUIZZ_API}/${ID}`);
   promise.then((response) => console.log(response));
+  promise.catch((error) => {
+    console.log(error.reponse.status);
+  });
 }
 
 function createQuizz(quizz) {
@@ -194,7 +214,7 @@ function createQuizz(quizz) {
     // a chave precisa pro bônus
     myQuizzes.push({ id: response.data.id, key: response.data.key });
     localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
-    getAllQuizzes()
+    getAllQuizzes();
   });
 }
 
@@ -204,24 +224,30 @@ function deleteQuizz(ID) {
     headers: { "Secret-Key": key },
   });
   promise.then((response) => console.log(response));
+  promise.catch((error) => {
+    console.log(error.reponse.status);
+  });
 }
 
-function selectQuizz () {
+function selectQuizz() {
   // body
-  let firstScreen = document.querySelector(".container.first-screen");
-  let secondScreen = document.querySelector(".container.second-screen");
+  let firstScreen = document.querySelector(".first-screen");
+  let secondScreen = document.querySelector(".second-screen");
   firstScreen.classList.add("hidden");
   secondScreen.classList.remove("hidden");
   console.log(this.id);
   const promise = axios.get(`${QUIZZ_API}/${this.id}`);
   promise.then(renderQuizz);
+  promise.catch((error) => {
+    console.log(error.reponse.status);
+  });
 }
 
-function renderQuizz (quizz){
-  console.log(quizz.data)
-  let secondScreen = document.querySelector(".container.second-screen");
-  secondScreen.innerHTML=""
-  secondScreen.innerHTML+=`<figure class="second-screen">
+function renderQuizz(quizz) {
+  console.log(quizz.data);
+  let secondScreen = document.querySelector(".second-screen");
+  secondScreen.innerHTML = "";
+  secondScreen.innerHTML += `<figure class="second-screen">
   <img
     src="${quizz.data.image}"
     class="cover"
@@ -229,55 +255,74 @@ function renderQuizz (quizz){
   />
   <div class="gradient"></div>
   <p>${quizz.data.title}</p>
-</figure>`
+</figure>`;
 
-  quizz.data.questions.forEach(renderQuestion)
+  quizz.data.questions.forEach(renderQuestion);
 
-  secondScreen.innerHTML+=`<button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
-  <button class="home-btn second-screen">Voltar para home</button>`
+  secondScreen.innerHTML += `<button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
+  <button class="home-btn second-screen">Voltar para home</button>`;
 
   let home_btn = document.querySelector(".home-btn.second-screen");
-  home_btn.addEventListener("click",() => {
-    let firstScreen = document.querySelector(".container.first-screen");
-  let secondScreen = document.querySelector(".container.second-screen");
-  firstScreen.classList.remove("hidden");
-  secondScreen.classList.add("hidden");
-  })
+  home_btn.addEventListener("click", () => {
+    let firstScreen = document.querySelector("");
+    let secondScreen = document.querySelector(".second-screen");
+    firstScreen.classList.remove("hidden");
+    secondScreen.classList.add("hidden");
+  });
 }
 
-function renderQuestion (question) {
+function renderQuestion(question) {
   // body
-  let secondScreen = document.querySelector(".container.second-screen");
-  secondScreen.innerHTML+=`<section class="quizz-question second-screen">
+  let secondScreen = document.querySelector(".second-screen");
+  secondScreen.innerHTML += `<section class="quizz-question second-screen">
   <div class="question" id="Q1">
     ${question.title}
   </div>
-  <div class="answers">`
+  <div class="answers">`;
 
   let currentAnswers = question.answers;
-  currentAnswers.sort(() => Math.random() - 0.5) 
+  currentAnswers.sort(() => Math.random() - 0.5);
 
-  currentAnswers.forEach(renderAnswer)
+  currentAnswers.forEach(renderAnswer);
 
-  secondScreen.innerHTML+=`</div>
-  </section>`
-  
+  secondScreen.innerHTML += `</div>
+  </section>`;
 }
 
-function renderAnswer (answer) {
-  let secondScreen = document.querySelector(".container.second-screen");
-  secondScreen.innerHTML+=`<figure>
+function renderAnswer(answer) {
+  let secondScreen = document.querySelector(".second-screen");
+  secondScreen.innerHTML += `<figure>
   <img src="${answer.image}" alt="Answer Image" />
   <figcaption>${answer.text}</figcaption>
-</figure>`
+</figure>`;
 }
 
+function validURL(str) {
+  let pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return pattern.test(str) && checkImage(str);
+}
+function checkImage(url) {
+  if (typeof url !== "string") {
+    return false;
+  }
+  return (
+    url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) !== null
+  );
+}
+
+//createQuizz(quizz);
 getAllQuizzes();
 
-//         testes: 
+//         testes:
 
-
-// createQuizz(quizz)
 // const promise = axios.post(QUIZZ_API, quizz);
 // promise.then(getAllQuizzes)
 
@@ -288,3 +333,4 @@ getAllQuizzes();
 //     quizz.addEventListener("click",selectQuizz)
 //   })
 // },3000)
+//AllQuizzes;

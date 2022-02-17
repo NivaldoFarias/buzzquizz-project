@@ -22,8 +22,22 @@
 
   <body>
     <header>BuzzQuizz</header>
-    <main class="second-screen">
-      <div class="container second-screen hidden">
+    <main>
+      <div class="first-screen">
+        <section class="no-quizz-available">
+          <p>Você não criou nenhum quizz ainda :(</p>
+          <button id="create-quizz-btn">Criar Quizz</button>
+        </section>
+        <section class="user-quizzes hidden">
+          <p>Seus Quizzes</p>
+          <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>
+          <!--Dynamically loaded via JavaScript-->
+        </section>
+        <section class="all-quizzes">
+          <!--Dynamically loaded via JavaScript-->
+        </section>
+      </div>
+      <div class="second-screen hidden">
         <figure class="second-screen">
           <img
             src="dist/img/portterhead.png"
@@ -89,29 +103,22 @@
           />
           <p>
             Parabéns Potterhead! Bem-vindx a Hogwarts, aproveite o loop infinito
-            de comida e clique no botão abaixo para usar o vira-tempo e reiniciar
-            este teste.
+            de comida e clique no botão abaixo para usar o vira-tempo e
+            reiniciar este teste.
           </p>
         </section>
         <button class="restart-quizz-btn second-screen">Reiniciar Quizz</button>
         <button class="home-btn second-screen">Voltar para home</button>
       </div>
-      <div class="container first-screen">
-        <section class="no-quizz-available first-screen">
-          <p>Você não criou nenhum quizz ainda :(</p>
-          <button id="create-quizz-btn">Criar Quizz</button>
-        </section>
-        <section class="user-quizzes hidden first-screen">
-          <!--Dynamically loaded via JavaScript-->
-          <p>Seus Quizzes</p>
-          <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>
-        </section>
-        <section class="all-quizzes first-screen">
-          <!--Dynamically loaded via JavaScript-->
-        </section>
-      </div>
-
     </main>
+    <script
+      type="module"
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="./scripts/script.js"></script>
   </body>

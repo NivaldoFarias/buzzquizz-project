@@ -39,6 +39,15 @@ header {
 }
 
 main {
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: 100%;
+  margin-top: 69px;
+  padding: 0 18px;
+}
+
+.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -49,75 +58,7 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: -webkit-min-content;
-  height: -moz-min-content;
-  height: min-content;
-  width: 100%;
-  margin-top: 69px;
-  padding: 0 18px;
-}
-
-main.first-screen {
   gap: 35px;
-}
-
-main.second-screen {
-  gap: 24px;
-}
-
-figure.second-screen {
-  display: none;
-}
-
-figure.second-screen.second-screen {
-  display: initial;
-  position: relative;
-  height: 142px;
-  width: 100vw;
-}
-
-figure.second-screen.second-screen > img {
-  height: auto;
-  width: 100%;
-  border: none;
-}
-
-figure.second-screen.second-screen > p {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
-  font-size: 19px;
-  font-weight: 400;
-  white-space: nowrap;
-  color: white;
-}
-
-figure.second-screen.second-screen .cover {
-  -o-object-fit: cover;
-     object-fit: cover;
-  height: inherit;
-  width: 100%;
-}
-
-figure.second-screen.second-screen .gradient {
-  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.5)));
-  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
-}
-
-*.hidden {
-  display: none !important;
-}
-
-.gradient {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(64.58%, rgba(0, 0, 0, 0.5)), to(black));
-  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, black 100%);
 }
 
 .first-screen article {
@@ -130,7 +71,7 @@ figure.second-screen.second-screen .gradient {
 
 .first-screen article > img {
   height: 181px;
-  width: 100%;
+  width: 340px;
   border-radius: 5px;
 }
 
@@ -144,14 +85,115 @@ figure.second-screen.second-screen .gradient {
 }
 
 .first-screen article .gradient {
+  height: 181px;
+  width: 340px;
   border-radius: 5px;
 }
 
-.no-quizz-available {
-  display: none;
+.first-screen .user-quizzes {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 14px;
+  position: relative;
+  margin-top: 31px;
+  height: 100%;
+  width: 100%;
 }
 
-.no-quizz-available.first-screen {
+.first-screen .user-quizzes p {
+  font-size: 20px;
+  font-weight: 700;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  text-decoration: none;
+}
+
+.first-screen .user-quizzes ion-icon {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: #ec362d;
+  font-size: 40px;
+}
+
+.second-screen {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  gap: 24px;
+}
+
+.second-screen button {
+  font-size: 18px;
+  text-transform: uppercase;
+}
+
+.second-screen figure {
+  position: relative;
+  height: 142px;
+  width: 100vw;
+}
+
+.second-screen figure > img {
+  height: auto;
+  width: 100%;
+  border: none;
+}
+
+.second-screen figure > p {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 19px;
+  font-weight: 400;
+  white-space: nowrap;
+  color: white;
+}
+
+.second-screen figure .gradient {
+  background: -webkit-gradient(linear, left bottom, left top, from(rgba(0, 0, 0, 0.6)), to(rgba(0, 0, 0, 0.5)));
+  background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
+}
+
+*.hidden {
+  display: none !important;
+}
+
+.cover {
+  -o-object-fit: cover;
+     object-fit: cover;
+  height: inherit;
+  width: 100%;
+}
+
+.gradient {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(rgba(255, 255, 255, 0)), color-stop(64.58%, rgba(0, 0, 0, 0.5)), to(black));
+  background-image: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, rgba(0, 0, 0, 0.5) 64.58%, black 100%);
+}
+
+.no-quizz-available {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -166,23 +208,23 @@ figure.second-screen.second-screen .gradient {
       -ms-flex-direction: column;
           flex-direction: column;
   min-height: 181px;
-  width: 100%;
+  width: 340px;
   margin-top: 31px;
-  padding: 0 45px;
+  padding: 10px 45px;
   border: 2px dashed #d5d5d5;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border-radius: 5px;
 }
 
-.no-quizz-available.first-screen > p {
+.no-quizz-available > p {
   font-size: 19px;
   font-weight: 400;
   color: #b9b9b9;
   text-align: center;
 }
 
-.no-quizz-available.first-screen > button {
+.no-quizz-available > button {
   height: 40px;
   width: 151px;
   background-color: white;
@@ -193,10 +235,6 @@ figure.second-screen.second-screen .gradient {
 }
 
 .all-quizzes {
-  display: none;
-}
-
-.all-quizzes.first-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -212,53 +250,15 @@ figure.second-screen.second-screen .gradient {
   width: 100%;
 }
 
-.all-quizzes.first-screen > p {
+.all-quizzes > p {
   font-size: 20px;
   font-weight: 700;
   -ms-flex-item-align: start;
       align-self: flex-start;
   text-decoration: none;
-}
-
-.user-quizzes {
-  display: none;
-}
-
-.user-quizzes.first-screen {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  gap: 14px;
-  height: 100%;
-  width: 100%;
-}
-
-.user-quizzes.first-screen > p {
-  font-size: 20px;
-  font-weight: 700;
-  -ms-flex-item-align: start;
-      align-self: flex-start;
-  text-decoration: none;
-}
-
-.user-quizzes.first-screen > ion-icon {
-  position: absolute;
-  top: 0px;
-  right: 0px;
 }
 
 .quizz-question {
-  display: none;
-}
-
-.quizz-question.second-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -278,7 +278,7 @@ figure.second-screen.second-screen .gradient {
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
-.quizz-question.second-screen .question {
+.quizz-question .question {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -293,7 +293,7 @@ figure.second-screen.second-screen .gradient {
   color: white;
 }
 
-.quizz-question.second-screen .answers {
+.quizz-question .answers {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr;
@@ -305,25 +305,21 @@ figure.second-screen.second-screen .gradient {
   height: 293px;
 }
 
-.quizz-question.second-screen figure {
+.quizz-question figure {
   font-size: 13px;
   font-weight: 700;
   line-height: 18px;
 }
 
-.quizz-question.second-screen #Q1 {
+.quizz-question #Q1 {
   background-color: #434ca0;
 }
 
-.quizz-question.second-screen #Q2 {
+.quizz-question #Q2 {
   background-color: #a0438d;
 }
 
 .quizz-end {
-  display: none;
-}
-
-.quizz-end.second-screen {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -343,7 +339,7 @@ figure.second-screen.second-screen .gradient {
           box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 }
 
-.quizz-end.second-screen .level-title {
+.quizz-end .level-title {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -360,32 +356,18 @@ figure.second-screen.second-screen .gradient {
   background-color: #ec362d;
 }
 
-.quizz-end.second-screen img {
+.quizz-end img {
   height: 255px;
   width: 100%;
 }
 
-.quizz-end.second-screen p {
+.quizz-end p {
   font-size: 17px;
   line-height: 20px;
   font-weight: 700;
 }
 
-button {
-  display: none;
-}
-
-button.second-screen {
-  display: initial;
-  font-size: 18px;
-  text-transform: uppercase;
-}
-
 .home-btn {
-  display: none;
-}
-
-.home-btn.second-screen {
   margin-bottom: 30px;
   font-size: 15px;
   color: #818181;
@@ -394,11 +376,6 @@ button.second-screen {
 }
 
 .restart-quizz-btn {
-  display: none;
-}
-
-.restart-quizz-btn.second-screen {
-  display: initial;
   position: relative;
   left: 0px;
   top: 0px;
@@ -418,11 +395,6 @@ button.second-screen {
 }
 
 .restart-quizz-btn:hover {
-  display: none;
-}
-
-.restart-quizz-btn:hover.second-screen {
-  display: initial;
   left: 4px;
   top: 4px;
   -webkit-box-shadow: white 0px 0px 0px 0px;
