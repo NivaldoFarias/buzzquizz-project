@@ -14,90 +14,7 @@ let hits = 0;
 
 let currentQuizz = null;
 
-const quizz = {
-  title:
-    "Só uma pessoa que assistiu todos os filmes da Marvel vai gabaritar esse teste",
-  image:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
-  questions: [
-    {
-      title: "Que ator é conhecido pelo seu papel como O Hulk?",
-      color: "#123456",
-      answers: [
-        {
-          text: "Mark Ruffalo",
-          image:
-            "https://ogimg.infoglobo.com.br/in/25320231-3fa-ec0/FT1086A/33973739_Marvels-AvengersAge-Of-UltronHulk-Bruce-Banner-Mark-RuffaloPhFilm-FrameMarvel.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "Vincent D'Onofrio",
-          image:
-            "https://nerdhits.com.br/wp-content/uploads/2021/11/hulk-1.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-    {
-      title: "Qual é o nome do martelo encantado do Thor?",
-      color: "#123456",
-      answers: [
-        {
-          text: "Mjölnir",
-          image:
-            "https://exame.com/wp-content/uploads/2018/10/thor-ragnarok-filme-cultura-vip.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "Mnajas",
-          image: "https://mega.ibxk.com.br/2013/11/04/04135704362.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-    {
-      title: "Em que ano foi lançado o primeiro filme do Homem de Ferro?",
-      color: "#123456",
-      answers: [
-        {
-          text: "2008",
-          image:
-            "https://sm.ign.com/ign_br/news/m/marvels-ir/marvels-iron-man-vr-release-date-now-set-for-july-2020_8h12.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "2010",
-          image:
-            "https://conteudo.imguol.com.br/c/entretenimento/96/2020/08/07/iron-man-1596813808466_v2_615x300.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-  ],
-  levels: [
-    {
-      title: "Sabe de nada!",
-      image:
-        "https://referencianerd.com/wp-content/uploads/2020/06/IronManSnapFunkoFeature.jpg",
-      text: "Você precisa maratonar os filmes da Marvel.",
-      minValue: 0,
-    },
-    {
-      title: "Quase lá!",
-      image:
-        "https://observatoriodocinema.uol.com.br/wp-content/uploads/2021/02/homem-de-ferro-tony-divulgacao.jpg",
-      text: "Você sabe bastante, mas precisa relembrar algo.",
-      minValue: 32,
-    },
-    {
-      title: "Sabe tudo!",
-      image:
-        "https://static1.cbrimages.com/wordpress/wp-content/uploads/2021/11/Iron-Man-God-Armor-Infinity-Gauntlet.jpg",
-      text: "Você sabe de tudo da Marvel, já pode substituir o Vigia!",
-      minValue: 66,
-    },
-  ],
-};
+let quizz = {}
 
 function getMyQuizzesOnLocalStorage() {
   myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
@@ -112,18 +29,6 @@ function addQuizzOnLocalStorage(ID, key) {
   localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
 }
 
-// function updateLocalStorage(quizzes){
-//   let myQuizzesId = myQuizzes.map(quizz => quizz.id)
-//   myQuizzes =[]
-//   const promise = axios.get(QUIZZ_API);
-//   promise.then(response => {
-//     response.data.forEach(quizz => {
-//       if ()
-//     })
-//   })
-
-// }
-
 function getAllQuizzes() {
   const promise = axios.get(QUIZZ_API);
   promise.then((response) => {
@@ -137,14 +42,11 @@ function getAllQuizzes() {
 }
 
 function loadQuizzes(quizzes) {
+  document.querySelector("button#create-quizz-btn").addEventListener("click",openCreateQuizzWindow)
   myQuizzesId = myQuizzes.map((quizz) => quizz.id);
   if (checkMyQuizzesOnAPI(myQuizzesId)) {
     renderUserQuizzes();
   }
-  // if (myQuizzes.length >= 1) {
-  //   renderUserQuizzes();
-  // }
-
   renderAllQuizzes(quizzes);
 }
 
@@ -212,6 +114,8 @@ function renderUserQuizzes() {
       printQuizz(user_Quizzes, quizz);
     }
   });
+
+  document.querySelector("ion-icon#create-quizz-btn").addEventListener("click",openCreateQuizzWindow)
   const user_QuizzesRenderedes = [
     ...document.querySelectorAll(".user-quizzes article"),
   ];
@@ -229,7 +133,7 @@ function getQuizz(ID) {
   });
 }
 
-function createQuizz(quizz) {
+function postQuizz(quizz) {
   const promise = axios.post(QUIZZ_API, quizz);
   promise.then((response) => {
     console.log(response);
@@ -496,7 +400,101 @@ function collapseCreateQuestion() {
 if (!document.getElementById("third-screen").classList.contains("hidden")) {
   collapseCreateQuestion();
 }
-//createQuizz(quizz);
+
+
+function openCreateQuizzWindow(){
+  let firstScreen = document.getElementById("first-screen");
+  let createQuizz1 = document.getElementById("create-quizz-1");
+  firstScreen.classList.add("hidden");
+  createQuizz1.classList.remove("hidden");
+}
+
+let createQuestionsBtn = document.querySelector("#create-quizz-1 button")
+createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
+
+function openCreateQuestionsWindow () {
+  let createQuizz1 = document.getElementById("create-quizz-1");
+  let createQuizz2 = document.getElementById("create-quizz-2");
+
+  let title = document.querySelector("#create-quizz-1 #title").value;
+  let image = document.querySelector("#create-quizz-1 #image").value;
+  let numOfQuestions = document.querySelector("#create-quizz-1 #numOfQuestions").value;
+  let numOfLevels = document.querySelector("#create-quizz-1 #numOfLevels").value;
+  let questions = [];
+  questions.length = numOfQuestions;
+  let levels = [];
+  levels.length = numOfLevels;
+
+  quizz = {title:title,
+  image:image,
+  questions:questions,
+  levels:levels,
+  }
+
+  createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`
+
+  for (let i=0; i<quizz.questions.length; i++){
+    createQuizz2.innerHTML += `<article id="QUESTION-${i+1}">
+    <div class="question-btn">
+      <p>Pergunta ${i+1}</p>
+      <ion-icon name="create-outline"></ion-icon>
+    </div>
+    <div class="input-container">
+      <input type="text" placeholder="Texto da pergunta" />
+      <input type="text" placeholder="Cor de fundo da pergunta" />
+      <p>Resposta correta</p>
+      <input type="text" placeholder="Resposta correta" />
+      <input type="text" placeholder="URL da imagem" />
+      <p>Respostas incorretas</p>
+      <div class="incorrect-answer">
+        <input type="text" placeholder="Resposta incorreta 1" />
+        <input type="text" placeholder="URL da imagem 1" />
+      </div>
+      <div class="incorrect-answer">
+        <input type="text" placeholder="Resposta incorreta 2" />
+        <input type="text" placeholder="URL da imagem 2" />
+      </div>
+      <div class="incorrect-answer">
+        <input type="text" placeholder="Resposta incorreta 3" />
+        <input type="text" placeholder="URL da imagem 3" />
+      </div>
+      <ion-icon name="chevron-up"></ion-icon>
+    </div>
+  </article>`
+  }
+
+  createQuizz2.innerHTML += `<button class="restart-quizz-btn">Prosseguir pra criar níveis</button>
+  </section>`
+
+  if (!document.getElementById("third-screen").classList.contains("hidden")) {
+    collapseCreateQuestion();
+  }
+  
+  let createLevelsBtn = document.querySelector("#create-quizz-2 button")
+  createLevelsBtn.addEventListener("click",openCreateLevelsWindow)
+  
+  setTimeout(() => {
+  createQuizz1.classList.add("hidden");
+  createQuizz2.classList.remove("hidden");
+  console.log(quizz)
+  },300)
+}
+
+
+function openCreateLevelsWindow () {
+  setTimeout(() => {
+  let createQuizz2 = document.getElementById("create-quizz-2");
+  let createQuizz3 = document.getElementById("create-quizz-3");
+  createQuizz2.classList.add("hidden");
+  createQuizz3.classList.remove("hidden");
+  },300)
+}
+
+
+
+
+
+// postQuizz(quizz);
 getAllQuizzes();
 
 //         testes:
