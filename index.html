@@ -23,7 +23,7 @@
   <body>
     <header>BuzzQuizz</header>
     <main>
-      <div id="first-screen">
+      <div id="first-screen" class="hidden">
         <section class="no-quizz-available">
           <p>Você não criou nenhum quizz ainda :(</p>
           <button id="create-quizz-btn">Criar Quizz</button>
@@ -142,6 +142,94 @@
         </section>
         <button class="restart-quizz-btn">Reiniciar Quizz</button>
         <button class="home-btn">Voltar para home</button>
+      </div>
+      <div id="third-screen">
+        <section class="third-screen-first hidden">
+          <p>Comece pelo Começo</p>
+          <div class="input-container">
+            <input type="text" placeholder="Título do seu quizz" />
+            <input type="text" placeholder="URL da imagem do seu quizz" />
+            <input type="text" placeholder="Quantidade de perguntas do quizz" />
+            <input type="text" placeholder="Quantidade de níveis do quizz" />
+          </div>
+          <button class="restart-quizz-btn">
+            Prosseguir pra criar perguntas
+          </button>
+        </section>
+        <section class="third-screen-second">
+          <p>Crie suas perguntas</p>
+          <button class="question hidden">Pergunta 1</button>
+          <div class="input-container">
+            <p>Pergunta 1</p>
+            <input type="text" placeholder="Título do seu quizz" />
+            <input type="text" placeholder="URL da imagem do seu quizz" />
+            <p>Resposta correta</p>
+            <input type="text" placeholder="Resposta correta" />
+            <input type="text" placeholder="URL da imagem" />
+            <p>Respostas incorretas</p>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 1" />
+              <input type="text" placeholder="URL da imagem 1" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 2" />
+              <input type="text" placeholder="URL da imagem 2" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 3" />
+              <input type="text" placeholder="URL da imagem 3" />
+            </div>
+          </div>
+          <button class="question hidden">Pergunta 2</button>
+          <div class="input-container hidden">
+            <p>Pergunta 1</p>
+            <input type="text" placeholder="Título do seu quizz" />
+            <input type="text" placeholder="URL da imagem do seu quizz" />
+            <p>Resposta correta</p>
+            <input type="text" placeholder="Resposta correta" />
+            <input type="text" placeholder="URL da imagem" />
+            <p>Respostas incorretas</p>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 1" />
+              <input type="text" placeholder="URL da imagem 1" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 2" />
+              <input type="text" placeholder="URL da imagem 2" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 3" />
+              <input type="text" placeholder="URL da imagem 3" />
+            </div>
+          </div>
+          <button class="question hidden">Pergunta 3</button>
+          <div class="input-container hidden">
+            <p>Pergunta 1</p>
+            <input type="text" placeholder="Título do seu quizz" />
+            <input type="text" placeholder="URL da imagem do seu quizz" />
+            <p>Resposta correta</p>
+            <input type="text" placeholder="Resposta correta" />
+            <input type="text" placeholder="URL da imagem" />
+            <p>Respostas incorretas</p>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 1" />
+              <input type="text" placeholder="URL da imagem 1" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 2" />
+              <input type="text" placeholder="URL da imagem 2" />
+            </div>
+            <div class="incorrect-answer">
+              <input type="text" placeholder="Resposta incorreta 3" />
+              <input type="text" placeholder="URL da imagem 3" />
+            </div>
+          </div>
+          <button class="restart-quizz-btn hidden">
+            Prosseguir pra criar perguntas
+          </button>
+        </section>
+        <section class="third-screen-third hidden"></section>
+        <section class="third-screen-fourth hidden"></section>
       </div>
     </main>
     <script

@@ -175,6 +175,83 @@ main {
     }
   }
 }
+#third-screen {
+  @include flex-column();
+
+  height: 100%;
+  width: 100vw;
+
+  section > p {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    height: 89px;
+
+    font-size: $default-font-size;
+    font-weight: 700;
+  }
+  input {
+    padding: 0 14px;
+    height: 46px;
+    width: 100%;
+
+    font-style: italic;
+    font-size: 19px;
+    line-height: 22px;
+    color: rgba(186, 186, 186, 1);
+
+    background: #ffffff;
+    border: 1px solid #d1d1d1;
+    border-radius: $default-border-radius;
+  }
+  .restart-quizz-btn {
+    position: absolute;
+    margin-left: auto;
+    margin-right: auto;
+
+    top: 55%;
+    left: 0;
+    right: 0;
+
+    font-size: 13px;
+    text-align: center;
+  }
+}
+.input-container {
+  @include flex-column();
+  gap: 9px;
+  padding: 22px 19px;
+
+  height: fit-content;
+  width: 100vw;
+
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+  p {
+    width: 100%;
+
+    font-size: $default-font-size;
+    font-weight: 700;
+  }
+}
+.third-screen-second .input-container {
+  gap: 14px;
+
+  p {
+    margin: 10px 0 4px;
+  }
+  .incorrect-answer {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+
+    margin-bottom: 18px;
+    height: auto;
+    width: 100%;
+  }
+}
 *.hidden {
   display: none !important;
 }
@@ -470,6 +547,9 @@ main {
   left: 4px;
   top: 4px;
   box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
+}
+::placeholder {
+  color: rgba(186, 186, 186, 1);
 }
 
 //button css referenced at https://enjeck.com/btns/ (modified)
