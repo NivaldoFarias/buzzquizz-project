@@ -441,19 +441,28 @@ function checkImage(url) {
   );
 }
 function collapseCreateQuestion() {
-  let collapseButtons = document.getElementsByClassName("question-btn");
+  const collapseButtons = Array.from(
+    document.getElementsByClassName("question-btn")
+  );
+  /* const container = document.querySelector(
+    ".third-screen-second .input-container"
+  ); */
 
-  for (let i = 0; i < collapseButtons.length; i++) {
-    collapseButtons[i].addEventListener("click", function () {
+  collapseButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
       this.classList.toggle("active");
-      let content = this.nextElementSibling;
-      if (content.style.maxHeight) {
-        content.style.maxHeight = null;
+      const content = this.nextElementSibling;
+      if (content.style.height) {
+        this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = null;
+        content.style.overflow = "hidden";
       } else {
-        content.style.maxHeight = content.scrollHeight + "px";
+        this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = "750px";
+        content.style.overflow = "initial";
       }
     });
-  }
+  });
 }
 
 if (!document.getElementById("third-screen").classList.contains("hidden")) {
