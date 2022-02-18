@@ -260,7 +260,7 @@ main {
 .active:after {
   box-shadow: none !important;
 }
-.third-screen-first .input-container {
+#create-quizz-1 .input-container {
   gap: 9px;
   padding: 22px 19px;
 
@@ -274,13 +274,13 @@ main {
     font-weight: 700;
   }
 }
-.third-screen-second {
+#create-quizz-2 {
   @include flex-column();
   height: inherit;
   width: inherit;
   gap: 12px;
 }
-.third-screen-second .input-container {
+#create-quizz-2 .input-container {
   gap: 14px;
   padding: 0 19px;
 
