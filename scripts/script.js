@@ -308,11 +308,13 @@ function renderQuizz(quizz) {
 
   let restartQuizzBtn = document.querySelector(".restart-quizz-btn");
   restartQuizzBtn.addEventListener("click", () => {
-    renderQuizz(currentQuizz);
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    setTimeout(function () {
+      renderQuizz(currentQuizz);
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth",
+      });
+    }, 350);
   });
 
   const all_AnswersRenderedes = [...document.querySelectorAll("figure")];

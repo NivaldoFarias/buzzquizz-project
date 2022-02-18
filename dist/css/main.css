@@ -516,12 +516,11 @@ main {
 
 @media screen and (max-width: 375px) {
   .quizz-end {
-    height: 430px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
     width: 100%;
-  }
-  .quizz-end p {
-    text-align: center;
-    word-wrap: break-word;
+    padding: 18px;
   }
 }
 
@@ -552,6 +551,10 @@ main {
   .quizz-end img {
     height: 273px;
     width: 364px;
+  }
+  .quizz-end p {
+    font-size: 22px;
+    line-height: 25px;
   }
 }
 

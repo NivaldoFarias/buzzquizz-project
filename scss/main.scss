@@ -398,13 +398,10 @@ main {
     font-weight: 700;
   }
   @media screen and (max-width: 375px) {
-    height: 430px;
+    height: fit-content;
     width: 100%;
 
-    p {
-      text-align: center;
-      word-wrap: break-word;
-    }
+    padding: 18px;
   }
   @media screen and (min-width: 980px) {
     flex-direction: row;
@@ -426,6 +423,10 @@ main {
     img {
       height: 273px;
       width: 364px;
+    }
+    p {
+      font-size: 22px;
+      line-height: 25px;
     }
   }
 }
