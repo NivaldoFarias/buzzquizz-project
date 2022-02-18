@@ -164,6 +164,13 @@ main {
 
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.5));
   }
+  @media screen and (min-width: 980px) {
+    height: 227px;
+
+    > p {
+      font-size: 39px;
+    }
+  }
 }
 *.hidden {
   display: none !important;
@@ -261,15 +268,32 @@ main {
   gap: 13px;
   padding: 18px;
 
-  height: 436px;
-  width: 100%;
+  height: fit-content;
+  width: 375px;
 
   background-color: white;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 
+  figure {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    height: 141px;
+
+    font-size: $small-font-size;
+    font-weight: 700;
+    img {
+      height: 113px;
+      width: 163px;
+    }
+  }
   .question {
     display: flex;
     align-items: center;
+    justify-content: center;
+
+    padding: 0 10px;
 
     height: 89px;
     width: $default-box-width;
@@ -282,21 +306,11 @@ main {
   .answers {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 0.5fr;
     gap: 12px;
 
     width: 337px;
-    height: 293px;
-  }
-  figure {
-    font-size: $small-font-size;
-    font-weight: 700;
-    line-height: 18px;
-
-    img {
-      height: 113px;
-      width: 163px;
-    }
+    height: fit-content;
   }
   #Q1 {
     background-color: rgba(67, 76, 160, 1);
@@ -305,15 +319,47 @@ main {
     background-color: rgba(160, 67, 141, 1);
   }
   #Q3 {
-    background-color: rgba(200, 150, 160, 1);
+    background-color: rgb(22, 183, 189);
   }
   #Q4 {
     background-color: rgba(30, 67, 141, 1);
   }
-  /* @media screen and (min-width: 480px) {
-    height: 616px;
-    width: 52.7vw;
-  } */
+  @media screen and (max-width: 375px) {
+    figure {
+      img {
+        height: 95px;
+        width: 140px;
+      }
+    }
+  }
+  @media screen and (min-width: 980px) {
+    width: $desktop-container-width;
+
+    padding: 27px;
+
+    .question {
+      height: 138px;
+      width: 688px;
+
+      font-size: 23px;
+    }
+    .answers {
+      gap: 24px;
+
+      width: 688px;
+    }
+    figure {
+      height: 218.62px;
+
+      img {
+        width: 332px;
+        height: 175.2px;
+      }
+      figcaption {
+        font-size: $default-font-size;
+      }
+    }
+  }
 }
 .quizz-end {
   @include flex-column();
@@ -321,7 +367,7 @@ main {
   padding: 18px 18px 0;
 
   height: 500px;
-  width: 100vw;
+  width: 375px;
 
   background-color: white;
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
@@ -350,6 +396,37 @@ main {
     font-size: 17px;
     line-height: 20px;
     font-weight: 700;
+  }
+  @media screen and (max-width: 375px) {
+    height: 430px;
+    width: 100%;
+
+    p {
+      text-align: center;
+      word-wrap: break-word;
+    }
+  }
+  @media screen and (min-width: 980px) {
+    flex-direction: row;
+    align-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+
+    padding: 18px;
+
+    height: 430px;
+    width: $desktop-container-width;
+
+    .level-title {
+      justify-content: center;
+
+      width: 727px;
+      font-size: 23px;
+    }
+    img {
+      height: 273px;
+      width: 364px;
+    }
   }
 }
 .home-btn {
