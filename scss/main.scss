@@ -292,12 +292,23 @@ main {
     font-size: $small-font-size;
     font-weight: 700;
     line-height: 18px;
+
+    img {
+      height: 113px;
+      width: 163px;
+    }
   }
   #Q1 {
     background-color: rgba(67, 76, 160, 1);
   }
   #Q2 {
     background-color: rgba(160, 67, 141, 1);
+  }
+  #Q3 {
+    background-color: rgba(200, 150, 160, 1);
+  }
+  #Q4 {
+    background-color: rgba(30, 67, 141, 1);
   }
   /* @media screen and (min-width: 480px) {
     height: 616px;

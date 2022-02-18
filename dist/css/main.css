@@ -389,12 +389,25 @@ main {
   line-height: 18px;
 }
 
+.quizz-question figure img {
+  height: 113px;
+  width: 163px;
+}
+
 .quizz-question #Q1 {
   background-color: #434ca0;
 }
 
 .quizz-question #Q2 {
   background-color: #a0438d;
+}
+
+.quizz-question #Q3 {
+  background-color: #c896a0;
+}
+
+.quizz-question #Q4 {
+  background-color: #1e438d;
 }
 
 .quizz-end {
