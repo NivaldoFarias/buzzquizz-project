@@ -206,13 +206,7 @@ main {
     border-radius: $default-border-radius;
   }
   .restart-quizz-btn {
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-
-    top: 55%;
-    left: 0;
-    right: 0;
+    margin: 20px auto 40px;
 
     font-size: 13px;
     text-align: center;
@@ -276,11 +270,12 @@ main {
 }
 #create-quizz-2 {
   @include flex-column();
-  height: inherit;
+  height: min-content;
   width: inherit;
   gap: 12px;
 }
 #create-quizz-2 .input-container {
+  position: relative;
   gap: 14px;
   padding: 0 19px;
 
@@ -293,6 +288,15 @@ main {
   p {
     margin-top: 15px;
   }
+  input {
+    height: 46px;
+  }
+  ion-icon {
+    position: absolute;
+    margin: 0 auto;
+    top: 92%;
+    font-size: 50px;
+  }
   .incorrect-answer {
     display: flex;
     flex-direction: column;
@@ -301,9 +305,6 @@ main {
     margin-bottom: 18px;
     height: auto;
     width: 100%;
-  }
-  input {
-    height: 46px;
   }
 }
 *.hidden {

@@ -444,9 +444,9 @@ function collapseCreateQuestion() {
   const collapseButtons = Array.from(
     document.getElementsByClassName("question-btn")
   );
-  /* const container = document.querySelector(
-    ".third-screen-second .input-container"
-  ); */
+  const altBtns = Array.from(
+    document.querySelectorAll(".input-container ion-icon")
+  );
 
   collapseButtons.forEach((btn) => {
     btn.addEventListener("click", function () {
@@ -458,9 +458,27 @@ function collapseCreateQuestion() {
         content.style.overflow = "hidden";
       } else {
         this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = "750px";
+        content.style.height = "800px";
         content.style.overflow = "initial";
       }
+    });
+  });
+  altBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      collapseButtons.forEach((btnClicked) => {
+        if (
+          btnClicked.classList.contains("active") &&
+          btnClicked.nextElementSibling === btn.parentElement
+        ) {
+          btnClicked.classList.remove("active");
+          const content = btnClicked.nextElementSibling;
+          if (content.style.height) {
+            btnClicked.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+            content.style.height = null;
+            content.style.overflow = "hidden";
+          }
+        }
+      });
     });
   });
 }
