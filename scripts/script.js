@@ -328,15 +328,15 @@ function renderQuestion(question, index) {
   currentAnswers.sort(() => Math.random() - 0.5);
 
   let secondScreen = document.getElementById("second-screen");
-  secondScreen.innerHTML += `<section class="quizz-question">
-  <div class="question" id="Q${index + 1}">
-  ${question.title}
-  </div>
-  <div class="answers">
-  ${getAnswers(currentAnswers)}
-  </div>
-  </section>`;
-
+  secondScreen.innerHTML += `
+    <section class="quizz-question">
+      <div class="question" id="Q${index + 1}">
+        ${question.title}
+      </div>
+      <div class="answers">
+        ${getAnswers(currentAnswers)}
+      </div>
+    </section>`;
   // currentAnswers.forEach(renderAnswer);
 
   // secondScreen.innerHTML += `</div>
@@ -441,11 +441,10 @@ function checkImage(url) {
   );
 }
 function collapseCreateQuestion() {
-  let coll = document.getElementsByClassName("input-container");
-  let i;
+  let collapseButtons = document.getElementsByClassName("question-btn");
 
-  for (i = 0; i < coll.length; i++) {
-    coll[i].addEventListener("click", function () {
+  for (let i = 0; i < collapseButtons.length; i++) {
+    collapseButtons[i].addEventListener("click", function () {
       this.classList.toggle("active");
       let content = this.nextElementSibling;
       if (content.style.maxHeight) {
@@ -457,6 +456,9 @@ function collapseCreateQuestion() {
   }
 }
 
+if (!document.getElementById("third-screen").classList.contains("hidden")) {
+  collapseCreateQuestion();
+}
 //createQuizz(quizz);
 getAllQuizzes();
 
