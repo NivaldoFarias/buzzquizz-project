@@ -153,9 +153,12 @@ main {
     left: 50%;
     transform: translate(-50%, -50%);
 
+    width: 90%;
+
     font-size: 19px;
+    line-height: 22px;
     font-weight: $font-weight-regular;
-    white-space: nowrap;
+    text-align: center;
     color: white;
   }
   .gradient {
@@ -364,9 +367,9 @@ main {
 .quizz-end {
   @include flex-column();
   gap: 13px;
-  padding: 18px 18px 0;
+  padding: 18px;
 
-  height: 500px;
+  height: fit-content;
   width: 375px;
 
   background-color: white;
@@ -398,10 +401,14 @@ main {
     font-weight: 700;
   }
   @media screen and (max-width: 375px) {
-    height: fit-content;
     width: 100%;
 
-    padding: 18px;
+    img {
+      width: 90%;
+    }
+    p {
+      width: 90%;
+    }
   }
   @media screen and (min-width: 980px) {
     flex-direction: row;

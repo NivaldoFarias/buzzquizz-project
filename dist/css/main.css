@@ -204,9 +204,11 @@ main {
   left: 50%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%);
+  width: 90%;
   font-size: 19px;
+  line-height: 22px;
   font-weight: 400;
-  white-space: nowrap;
+  text-align: center;
   color: white;
 }
 
@@ -477,8 +479,10 @@ main {
       -ms-flex-direction: column;
           flex-direction: column;
   gap: 13px;
-  padding: 18px 18px 0;
-  height: 500px;
+  padding: 18px;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
   width: 375px;
   background-color: white;
   -webkit-box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
@@ -516,11 +520,13 @@ main {
 
 @media screen and (max-width: 375px) {
   .quizz-end {
-    height: -webkit-fit-content;
-    height: -moz-fit-content;
-    height: fit-content;
     width: 100%;
-    padding: 18px;
+  }
+  .quizz-end img {
+    width: 90%;
+  }
+  .quizz-end p {
+    width: 90%;
   }
 }
 
