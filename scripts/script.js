@@ -337,6 +337,11 @@ function renderQuestion(question, index) {
         ${getAnswers(currentAnswers)}
       </div>
     </section>`;
+    if(!["#fff","#ffffff","white"].includes(`${question.color}`.toLowerCase())){
+      document.querySelector(`#Q${index + 1}`).style.backgroundColor = `${question.color}`
+    } else {
+      document.querySelector(`#Q${index + 1}`).style.backgroundColor = "#EC362D"
+    }
   // currentAnswers.forEach(renderAnswer);
 
   // secondScreen.innerHTML += `</div>
@@ -349,6 +354,7 @@ function getAnswers(answers) {
     content += `<figure class="${answer.isCorrectAnswer}">
     <img src="${answer.image}" class='cover' alt="Answer Image" />
     <figcaption>${answer.text}</figcaption>
+    <div class="whitish hidden"></div>
     </figure>`;
   }
   return content;
@@ -357,7 +363,7 @@ function getAnswers(answers) {
 function selectAnswer() {
   // body
   // answerFigure.classList
-  // console.log(this);
+  // console.log(this.parentNode.children);
   let answers = this.parentNode;
   if (!answers.classList.contains("lock")) {
     moves++;
@@ -365,7 +371,11 @@ function selectAnswer() {
       hits++;
     }
     answers.classList.add("lock");
-    this.style.border = "thick solid #000000";
+    [...answers.children].forEach(answer => {
+      if (answer != this) {
+        answer.querySelector(".whitish").classList.remove("hidden")
+      }
+    })
     let rightAnswer = answers.querySelector(".true");
     rightAnswer.querySelector("figcaption").style.color = "green";
     let wrongAnswers = [...answers.querySelectorAll(".false")];
@@ -405,7 +415,7 @@ function selectAnswer() {
     } else {
       setTimeout(() => {
         window.scrollBy({
-          top: 460,
+          top: this.parentElement.parentElement.offsetHeight + 24,
           behavior: "smooth",
         });
       }, 2000);
