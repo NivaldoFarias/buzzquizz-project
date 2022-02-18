@@ -440,9 +440,25 @@ function checkImage(url) {
     url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) !== null
   );
 }
-function collapseCreateQuestion() {
+function collapseElement() {
+  const createQuestions = document.getElementById("create-quizz-2");
+
+  if (createQuestions.classList.contains("hidden")) {
+    toggleCollapsibleElement("create-quizz-3", 430);
+  } else {
+    toggleCollapsibleElement("create-quizz-2", 800);
+  }
+}
+
+if (!document.getElementById("third-screen").classList.contains("hidden")) {
+  collapseElement();
+}
+//createQuizz(quizz);
+getAllQuizzes();
+
+function toggleCollapsibleElement(elementID, elementHeight) {
   const collapseButtons = Array.from(
-    document.getElementsByClassName("question-btn")
+    document.querySelectorAll(`#${elementID} .question-btn`)
   );
   const altBtns = Array.from(
     document.querySelectorAll(".input-container ion-icon")
@@ -458,7 +474,7 @@ function collapseCreateQuestion() {
         content.style.overflow = "hidden";
       } else {
         this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = "800px";
+        content.style.height = `${elementHeight}px`;
         content.style.overflow = "initial";
       }
     });
@@ -482,13 +498,6 @@ function collapseCreateQuestion() {
     });
   });
 }
-
-if (!document.getElementById("third-screen").classList.contains("hidden")) {
-  collapseCreateQuestion();
-}
-//createQuizz(quizz);
-getAllQuizzes();
-
 //         testes:
 
 // const promise = axios.post(QUIZZ_API, quizz);

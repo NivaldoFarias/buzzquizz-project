@@ -425,6 +425,64 @@ main {
   width: 100%;
 }
 
+#create-quizz-3 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: -webkit-min-content;
+  height: -moz-min-content;
+  height: min-content;
+  width: inherit;
+  gap: 12px;
+}
+
+#create-quizz-3 .input-container {
+  position: relative;
+  gap: 14px;
+  padding: 0 19px;
+  height: 0;
+  width: 100%;
+  overflow: hidden;
+  -webkit-transition: height 500ms cubic-bezier(0, 0, 0.32, 0.96);
+  transition: height 500ms cubic-bezier(0, 0, 0.32, 0.96);
+  -webkit-box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+          box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+#create-quizz-3 .input-container p {
+  margin-top: 15px;
+}
+
+#create-quizz-3 .input-container input {
+  height: 46px;
+}
+
+#create-quizz-3 .input-container ion-icon {
+  position: absolute;
+  margin: 0 auto;
+  top: 85%;
+  font-size: 50px;
+}
+
+#create-quizz-3 .input-container textarea {
+  padding: 14px;
+  width: 100%;
+  font-style: italic;
+  font-size: 19px;
+  color: #bababa;
+  background: #ffffff;
+  border: 1px solid #d1d1d1;
+  border-radius: 5px;
+  height: 177px;
+}
+
 *.hidden {
   display: none !important;
 }
