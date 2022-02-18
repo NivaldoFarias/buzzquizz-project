@@ -254,6 +254,9 @@ main {
 .active:after {
   box-shadow: none !important;
 }
+#create-quizz-1 {
+  @include flex-column();
+}
 #create-quizz-1 .input-container {
   gap: 9px;
   padding: 22px 19px;
@@ -454,7 +457,7 @@ main {
     background-color: rgba(160, 67, 141, 1);
   }
   #Q3 {
-    background-color: rgb(22, 183, 189);
+    background-color: rgba(22, 183, 189, 1);
   }
   #Q4 {
     background-color: rgba(30, 67, 141, 1);
