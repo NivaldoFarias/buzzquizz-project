@@ -354,11 +354,11 @@ function checkImage(url) {
 }
 function collapseElement() {
   const createQuestions = document.getElementById("create-quizz-2");
-
-  if (createQuestions.classList.contains("hidden")) {
+  // createQuestions.classList.contains("hidden")
+  if (true) {
     toggleCollapsibleElement("create-quizz-3", 430);
-  } else {
     toggleCollapsibleElement("create-quizz-2", 800);
+  } else {
   }
 }
 function toggleCollapsibleElement(elementID, elementHeight) {
@@ -371,6 +371,7 @@ function toggleCollapsibleElement(elementID, elementHeight) {
 
   collapseButtons.forEach((btn) => {
     btn.addEventListener("click", function () {
+      console.log("eventlistener");
       this.classList.toggle("active");
       const content = this.nextElementSibling;
       if (content.style.height) {
@@ -420,6 +421,7 @@ let createQuestionsBtn = document.querySelector("#create-quizz-1 button")
 createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
 
 function openCreateQuestionsWindow () {
+  collapseElement()
   let createQuizz1 = document.getElementById("create-quizz-1");
   let createQuizz2 = document.getElementById("create-quizz-2");
 
@@ -485,7 +487,7 @@ function openCreateQuestionsWindow () {
     </section>`
   
     if (!document.getElementById("third-screen").classList.contains("hidden")) {
-      collapseCreateQuestion();
+      collapseElement();
     }
     
     let createLevelsBtn = document.querySelector("#create-quizz-2 button")
@@ -530,6 +532,7 @@ function createQuestionsValidation () {
 
 
 function openCreateLevelsWindow () {
+  collapseElement()
   if(createQuestionsValidation()){
     for (let i=0; i<quizz.questions.length;i++){
       let answers = []
