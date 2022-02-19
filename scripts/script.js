@@ -490,9 +490,38 @@ function openCreateQuestionsWindow () {
   }
 }
 
+function createQuestionsValidation () {
+  // body
+  for (let i=0; i<quizz.questions.length;i++){
+    if(document.querySelector(`#QUESTION-${i+1} #question-title`).value<20){
+      alert(`Texto da pergunta ${i+1}: no mínimo 20 caracteres`)
+      return false
+    } else if (!document.querySelector(`#QUESTION-${i+1} #right-answer-text`).value){
+      alert("Texto as resposta correta: não pode estar vazio")
+      return false
+    } else if (!validURL(document.querySelector(`#QUESTION-${i+1} #right-answer-image`).value)){
+      alert("URL da imagem de resposta correta: deve ter formato de URL")
+      return false
+    } else if (!document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-1`).value){
+      alert("Texto da resposta incorreta 1: não pode estar vazio")
+      return false
+    } else if (!validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-1`).value)){
+      alert("URL das imagem de resposta incorreta 1: deve ter formato de URL")
+      return false
+    } else if (document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-2`).value && !validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-2`).value)){
+      alert("URL das imagem de resposta incorreta 2: deve ter formato de URL")
+      return false
+    } else if (document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-3`).value && !validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-3`).value)){
+      alert("URL das imagem de resposta incorreta 3: deve ter formato de URL")
+      return false
+    } 
+  }
+  return true
+}
+
 
 function openCreateLevelsWindow () {
-  
+  if(createQuestionsValidation()){
     for (let i=0; i<quizz.questions.length;i++){
       let answers = []
       let rightAnswer = {
@@ -527,7 +556,7 @@ function openCreateLevelsWindow () {
     createQuizz2.classList.add("hidden");
     createQuizz3.classList.remove("hidden");
     },300)
-  
+  }
 }
 
 
