@@ -449,13 +449,6 @@ function collapseElement() {
     toggleCollapsibleElement("create-quizz-2", 800);
   }
 }
-
-if (!document.getElementById("third-screen").classList.contains("hidden")) {
-  collapseElement();
-}
-//createQuizz(quizz);
-getAllQuizzes();
-
 function toggleCollapsibleElement(elementID, elementHeight) {
   const collapseButtons = Array.from(
     document.querySelectorAll(`#${elementID} .question-btn`)
@@ -498,6 +491,13 @@ function toggleCollapsibleElement(elementID, elementHeight) {
     });
   });
 }
+
+if (!document.getElementById("third-screen").classList.contains("hidden")) {
+  collapseElement();
+}
+//createQuizz(quizz);
+getAllQuizzes();
+
 //         testes:
 
 // const promise = axios.post(QUIZZ_API, quizz);
