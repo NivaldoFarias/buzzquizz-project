@@ -288,7 +288,6 @@ function selectAnswer() {
     );
 
     if (numberOfQuestions == moves) {
-      console.log("acabou");
       let value = Math.round((hits / numberOfQuestions) * 100);
       let levels = currentQuizz.levels;
       levels.sort();
@@ -310,7 +309,6 @@ function selectAnswer() {
       });
       quizzEnd.classList.remove("hidden");
       setTimeout(() => {
-        console.log("acabou");
         window.scrollTo({
           top: document.body.scrollHeight,
           behavior: "smooth",
@@ -420,74 +418,116 @@ function openCreateQuestionsWindow () {
   let image = document.querySelector("#create-quizz-1 #image").value;
   let numOfQuestions = document.querySelector("#create-quizz-1 #numOfQuestions").value;
   let numOfLevels = document.querySelector("#create-quizz-1 #numOfLevels").value;
-  let questions = [];
-  questions.length = numOfQuestions;
-  let levels = [];
-  levels.length = numOfLevels;
 
-  quizz = {title:title,
-  image:image,
-  questions:questions,
-  levels:levels,
-  }
-
-  createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`
-
-  for (let i=0; i<quizz.questions.length; i++){
-    createQuizz2.innerHTML += `<article id="QUESTION-${i+1}">
-    <div class="question-btn">
-      <p>Pergunta ${i+1}</p>
-      <ion-icon name="create-outline"></ion-icon>
-    </div>
-    <div class="input-container">
-      <input type="text" placeholder="Texto da pergunta" />
-      <input type="text" placeholder="Cor de fundo da pergunta" />
-      <p>Resposta correta</p>
-      <input type="text" placeholder="Resposta correta" />
-      <input type="text" placeholder="URL da imagem" />
-      <p>Respostas incorretas</p>
-      <div class="incorrect-answer">
-        <input type="text" placeholder="Resposta incorreta 1" />
-        <input type="text" placeholder="URL da imagem 1" />
-      </div>
-      <div class="incorrect-answer">
-        <input type="text" placeholder="Resposta incorreta 2" />
-        <input type="text" placeholder="URL da imagem 2" />
-      </div>
-      <div class="incorrect-answer">
-        <input type="text" placeholder="Resposta incorreta 3" />
-        <input type="text" placeholder="URL da imagem 3" />
-      </div>
-      <ion-icon name="chevron-up"></ion-icon>
-    </div>
-  </article>`
-  }
-
-  createQuizz2.innerHTML += `<button class="restart-quizz-btn">Prosseguir pra criar níveis</button>
-  </section>`
-
-  if (!document.getElementById("third-screen").classList.contains("hidden")) {
-    collapseCreateQuestion();
-  }
+  if(title.length<20 || title.length>65){
+    alert("Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres")
+  } else if(!validURL(image)){
+    alert("URL da Imagem: deve ter formato de URL e ser uma imagem")
+  } else if (numOfQuestions < 3){
+    alert("Quantidade de perguntas: no mínimo 3 perguntas")
+  } else if (numOfLevels < 2){
+    alert("Quantidade de níveis: no mínimo 2 níveis")
+  } else {
+    let questions = [];
+    questions.length = numOfQuestions;
+    let levels = [];
+    levels.length = numOfLevels;
   
-  let createLevelsBtn = document.querySelector("#create-quizz-2 button")
-  createLevelsBtn.addEventListener("click",openCreateLevelsWindow)
+    quizz = {title:title,
+    image:image,
+    questions:questions,
+    levels:levels,
+    }
   
-  setTimeout(() => {
-  createQuizz1.classList.add("hidden");
-  createQuizz2.classList.remove("hidden");
-  console.log(quizz)
-  },300)
+    createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`
+  
+    for (let i=0; i<quizz.questions.length; i++){
+      createQuizz2.innerHTML += 
+      `<article id="QUESTION-${i+1}">
+        <div class="question-btn">
+          <p>Pergunta ${i+1}</p>
+          <ion-icon name="create-outline"></ion-icon>
+        </div>
+        <div class="input-container">
+          <input id="question-title" type="text" placeholder="Texto da pergunta" />
+          <input id="question-color" type="text" placeholder="Cor de fundo da pergunta" />
+          <p>Resposta correta</p>
+          <input id="right-answer-text" type="text" placeholder="Resposta correta" />
+          <input id="right-answer-image" type="text" placeholder="URL da imagem" />
+          <p>Respostas incorretas</p>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-1" type="text" placeholder="Resposta incorreta 1" />
+            <input id="wrong-answer-image-1" type="text" placeholder="URL da imagem 1" />
+          </div>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-2" type="text" placeholder="Resposta incorreta 2" />
+            <input id="wrong-answer-image-2" type="text" placeholder="URL da imagem 2" />
+          </div>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-3"  type="text" placeholder="Resposta incorreta 3" />
+            <input id="wrong-answer-image-3" type="text" placeholder="URL da imagem 3" />
+          </div>
+          <ion-icon name="chevron-up"></ion-icon>
+        </div>
+      </article>`
+    }
+  
+    createQuizz2.innerHTML += `<button class="restart-quizz-btn">Prosseguir pra criar níveis</button>
+    </section>`
+  
+    if (!document.getElementById("third-screen").classList.contains("hidden")) {
+      collapseCreateQuestion();
+    }
+    
+    let createLevelsBtn = document.querySelector("#create-quizz-2 button")
+    createLevelsBtn.addEventListener("click",openCreateLevelsWindow)
+    
+    setTimeout(() => {
+    createQuizz1.classList.add("hidden");
+    createQuizz2.classList.remove("hidden");
+    console.log(quizz)
+    },300)
+  }
 }
 
 
 function openCreateLevelsWindow () {
-  setTimeout(() => {
-  let createQuizz2 = document.getElementById("create-quizz-2");
-  let createQuizz3 = document.getElementById("create-quizz-3");
-  createQuizz2.classList.add("hidden");
-  createQuizz3.classList.remove("hidden");
-  },300)
+  
+    for (let i=0; i<quizz.questions.length;i++){
+      let answers = []
+      let rightAnswer = {
+        text: document.querySelector(`#QUESTION-${i+1} #right-answer-text`).value,
+        image: document.querySelector(`#QUESTION-${i+1} #right-answer-image`).value,
+        isCorrectAnswer: true
+      }
+      answers.push(rightAnswer)
+      for (let j=1;j<4;j++){
+        let wrongAnswerText = document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-${j}`).value;
+        let wrongAnswerImage = document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-${j}`).value
+        if(wrongAnswerImage && wrongAnswerImage){
+          answers.push({
+            text: wrongAnswerText,
+            image: wrongAnswerImage,
+            isCorrectAnswer: false
+          })
+        }
+      }
+      let questionTitle = document.querySelector(`#QUESTION-${i+1} #question-title`).value;
+      let questionColor = document.querySelector(`#QUESTION-${i+1} #question-color`).value;
+      quizz.questions[i] = {
+        title:questionTitle,
+        color:questionColor,
+        answers:answers
+      }
+    }
+    console.log(quizz);
+    setTimeout(() => {
+    let createQuizz2 = document.getElementById("create-quizz-2");
+    let createQuizz3 = document.getElementById("create-quizz-3");
+    createQuizz2.classList.add("hidden");
+    createQuizz3.classList.remove("hidden");
+    },300)
+  
 }
 
 
