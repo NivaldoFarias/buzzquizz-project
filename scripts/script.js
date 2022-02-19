@@ -16,6 +16,8 @@ let currentQuizz = null;
 
 let quizz = {}
 
+let teste;
+
 function getMyQuizzesOnLocalStorage() {
   myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
   if (!myQuizzes) {
@@ -405,9 +407,9 @@ function toggleCollapsibleElement(elementID, elementHeight) {
   });
 }
 
-if (!document.getElementById("third-screen").classList.contains("hidden")) {
+// if (!document.getElementById("third-screen").classList.contains("hidden")) {
   collapseElement();
-}
+// }
 
 
 function openCreateQuizzWindow(){
@@ -422,6 +424,7 @@ createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
 
 function openCreateQuestionsWindow () {
   collapseElement()
+  teste = parseInt(prompt("teste"))
   let createQuizz1 = document.getElementById("create-quizz-1");
   let createQuizz2 = document.getElementById("create-quizz-2");
 
@@ -503,6 +506,9 @@ function openCreateQuestionsWindow () {
 
 function createQuestionsValidation () {
   // body
+  if(teste){
+    return true
+  }
   for (let i=0; i<quizz.questions.length;i++){
     if(document.querySelector(`#QUESTION-${i+1} #question-title`).value<20){
       alert(`Texto da pergunta ${i+1}: no mínimo 20 caracteres`)
@@ -534,6 +540,7 @@ function createQuestionsValidation () {
 function openCreateLevelsWindow () {
   collapseElement()
   if(createQuestionsValidation()){
+    console.log("if");
     for (let i=0; i<quizz.questions.length;i++){
       let answers = []
       let rightAnswer = {
@@ -559,15 +566,18 @@ function openCreateLevelsWindow () {
         title:questionTitle,
         color:questionColor,
         answers:answers
+      } 
       }
-    }
     console.log(quizz);
     setTimeout(() => {
     let createQuizz2 = document.getElementById("create-quizz-2");
     let createQuizz3 = document.getElementById("create-quizz-3");
     createQuizz2.classList.add("hidden");
     createQuizz3.classList.remove("hidden");
+    collapseElement()
     },300)
+  } else {
+    collapseElement()
   }
 }
 
