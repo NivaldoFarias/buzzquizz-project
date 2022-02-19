@@ -14,90 +14,7 @@ let hits = 0;
 
 let currentQuizz = null;
 
-const quizz = {
-  title:
-    "Só uma pessoa que assistiu todos os filmes da Marvel vai gabaritar esse teste",
-  image:
-    "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
-  questions: [
-    {
-      title: "Que ator é conhecido pelo seu papel como O Hulk?",
-      color: "#123456",
-      answers: [
-        {
-          text: "Mark Ruffalo",
-          image:
-            "https://ogimg.infoglobo.com.br/in/25320231-3fa-ec0/FT1086A/33973739_Marvels-AvengersAge-Of-UltronHulk-Bruce-Banner-Mark-RuffaloPhFilm-FrameMarvel.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "Vincent D'Onofrio",
-          image:
-            "https://nerdhits.com.br/wp-content/uploads/2021/11/hulk-1.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-    {
-      title: "Qual é o nome do martelo encantado do Thor?",
-      color: "#123456",
-      answers: [
-        {
-          text: "Mjölnir",
-          image:
-            "https://exame.com/wp-content/uploads/2018/10/thor-ragnarok-filme-cultura-vip.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "Mnajas",
-          image: "https://mega.ibxk.com.br/2013/11/04/04135704362.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-    {
-      title: "Em que ano foi lançado o primeiro filme do Homem de Ferro?",
-      color: "#123456",
-      answers: [
-        {
-          text: "2008",
-          image:
-            "https://sm.ign.com/ign_br/news/m/marvels-ir/marvels-iron-man-vr-release-date-now-set-for-july-2020_8h12.jpg",
-          isCorrectAnswer: true,
-        },
-        {
-          text: "2010",
-          image:
-            "https://conteudo.imguol.com.br/c/entretenimento/96/2020/08/07/iron-man-1596813808466_v2_615x300.jpg",
-          isCorrectAnswer: false,
-        },
-      ],
-    },
-  ],
-  levels: [
-    {
-      title: "Sabe de nada!",
-      image:
-        "https://referencianerd.com/wp-content/uploads/2020/06/IronManSnapFunkoFeature.jpg",
-      text: "Você precisa maratonar os filmes da Marvel.",
-      minValue: 0,
-    },
-    {
-      title: "Quase lá!",
-      image:
-        "https://observatoriodocinema.uol.com.br/wp-content/uploads/2021/02/homem-de-ferro-tony-divulgacao.jpg",
-      text: "Você sabe bastante, mas precisa relembrar algo.",
-      minValue: 32,
-    },
-    {
-      title: "Sabe tudo!",
-      image:
-        "https://static1.cbrimages.com/wordpress/wp-content/uploads/2021/11/Iron-Man-God-Armor-Infinity-Gauntlet.jpg",
-      text: "Você sabe de tudo da Marvel, já pode substituir o Vigia!",
-      minValue: 66,
-    },
-  ],
-};
+let quizz = {}
 
 function getMyQuizzesOnLocalStorage() {
   myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
@@ -112,18 +29,6 @@ function addQuizzOnLocalStorage(ID, key) {
   localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
 }
 
-// function updateLocalStorage(quizzes){
-//   let myQuizzesId = myQuizzes.map(quizz => quizz.id)
-//   myQuizzes =[]
-//   const promise = axios.get(QUIZZ_API);
-//   promise.then(response => {
-//     response.data.forEach(quizz => {
-//       if ()
-//     })
-//   })
-
-// }
-
 function getAllQuizzes() {
   const promise = axios.get(QUIZZ_API);
   promise.then((response) => {
@@ -137,14 +42,11 @@ function getAllQuizzes() {
 }
 
 function loadQuizzes(quizzes) {
+  document.querySelector("button#create-quizz-btn").addEventListener("click",openCreateQuizzWindow)
   myQuizzesId = myQuizzes.map((quizz) => quizz.id);
   if (checkMyQuizzesOnAPI(myQuizzesId)) {
     renderUserQuizzes();
   }
-  // if (myQuizzes.length >= 1) {
-  //   renderUserQuizzes();
-  // }
-
   renderAllQuizzes(quizzes);
 }
 
@@ -212,6 +114,8 @@ function renderUserQuizzes() {
       printQuizz(user_Quizzes, quizz);
     }
   });
+
+  document.querySelector("ion-icon#create-quizz-btn").addEventListener("click",openCreateQuizzWindow)
   const user_QuizzesRenderedes = [
     ...document.querySelectorAll(".user-quizzes article"),
   ];
@@ -229,7 +133,7 @@ function getQuizz(ID) {
   });
 }
 
-function createQuizz(quizz) {
+function postQuizz(quizz) {
   const promise = axios.post(QUIZZ_API, quizz);
   promise.then((response) => {
     console.log(response);
@@ -384,7 +288,6 @@ function selectAnswer() {
     );
 
     if (numberOfQuestions == moves) {
-      console.log("acabou");
       let value = Math.round((hits / numberOfQuestions) * 100);
       let levels = currentQuizz.levels;
       levels.sort();
@@ -406,7 +309,6 @@ function selectAnswer() {
       });
       quizzEnd.classList.remove("hidden");
       setTimeout(() => {
-        console.log("acabou");
         window.scrollTo({
           top: document.body.scrollHeight,
           behavior: "smooth",
@@ -505,7 +407,172 @@ function toggleCollapsibleElement(elementID, elementHeight) {
 if (!document.getElementById("third-screen").classList.contains("hidden")) {
   collapseElement();
 }
-//createQuizz(quizz);
+
+
+function openCreateQuizzWindow(){
+  let firstScreen = document.getElementById("first-screen");
+  let createQuizz1 = document.getElementById("create-quizz-1");
+  firstScreen.classList.add("hidden");
+  createQuizz1.classList.remove("hidden");
+}
+
+let createQuestionsBtn = document.querySelector("#create-quizz-1 button")
+createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
+
+function openCreateQuestionsWindow () {
+  let createQuizz1 = document.getElementById("create-quizz-1");
+  let createQuizz2 = document.getElementById("create-quizz-2");
+
+  let title = document.querySelector("#create-quizz-1 #title").value;
+  let image = document.querySelector("#create-quizz-1 #image").value;
+  let numOfQuestions = document.querySelector("#create-quizz-1 #numOfQuestions").value;
+  let numOfLevels = document.querySelector("#create-quizz-1 #numOfLevels").value;
+
+  if(title.length<20 || title.length>65){
+    alert("Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres")
+  } else if(!validURL(image)){
+    alert("URL da Imagem: deve ter formato de URL e ser uma imagem")
+  } else if (numOfQuestions < 3){
+    alert("Quantidade de perguntas: no mínimo 3 perguntas")
+  } else if (numOfLevels < 2){
+    alert("Quantidade de níveis: no mínimo 2 níveis")
+  } else {
+    let questions = [];
+    questions.length = numOfQuestions;
+    let levels = [];
+    levels.length = numOfLevels;
+  
+    quizz = {title:title,
+    image:image,
+    questions:questions,
+    levels:levels,
+    }
+  
+    createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`
+  
+    for (let i=0; i<quizz.questions.length; i++){
+      createQuizz2.innerHTML += 
+      `<article id="QUESTION-${i+1}">
+        <div class="question-btn">
+          <p>Pergunta ${i+1}</p>
+          <ion-icon name="create-outline"></ion-icon>
+        </div>
+        <div class="input-container">
+          <input id="question-title" type="text" placeholder="Texto da pergunta" />
+          <input id="question-color" type="text" placeholder="Cor de fundo da pergunta" />
+          <p>Resposta correta</p>
+          <input id="right-answer-text" type="text" placeholder="Resposta correta" />
+          <input id="right-answer-image" type="text" placeholder="URL da imagem" />
+          <p>Respostas incorretas</p>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-1" type="text" placeholder="Resposta incorreta 1" />
+            <input id="wrong-answer-image-1" type="text" placeholder="URL da imagem 1" />
+          </div>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-2" type="text" placeholder="Resposta incorreta 2" />
+            <input id="wrong-answer-image-2" type="text" placeholder="URL da imagem 2" />
+          </div>
+          <div class="incorrect-answer">
+            <input id="wrong-answer-text-3"  type="text" placeholder="Resposta incorreta 3" />
+            <input id="wrong-answer-image-3" type="text" placeholder="URL da imagem 3" />
+          </div>
+          <ion-icon name="chevron-up"></ion-icon>
+        </div>
+      </article>`
+    }
+  
+    createQuizz2.innerHTML += `<button class="restart-quizz-btn">Prosseguir pra criar níveis</button>
+    </section>`
+  
+    if (!document.getElementById("third-screen").classList.contains("hidden")) {
+      collapseCreateQuestion();
+    }
+    
+    let createLevelsBtn = document.querySelector("#create-quizz-2 button")
+    createLevelsBtn.addEventListener("click",openCreateLevelsWindow)
+    
+    setTimeout(() => {
+    createQuizz1.classList.add("hidden");
+    createQuizz2.classList.remove("hidden");
+    console.log(quizz)
+    },300)
+  }
+}
+
+function createQuestionsValidation () {
+  // body
+  for (let i=0; i<quizz.questions.length;i++){
+    if(document.querySelector(`#QUESTION-${i+1} #question-title`).value<20){
+      alert(`Texto da pergunta ${i+1}: no mínimo 20 caracteres`)
+      return false
+    } else if (!document.querySelector(`#QUESTION-${i+1} #right-answer-text`).value){
+      alert("Texto as resposta correta: não pode estar vazio")
+      return false
+    } else if (!validURL(document.querySelector(`#QUESTION-${i+1} #right-answer-image`).value)){
+      alert("URL da imagem de resposta correta: deve ter formato de URL")
+      return false
+    } else if (!document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-1`).value){
+      alert("Texto da resposta incorreta 1: não pode estar vazio")
+      return false
+    } else if (!validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-1`).value)){
+      alert("URL das imagem de resposta incorreta 1: deve ter formato de URL")
+      return false
+    } else if (document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-2`).value && !validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-2`).value)){
+      alert("URL das imagem de resposta incorreta 2: deve ter formato de URL")
+      return false
+    } else if (document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-3`).value && !validURL(document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-3`).value)){
+      alert("URL das imagem de resposta incorreta 3: deve ter formato de URL")
+      return false
+    } 
+  }
+  return true
+}
+
+
+function openCreateLevelsWindow () {
+  if(createQuestionsValidation()){
+    for (let i=0; i<quizz.questions.length;i++){
+      let answers = []
+      let rightAnswer = {
+        text: document.querySelector(`#QUESTION-${i+1} #right-answer-text`).value,
+        image: document.querySelector(`#QUESTION-${i+1} #right-answer-image`).value,
+        isCorrectAnswer: true
+      }
+      answers.push(rightAnswer)
+      for (let j=1;j<4;j++){
+        let wrongAnswerText = document.querySelector(`#QUESTION-${i+1} #wrong-answer-text-${j}`).value;
+        let wrongAnswerImage = document.querySelector(`#QUESTION-${i+1} #wrong-answer-image-${j}`).value
+        if(wrongAnswerImage && wrongAnswerImage){
+          answers.push({
+            text: wrongAnswerText,
+            image: wrongAnswerImage,
+            isCorrectAnswer: false
+          })
+        }
+      }
+      let questionTitle = document.querySelector(`#QUESTION-${i+1} #question-title`).value;
+      let questionColor = document.querySelector(`#QUESTION-${i+1} #question-color`).value;
+      quizz.questions[i] = {
+        title:questionTitle,
+        color:questionColor,
+        answers:answers
+      }
+    }
+    console.log(quizz);
+    setTimeout(() => {
+    let createQuizz2 = document.getElementById("create-quizz-2");
+    let createQuizz3 = document.getElementById("create-quizz-3");
+    createQuizz2.classList.add("hidden");
+    createQuizz3.classList.remove("hidden");
+    },300)
+  }
+}
+
+
+
+
+
+// postQuizz(quizz);
 getAllQuizzes();
 
 //         testes:
