@@ -209,7 +209,7 @@ function renderQuizz(quizz) {
   secondScreen.innerHTML += `<section class="quizz-end hidden"></section>`;
 
   secondScreen.innerHTML += `
-  <button class="restart-quizz-btn">Reiniciar Quizz</button>
+  <button class="quizz-btn">Reiniciar Quizz</button>
   <button class="home-btn">Voltar para home</button>`;
 
   hits = 0;
@@ -220,7 +220,7 @@ function renderQuizz(quizz) {
     location.reload();
   });
 
-  let restartQuizzBtn = document.querySelector(".restart-quizz-btn");
+  let restartQuizzBtn = document.querySelector(".quizz-btn");
   restartQuizzBtn.addEventListener("click", () => {
     setTimeout(function () {
       renderQuizz(currentQuizz);
@@ -361,7 +361,7 @@ function openCreateQuizzWindow() {
       placeholder="Quantidade de níveis do quizz"
     />
   </div>
-  <button class="restart-quizz-btn">
+  <button class="quizz-btn">
     Prosseguir pra criar perguntas
   </button>`;
 
@@ -436,7 +436,7 @@ function openCreateQuestionsWindow() {
       </article>`;
     }
 
-    createQuizz2.innerHTML += `<button class="restart-quizz-btn">Prosseguir pra criar níveis</button>`;
+    createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
 
     let createLevelsBtn = document.querySelector("#create-quizz-2 button");
     createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
@@ -508,7 +508,7 @@ function openCreateLevelsWindow() {
       </article>`;
     }
 
-    createQuizz3.innerHTML += `<button class="restart-quizz-btn">Finalizar Quizz</button>`;
+    createQuizz3.innerHTML += `<button class="quizz-btn">Finalizar Quizz</button>`;
 
     let finishBtn = document.querySelector("#create-quizz-3 button");
     finishBtn.addEventListener("click", finishQuizz);
@@ -613,12 +613,10 @@ function postQuizz(quizz) {
       <div class="gradient"></div>
       <p>${quizz.title}</p>
     </article>
-    <button class="restart-quizz-btn">Acessar Quizz</button>
+    <button class="quizz-btn">Acessar Quizz</button>
     <button class="home-btn">Voltar para home</button>`;
 
-    let playQuizz = document.querySelector(
-      "#create-quizz-4 .restart-quizz-btn"
-    );
+    let playQuizz = document.querySelector("#create-quizz-4 .quizz-btn");
     playQuizz.addEventListener("click", () => {
       selectCreatedQuizz();
     });

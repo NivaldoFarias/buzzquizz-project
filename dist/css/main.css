@@ -269,10 +269,24 @@ main {
   border-radius: 5px;
 }
 
-#third-screen .restart-quizz-btn {
+#third-screen .quizz-btn {
   margin: 20px auto 40px;
   font-size: 13px;
   text-align: center;
+}
+
+@media screen and (min-width: 980px) {
+  #third-screen .quizz-btn {
+    margin-top: 50px;
+    width: 240px;
+    font-size: 16px;
+  }
+}
+
+@media screen and (min-width: 980px) {
+  #third-screen section > p {
+    font-size: 23px;
+  }
 }
 
 #create-quizz-1 {
@@ -301,6 +315,12 @@ main {
   width: 100%;
   font-size: 20px;
   font-weight: 700;
+}
+
+@media screen and (min-width: 980px) {
+  #create-quizz-1 .input-container {
+    width: 600px;
+  }
 }
 
 #create-quizz-2 {
@@ -349,6 +369,10 @@ main {
   font-size: 50px;
 }
 
+#create-quizz-2 .input-container ion-icon:hover {
+  cursor: pointer;
+}
+
 #create-quizz-2 .input-container .incorrect-answer {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -361,6 +385,12 @@ main {
   margin-bottom: 18px;
   height: auto;
   width: 100%;
+}
+
+@media screen and (min-width: 980px) {
+  #create-quizz-2 .input-container {
+    width: 600px;
+  }
 }
 
 #create-quizz-3 {
@@ -407,6 +437,10 @@ main {
   margin: 0 auto;
   top: 85%;
   font-size: 50px;
+}
+
+#create-quizz-3 .input-container ion-icon:hover {
+  cursor: pointer;
 }
 
 #create-quizz-3 .input-container textarea {
@@ -474,7 +508,7 @@ main {
   text-transform: uppercase;
 }
 
-#create-quizz-4 .restart-quizz-btn {
+#create-quizz-4 .quizz-btn {
   margin-bottom: 10px;
 }
 
@@ -531,10 +565,10 @@ main {
       align-self: flex-end;
 }
 
-.question-btn:after {
-  color: white;
-  font-weight: bold;
-  margin-left: 5px;
+@media screen and (min-width: 980px) {
+  .question-btn {
+    width: 600px;
+  }
 }
 
 .active:after {
@@ -894,7 +928,7 @@ main {
   background-color: inherit;
 }
 
-.restart-quizz-btn {
+.quizz-btn {
   position: relative;
   left: 0px;
   top: 0px;
@@ -913,7 +947,7 @@ main {
   background-color: white;
 }
 
-.restart-quizz-btn:hover {
+.quizz-btn:hover {
   left: 4px;
   top: 4px;
   -webkit-box-shadow: white 0px 0px 0px 0px;

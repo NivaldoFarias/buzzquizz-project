@@ -201,11 +201,23 @@ main {
     border: 1px solid #d1d1d1;
     border-radius: $default-border-radius;
   }
-  .restart-quizz-btn {
+  .quizz-btn {
     margin: 20px auto 40px;
 
     font-size: 13px;
     text-align: center;
+
+    @media screen and (min-width: 980px) {
+      margin-top: 50px;
+      width: 240px;
+
+      font-size: 16px;
+    }
+  }
+  @media screen and (min-width: 980px) {
+    section > p {
+      font-size: 23px;
+    }
   }
 }
 #create-quizz-1 {
@@ -223,6 +235,9 @@ main {
 
     font-size: $default-font-size;
     font-weight: 700;
+  }
+  @media screen and (min-width: 980px) {
+    width: 600px;
   }
 }
 #create-quizz-2 {
@@ -254,6 +269,9 @@ main {
     top: 92%;
     font-size: 50px;
   }
+  ion-icon:hover {
+    cursor: pointer;
+  }
   .incorrect-answer {
     display: flex;
     flex-direction: column;
@@ -262,6 +280,9 @@ main {
     margin-bottom: 18px;
     height: auto;
     width: 100%;
+  }
+  @media screen and (min-width: 980px) {
+    width: 600px;
   }
 }
 #create-quizz-3 {
@@ -292,6 +313,9 @@ main {
     margin: 0 auto;
     top: 85%;
     font-size: 50px;
+  }
+  ion-icon:hover {
+    cursor: pointer;
   }
   textarea {
     padding: 14px;
@@ -345,7 +369,7 @@ main {
   button {
     text-transform: uppercase;
   }
-  .restart-quizz-btn {
+  .quizz-btn {
     margin-bottom: 10px;
   }
 }
@@ -385,11 +409,9 @@ main {
     font-size: 34px;
     align-self: flex-end;
   }
-}
-.question-btn:after {
-  color: white;
-  font-weight: bold;
-  margin-left: 5px;
+  @media screen and (min-width: 980px) {
+    width: 600px;
+  }
 }
 .active:after {
   box-shadow: none !important;
@@ -672,7 +694,7 @@ main {
   border-style: none;
   background-color: inherit;
 }
-.restart-quizz-btn {
+.quizz-btn {
   position: relative;
   left: 0px;
   top: 0px;
@@ -692,7 +714,7 @@ main {
   box-shadow: $default-red 4px 4px 0px 0px;
   background-color: rgb(255, 255, 255);
 }
-.restart-quizz-btn:hover {
+.quizz-btn:hover {
   left: 4px;
   top: 4px;
   box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
