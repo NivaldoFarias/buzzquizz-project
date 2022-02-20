@@ -181,7 +181,16 @@ main {
   height: 100%;
   width: 100vw;
 
-  section > p {
+  section {
+    @include flex-column();
+
+    // gap: 24px;
+
+    button {
+    font-size: 18px;
+    text-transform: uppercase;
+    }
+    p {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -190,8 +199,8 @@ main {
 
     font-size: $default-font-size;
     font-weight: 700;
-  }
-  input {
+    }
+    input {
     padding: 0 14px;
     height: 46px;
     width: 100%;
@@ -204,12 +213,41 @@ main {
     background: #ffffff;
     border: 1px solid #d1d1d1;
     border-radius: $default-border-radius;
+    }
   }
   .restart-quizz-btn {
     margin: 20px auto 40px;
 
     font-size: 13px;
     text-align: center;
+  }
+  article {
+    position: relative;
+    height: fit-content;
+    width: $default-box-width;
+    > img {
+      height: $default-box-height;
+      width: $default-box-width;
+  
+      border-radius: $default-border-radius;
+    }
+    > p {
+      position: absolute;
+      bottom: 15px;
+      left: 17px;
+  
+      width: 90%;
+  
+      font-size: 19px;
+      font-weight: $font-weight-regular;
+      word-break: normal;
+      color: white;
+    }
+    .gradient {
+      height: $default-box-height;
+      width: $default-box-width;
+      border-radius: $default-border-radius;
+    }
   }
 }
 .input-container {
