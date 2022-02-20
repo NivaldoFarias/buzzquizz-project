@@ -777,9 +777,9 @@ main {
     width: 332px;
     height: 175.2px;
   }
-  .quizz-question figcaption {
+  .quizz-question figure figcaption {
     height: 34.11px;
-    font-size: 20px;
+    font-size: 1.5em;
   }
 }
 

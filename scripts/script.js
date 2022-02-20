@@ -21,6 +21,7 @@ let teste = 0;
 console.log("Page loaded");
 getAllQuizzes();
 
+/* First Screen Functions */
 function getMyQuizzesOnLocalStorage() {
   myQuizzes = JSON.parse(localStorage.getItem("quizzes"));
   if (!myQuizzes) {
@@ -139,45 +140,6 @@ function getQuizz(ID) {
     console.log(error.reponse.status);
   });
 }
-function postQuizz(quizz) {
-  const promise = axios.post(QUIZZ_API, quizz);
-  promise.then((response) => {
-    console.log(response);
-
-    // guarda o ID e a chave dos Quizzes criados
-    // a chave precisa pro bônus
-    myQuizzes.push({ id: response.data.id, key: response.data.key });
-    localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
-
-    let createQuizz3 = document.getElementById("create-quizz-3");
-    let createQuizz4 = document.getElementById("create-quizz-4");
-
-    createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
-    <article id="${response.data.id}">
-      <img src="${quizz.image}" class="cover" alt="imagem do quizz">
-      <div class="gradient"></div>
-      <p>${quizz.title}</p>
-    </article>
-    <button class="restart-quizz-btn">Acessar Quizz</button>
-    <button class="home-btn">Voltar para home</button>`;
-
-    let playQuizz = document.querySelector(
-      "#create-quizz-4 .restart-quizz-btn"
-    );
-    playQuizz.addEventListener("click", () => {
-      selectCreatedQuizz();
-    });
-    let home_btn = document.querySelector("#create-quizz-4 .home-btn");
-    home_btn.addEventListener("click", () => {
-      location.reload();
-    });
-
-    setTimeout(() => {
-      createQuizz3.classList.add("hidden");
-      createQuizz4.classList.remove("hidden");
-    }, 300);
-  });
-}
 function selectCreatedQuizz() {
   let createQuizz4 = document.getElementById("create-quizz-4");
   let secondScreen = document.getElementById("second-screen");
@@ -219,6 +181,8 @@ function selectQuizz() {
     console.log(error.reponse.status);
   });
 }
+
+/* Second Screen Functions */
 function renderQuizz(quizz) {
   window.scrollTo({
     top: 0,
@@ -373,73 +337,8 @@ function selectAnswer() {
     }
   }
 }
-function validURL(str) {
-  let pattern = new RegExp(
-    "^(https?:\\/\\/)?" + // protocol
-      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
-      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
-      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
-      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
-      "(\\#[-a-z\\d_]*)?$",
-    "i"
-  ); // fragment locator
-  return pattern.test(str) && checkImage(str);
-}
-function checkImage(url) {
-  if (typeof url !== "string") {
-    return false;
-  }
-  return (
-    url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) !== null
-  );
-}
-function collapseElement() {
-  toggleCollapsibleElement("create-quizz-3", 430);
-  toggleCollapsibleElement("create-quizz-2", 800);
-}
-function toggleCollapsibleElement(elementID, elementHeight) {
-  const collapseButtons = Array.from(
-    document.querySelectorAll(`#${elementID} .question-btn`)
-  );
-  const altBtns = Array.from(
-    document.querySelectorAll(".input-container ion-icon")
-  );
 
-  collapseButtons.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      console.log("eventlistener");
-      this.classList.toggle("active");
-      const content = this.nextElementSibling;
-      if (content.style.height) {
-        this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = null;
-        content.style.overflow = "hidden";
-      } else {
-        this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = `${elementHeight}px`;
-        content.style.overflow = "initial";
-      }
-    });
-  });
-  altBtns.forEach((btn) => {
-    btn.addEventListener("click", function () {
-      collapseButtons.forEach((btnClicked) => {
-        if (
-          btnClicked.classList.contains("active") &&
-          btnClicked.nextElementSibling === btn.parentElement
-        ) {
-          btnClicked.classList.remove("active");
-          const content = btnClicked.nextElementSibling;
-          if (content.style.height) {
-            btnClicked.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-            content.style.height = null;
-            content.style.overflow = "hidden";
-          }
-        }
-      });
-    });
-  });
-}
+/* Third Screen Functions */
 function openCreateQuizzWindow() {
   let firstScreen = document.getElementById("first-screen");
   let thirdScreen = document.getElementById("third-screen");
@@ -553,104 +452,6 @@ function openCreateQuestionsWindow() {
     }, 300);
   }
 }
-function isColor(str) {
-  if (str.length !== 7 || str[0] !== "#") {
-    return false;
-  } else {
-    let validChar = [
-      "1",
-      "2",
-      "3",
-      "4",
-      "5",
-      "6",
-      "7",
-      "8",
-      "9",
-      "0",
-      "a",
-      "b",
-      "c",
-      "d",
-      "e",
-      "f",
-    ];
-    for (let i = 1; i < str.length; i++) {
-      if (!validChar.includes(str[i].toLowerCase())) {
-        return false;
-      }
-    }
-  }
-  return true;
-}
-function createQuestionsValidation() {
-  // body
-  teste = parseInt(prompt("teste"));
-  if (teste) {
-    return true;
-  }
-  for (let i = 0; i < quizz.questions.length; i++) {
-    if (
-      document.querySelector(`#QUESTION-${i + 1} #question-title`).value
-        .length < 20
-    ) {
-      alert(`Texto da pergunta ${i + 1}: no mínimo 20 caracteres`);
-      return false;
-    } else if (
-      !isColor(
-        document.querySelector(`#QUESTION-${i + 1} #question-color`).value
-      )
-    ) {
-      alert(
-        `Cor da pergunta ${
-          i + 1
-        }: deve ser uma cor em hexadecimal (começar em "#", seguida de 6 caracteres hexadecimais, ou seja, números ou letras de A a F)`
-      );
-      return false;
-    } else if (
-      !document.querySelector(`#QUESTION-${i + 1} #right-answer-text`).value
-    ) {
-      alert("Texto as resposta correta: não pode estar vazio");
-      return false;
-    } else if (
-      !validURL(
-        document.querySelector(`#QUESTION-${i + 1} #right-answer-image`).value
-      )
-    ) {
-      alert("URL da imagem de resposta correta: deve ter formato de URL");
-      return false;
-    } else if (
-      !document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-1`).value
-    ) {
-      alert("Texto da resposta incorreta 1: não pode estar vazio");
-      return false;
-    } else if (
-      !validURL(
-        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-1`).value
-      )
-    ) {
-      alert("URL das imagem de resposta incorreta 1: deve ter formato de URL");
-      return false;
-    } else if (
-      document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-2`).value &&
-      !validURL(
-        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-2`).value
-      )
-    ) {
-      alert("URL das imagem de resposta incorreta 2: deve ter formato de URL");
-      return false;
-    } else if (
-      document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-3`).value &&
-      !validURL(
-        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-3`).value
-      )
-    ) {
-      alert("URL das imagem de resposta incorreta 3: deve ter formato de URL");
-      return false;
-    }
-  }
-  return true;
-}
 function openCreateLevelsWindow() {
   if (createQuestionsValidation()) {
     for (let i = 0; i < quizz.questions.length; i++) {
@@ -725,8 +526,189 @@ function openCreateLevelsWindow() {
     }, 300);
   }
 }
-function isNumber(n) {
-  return !isNaN(parseFloat(n)) && isFinite(n);
+function collapseElement() {
+  toggleCollapsibleElement("create-quizz-3", 430);
+  toggleCollapsibleElement("create-quizz-2", 800);
+}
+function toggleCollapsibleElement(elementID, elementHeight) {
+  const collapseButtons = Array.from(
+    document.querySelectorAll(`#${elementID} .question-btn`)
+  );
+  const altBtns = Array.from(
+    document.querySelectorAll(".input-container ion-icon")
+  );
+
+  collapseButtons.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      console.log("eventlistener");
+      this.classList.toggle("active");
+      const content = this.nextElementSibling;
+      if (content.style.height) {
+        this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = null;
+        content.style.overflow = "hidden";
+      } else {
+        this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = `${elementHeight}px`;
+        content.style.overflow = "initial";
+      }
+    });
+  });
+  altBtns.forEach((btn) => {
+    btn.addEventListener("click", function () {
+      collapseButtons.forEach((btnClicked) => {
+        if (
+          btnClicked.classList.contains("active") &&
+          btnClicked.nextElementSibling === btn.parentElement
+        ) {
+          btnClicked.classList.remove("active");
+          const content = btnClicked.nextElementSibling;
+          if (content.style.height) {
+            btnClicked.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+            content.style.height = null;
+            content.style.overflow = "hidden";
+          }
+        }
+      });
+    });
+  });
+}
+function finishQuizz() {
+  if (createLevelsValidation()) {
+    for (let i = 0; i < quizz.levels.length; i++) {
+      let levelTitle = document.querySelector(
+        `#LEVEL-${i + 1} #level-title`
+      ).value;
+      let levelMinValue = parseInt(
+        Number(document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value)
+      );
+      let levelImage = document.querySelector(
+        `#LEVEL-${i + 1} #level-image`
+      ).value;
+      let levelText = document.querySelector(
+        `#LEVEL-${i + 1} #level-text`
+      ).value;
+      quizz.levels[i] = {
+        title: levelTitle,
+        image: levelImage,
+        text: levelText,
+        minValue: levelMinValue,
+      };
+    }
+
+    setTimeout(() => {
+      postQuizz(quizz);
+    }, 300);
+  }
+}
+function postQuizz(quizz) {
+  const promise = axios.post(QUIZZ_API, quizz);
+  promise.then((response) => {
+    console.log(response);
+
+    // guarda o ID e a chave dos Quizzes criados
+    // a chave precisa pro bônus
+    myQuizzes.push({ id: response.data.id, key: response.data.key });
+    localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
+
+    let createQuizz3 = document.getElementById("create-quizz-3");
+    let createQuizz4 = document.getElementById("create-quizz-4");
+
+    createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
+    <article id="${response.data.id}">
+      <img src="${quizz.image}" class="cover" alt="imagem do quizz">
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>
+    <button class="restart-quizz-btn">Acessar Quizz</button>
+    <button class="home-btn">Voltar para home</button>`;
+
+    let playQuizz = document.querySelector(
+      "#create-quizz-4 .restart-quizz-btn"
+    );
+    playQuizz.addEventListener("click", () => {
+      selectCreatedQuizz();
+    });
+    let home_btn = document.querySelector("#create-quizz-4 .home-btn");
+    home_btn.addEventListener("click", () => {
+      location.reload();
+    });
+
+    setTimeout(() => {
+      createQuizz3.classList.add("hidden");
+      createQuizz4.classList.remove("hidden");
+    }, 300);
+  });
+}
+
+/* Validation Functions */
+function createQuestionsValidation() {
+  // body
+  teste = parseInt(prompt("teste"));
+  if (teste) {
+    return true;
+  }
+  for (let i = 0; i < quizz.questions.length; i++) {
+    if (
+      document.querySelector(`#QUESTION-${i + 1} #question-title`).value
+        .length < 20
+    ) {
+      alert(`Texto da pergunta ${i + 1}: no mínimo 20 caracteres`);
+      return false;
+    } else if (
+      !isColor(
+        document.querySelector(`#QUESTION-${i + 1} #question-color`).value
+      )
+    ) {
+      alert(
+        `Cor da pergunta ${
+          i + 1
+        }: deve ser uma cor em hexadecimal (começar em "#", seguida de 6 caracteres hexadecimais, ou seja, números ou letras de A a F)`
+      );
+      return false;
+    } else if (
+      !document.querySelector(`#QUESTION-${i + 1} #right-answer-text`).value
+    ) {
+      alert("Texto as resposta correta: não pode estar vazio");
+      return false;
+    } else if (
+      !validURL(
+        document.querySelector(`#QUESTION-${i + 1} #right-answer-image`).value
+      )
+    ) {
+      alert("URL da imagem de resposta correta: deve ter formato de URL");
+      return false;
+    } else if (
+      !document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-1`).value
+    ) {
+      alert("Texto da resposta incorreta 1: não pode estar vazio");
+      return false;
+    } else if (
+      !validURL(
+        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-1`).value
+      )
+    ) {
+      alert("URL das imagem de resposta incorreta 1: deve ter formato de URL");
+      return false;
+    } else if (
+      document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-2`).value &&
+      !validURL(
+        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-2`).value
+      )
+    ) {
+      alert("URL das imagem de resposta incorreta 2: deve ter formato de URL");
+      return false;
+    } else if (
+      document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-3`).value &&
+      !validURL(
+        document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-3`).value
+      )
+    ) {
+      alert("URL das imagem de resposta incorreta 3: deve ter formato de URL");
+      return false;
+    }
+  }
+  return true;
 }
 function createLevelsValidation() {
   teste = parseInt(prompt("teste"));
@@ -776,39 +758,62 @@ function createLevelsValidation() {
   }
   return true;
 }
-function finishQuizz() {
-  if (createLevelsValidation()) {
-    for (let i = 0; i < quizz.levels.length; i++) {
-      let levelTitle = document.querySelector(
-        `#LEVEL-${i + 1} #level-title`
-      ).value;
-      let levelMinValue = parseInt(
-        Number(document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value)
-      );
-      let levelImage = document.querySelector(
-        `#LEVEL-${i + 1} #level-image`
-      ).value;
-      let levelText = document.querySelector(
-        `#LEVEL-${i + 1} #level-text`
-      ).value;
-      quizz.levels[i] = {
-        title: levelTitle,
-        image: levelImage,
-        text: levelText,
-        minValue: levelMinValue,
-      };
-    }
-
-    setTimeout(() => {
-      postQuizz(quizz);
-    }, 300);
-  }
+function validURL(str) {
+  let pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return pattern.test(str) && checkImage(str);
 }
-
+function checkImage(url) {
+  if (typeof url !== "string") {
+    return false;
+  }
+  return (
+    url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) !== null
+  );
+}
+function isColor(str) {
+  if (str.length !== 7 || str[0] !== "#") {
+    return false;
+  } else {
+    let validChar = [
+      "1",
+      "2",
+      "3",
+      "4",
+      "5",
+      "6",
+      "7",
+      "8",
+      "9",
+      "0",
+      "a",
+      "b",
+      "c",
+      "d",
+      "e",
+      "f",
+    ];
+    for (let i = 1; i < str.length; i++) {
+      if (!validChar.includes(str[i].toLowerCase())) {
+        return false;
+      }
+    }
+  }
+  return true;
+}
+function isNumber(n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+}
 let mailme = function () {
   console.log("Caught!");
 };
-
 window.addEventListener(
   "error",
   function (e) {
@@ -821,28 +826,6 @@ window.addEventListener(
   },
   true
 );
-
-/* const output = document.querySelector(".output");
-
-function resize_to_fit() {
-  const input = document.querySelector("input");
-  const outputContainer = document.querySelectorAll("quizz-question figcaption");
-
-  let fontSize = window.getComputedStyle(output).fontSize;
-  output.style.fontSize = parseFloat(fontSize) - 1 + "px";
-
-  if (output.clientHeight >= outputContainer.clientHeight) {
-    resize_to_fit();
-  }
-}
-
-function processInput() {
-  output.innerHTML = this.value;
-  output.style.fontSize = "100px"; // Default font size
-  resize_to_fit();
-}
-
-input.addEventListener("input", processInput); */
 
 // quizz = {
 //   title:
