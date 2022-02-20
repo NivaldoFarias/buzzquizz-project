@@ -1,11 +1,6 @@
 @import "./resets";
 @import "./variables";
-
-@mixin flex-column {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
+@import "./mixins";
 
 body {
   height: 100vh;
@@ -14,11 +9,11 @@ body {
   overflow-y: scroll;
   background-color: rgb(250, 250, 250);
 
-  @media screen and (min-height: 980px) {
+  /* @media screen and (min-height: 980px) {
     #first-screen {
-      overflow-y: hidden;
+      overflow-y: auto;
     }
-  }
+  } */
 }
 header {
   position: fixed;
@@ -61,6 +56,7 @@ main {
   position: relative;
   height: fit-content;
   width: $default-box-width;
+
   > img {
     height: $default-box-height;
     width: $default-box-width;
@@ -76,7 +72,7 @@ main {
 
     font-size: 19px;
     font-weight: $font-weight-regular;
-    word-break: normal;
+    word-wrap: break-word;
     color: white;
   }
   .gradient {
@@ -155,8 +151,8 @@ main {
 
     width: 90%;
 
-    font-size: 19px;
-    line-height: 22px;
+    font-size: 1em;
+    //line-height: 22px;
     font-weight: $font-weight-regular;
     text-align: center;
     color: white;
@@ -190,7 +186,7 @@ main {
 
     font-size: $default-font-size;
     font-weight: 700;
-    }
+  }
   input {
     padding: 0 14px;
     height: 46px;
@@ -211,48 +207,6 @@ main {
     font-size: 13px;
     text-align: center;
   }
-}
-.input-container {
-  @include flex-column();
-
-  background-color: rgb(255, 255, 255);
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-
-  p {
-    width: 100%;
-
-    font-size: $default-font-size;
-    font-weight: 700;
-  }
-}
-.question-btn {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  padding: 22px 18px;
-  height: 74px;
-  width: 100vw;
-
-  font-size: $default-font-size;
-  font-weight: 700;
-
-  cursor: pointer;
-  background-color: white;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-
-  ion-icon {
-    font-size: 34px;
-    align-self: flex-end;
-  }
-}
-.question-btn:after {
-  color: white;
-  font-weight: bold;
-  margin-left: 5px;
-}
-.active:after {
-  box-shadow: none !important;
 }
 #create-quizz-1 {
   @include flex-column();
@@ -366,16 +320,16 @@ main {
     > img {
       height: $default-box-height;
       width: $default-box-width;
-  
+
       border-radius: $default-border-radius;
     }
     > p {
       position: absolute;
       bottom: 15px;
       left: 17px;
-  
+
       width: 90%;
-  
+
       font-size: 19px;
       font-weight: $font-weight-regular;
       word-break: normal;
@@ -391,12 +345,54 @@ main {
   button {
     text-transform: uppercase;
   }
-  .restart-quizz-btn{
+  .restart-quizz-btn {
     margin-bottom: 10px;
   }
 }
 *.hidden {
   display: none !important;
+}
+.input-container {
+  @include flex-column();
+
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  p {
+    width: 100%;
+
+    font-size: $default-font-size;
+    font-weight: 700;
+  }
+}
+.question-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 22px 18px;
+  height: 74px;
+  width: 100vw;
+
+  font-size: $default-font-size;
+  font-weight: 700;
+
+  cursor: pointer;
+  background-color: white;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  ion-icon {
+    font-size: 34px;
+    align-self: flex-end;
+  }
+}
+.question-btn:after {
+  color: white;
+  font-weight: bold;
+  margin-left: 5px;
+}
+.active:after {
+  box-shadow: none !important;
 }
 .cover {
   object-fit: cover;
@@ -417,7 +413,7 @@ main {
     rgb(0, 0, 0) 100%
   );
 }
-.whitish{
+.whitish {
   position: absolute;
   top: 0;
   bottom: 0;
@@ -486,6 +482,8 @@ main {
   @media screen and (min-width: 480px) {
     flex-direction: row;
     flex-wrap: wrap;
+
+    margin-bottom: 28px;
     width: 100%;
 
     > p {
@@ -507,20 +505,26 @@ main {
   box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.2);
 
   figure {
+    width: 163px;
     position: relative;
 
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
 
     height: 141px;
 
-    font-size: $small-font-size;
+    font-size: 0.65em;
     font-weight: 700;
-    img {
-      height: 113px;
-      width: 163px;
-    }
+    word-wrap: break-word;
+  }
+  figure img {
+    height: 113px;
+    width: 163px;
+  }
+  figure figcaption {
+    height: 22px;
+    overflow: hidden;
   }
   .question {
     display: flex;
@@ -528,13 +532,13 @@ main {
     justify-content: center;
 
     padding: 0 10px;
-
     height: 89px;
     width: $default-box-width;
 
-    font-size: 19px;
+    font-size: 1em;
     font-weight: 700;
     text-align: center;
+    word-break: break-all;
     color: white;
   }
   .answers {
@@ -548,16 +552,13 @@ main {
   }
 
   @media screen and (max-width: 375px) {
-    figure {
-      img {
-        height: 95px;
-        width: 140px;
-      }
+    figure img {
+      height: 95px;
+      width: 140px;
     }
   }
   @media screen and (min-width: 980px) {
     width: $desktop-container-width;
-
     padding: 27px;
 
     .question {
@@ -568,19 +569,19 @@ main {
     }
     .answers {
       gap: 24px;
-
       width: 688px;
     }
     figure {
+      width: 332px;
       height: 218.62px;
-
-      img {
-        width: 332px;
-        height: 175.2px;
-      }
-      figcaption {
-        font-size: $default-font-size;
-      }
+    }
+    figure img {
+      width: 332px;
+      height: 175.2px;
+    }
+    figcaption {
+      height: 34.11px;
+      font-size: $default-font-size;
     }
   }
 }
@@ -619,6 +620,7 @@ main {
     font-size: 17px;
     line-height: 20px;
     font-weight: 700;
+    word-wrap: break-word;
   }
   @media screen and (max-width: 375px) {
     width: 100%;
