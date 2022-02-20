@@ -139,7 +139,7 @@ main {
   font-size: 20px;
 }
 
-#first-screen .user-quizzes ion-icon {
+#first-screen .user-quizzes > ion-icon {
   position: absolute;
   top: -11px;
   right: 0px;
@@ -156,7 +156,7 @@ main {
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
   }
-  #first-screen .user-quizzes ion-icon {
+  #first-screen .user-quizzes > ion-icon {
     left: 180px;
     font-size: 44px;
   }
@@ -605,6 +605,33 @@ main {
   left: 0;
   right: 0;
   background-color: rgba(255, 255, 255, 0.75);
+}
+
+.edit-delete-widget {
+  position: absolute;
+  z-index: 5;
+  top: 10px;
+  right: 0;
+  height: 87px;
+  width: 43px;
+  font-size: 27px;
+  color: white;
+  background-color: #ec362d;
+  border-radius: 10px 0px 0px 11px;
+  -webkit-box-shadow: -1px -1px 7px 2px rgba(0, 0, 0, 0.1);
+          box-shadow: -1px -1px 7px 2px rgba(0, 0, 0, 0.1);
+}
+
+.edit-delete-widget :first-child {
+  position: absolute;
+  top: 8px;
+  right: 6px;
+}
+
+.edit-delete-widget :nth-child(2) {
+  position: absolute;
+  top: 48px;
+  right: 8px;
 }
 
 .no-quizz-available {

@@ -94,33 +94,52 @@ function checkQuizz(quizz, index, all_Quizzes) {
   ) {
     quizzImgExists.push(quizz.image);
     quizzTitleExists.push(quizz.title);
-    printQuizz(all_Quizzes, quizz);
+    printQuizz(all_Quizzes, quizz, "all");
   }
 }
-function printQuizz(quizzesArray, quizz) {
-  quizzesArray.innerHTML += `
-  <article id="${quizz.id}">
-    <img 
-      src="${quizz.image}" 
-      class="cover" 
-      alt="imagem do quizz" 
-      onerror="javascript:this.src='dist/img/default-image.png'"
-    />
-    <div class="gradient"></div>
-    <p>${quizz.title}</p>
-  </article>`;
+function printQuizz(quizzesArray, quizz, typeOfQuizz) {
+  if (typeOfQuizz === "user") {
+    quizzesArray.innerHTML += `
+    <article id="${quizz.id}">
+      <div class="edit-delete-widget">
+        <ion-icon name="create-outline" id="delete-btn"></ion-icon>
+        <ion-icon name="trash-outline" id="edit-btn"></ion-icon>
+      </div>
+      <img 
+        src="${quizz.image}" 
+        class="cover" 
+        alt="imagem do quizz" 
+        onerror="javascript:this.src='dist/img/default-image.png'"
+      />
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>`;
+  } else if (typeOfQuizz === "all") {
+    quizzesArray.innerHTML += `
+    <article id="${quizz.id}">
+      <img 
+        src="${quizz.image}" 
+        class="cover" 
+        alt="imagem do quizz" 
+        onerror="javascript:this.src='dist/img/default-image.png'"
+      />
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>`;
+  }
 }
 function renderUserQuizzes() {
   const user_Quizzes = document.querySelector(".user-quizzes");
   const no_Quizzes = document.querySelector(".no-quizz-available");
   no_Quizzes.classList.add("hidden");
   user_Quizzes.classList.remove("hidden");
-  user_Quizzes.innerHTML = `<p>Seus Quizzes</p>
+  user_Quizzes.innerHTML = `
+    <p>Seus Quizzes</p>
     <ion-icon name="add-circle" id="create-quizz-btn"></ion-icon>`;
 
   apiQuizzes.forEach((quizz) => {
     if (myQuizzesId.includes(quizz.id)) {
-      printQuizz(user_Quizzes, quizz);
+      printQuizz(user_Quizzes, quizz, "user");
     }
   });
 
