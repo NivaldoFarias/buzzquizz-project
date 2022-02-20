@@ -20,6 +20,7 @@ let teste = 0;
 
 console.log("Page loaded");
 getAllQuizzes();
+toggleLoadingScreen();
 
 /* First Screen Functions */
 function getMyQuizzesOnLocalStorage() {
@@ -98,16 +99,16 @@ function checkQuizz(quizz, index, all_Quizzes) {
 }
 function printQuizz(quizzesArray, quizz) {
   quizzesArray.innerHTML += `
-    <article id="${quizz.id}">
-      <img 
+  <article id="${quizz.id}">
+    <img 
       src="${quizz.image}" 
       class="cover" 
       alt="imagem do quizz" 
       onerror="javascript:this.src='dist/img/default-image.png'"
-      />
-      <div class="gradient"></div>
-      <p>${quizz.title}</p>
-    </article>`;
+    />
+    <div class="gradient"></div>
+    <p>${quizz.title}</p>
+  </article>`;
 }
 function renderUserQuizzes() {
   const user_Quizzes = document.querySelector(".user-quizzes");
@@ -167,10 +168,9 @@ function deleteQuizz(ID) {
   });
 }
 function selectQuizz() {
-  let firstScreen = document.getElementById("first-screen");
   let secondScreen = document.getElementById("second-screen");
-  firstScreen.classList.add("hidden");
-  secondScreen.classList.remove("hidden");
+  toggleLoadingScreen(1, 2);
+
   secondScreen.innerHTML = "";
   const promise = axios.get(`${QUIZZ_API}/${this.id}`);
   promise.then((response) => {
@@ -340,8 +340,6 @@ function selectAnswer() {
 
 /* Third Screen Functions */
 function openCreateQuizzWindow() {
-  let firstScreen = document.getElementById("first-screen");
-  let thirdScreen = document.getElementById("third-screen");
   let createQuizz1 = document.getElementById("create-quizz-1");
 
   createQuizz1.innerHTML = `<p>Comece pelo Começo</p>
@@ -370,8 +368,7 @@ function openCreateQuizzWindow() {
   let createQuestionsBtn = document.querySelector("#create-quizz-1 button");
   createQuestionsBtn.addEventListener("click", openCreateQuestionsWindow);
 
-  firstScreen.classList.add("hidden");
-  thirdScreen.classList.remove("hidden");
+  toggleLoadingScreen(1, 3);
 }
 function openCreateQuestionsWindow() {
   let createQuizz1 = document.getElementById("create-quizz-1");
@@ -445,8 +442,7 @@ function openCreateQuestionsWindow() {
     createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
 
     setTimeout(() => {
-      createQuizz1.classList.add("hidden");
-      createQuizz2.classList.remove("hidden");
+      toggleLoadingScreen(3.1, 3.2);
       collapseElement();
       console.log(quizz);
     }, 300);
@@ -826,6 +822,65 @@ window.addEventListener(
   },
   true
 );
+
+/* Global Functions */
+function toggleLoadingScreen(from, to) {
+  const loadingScreen = document.querySelector(".loading-spinner");
+  const firstScreen = document.getElementById("first-screen");
+  const secondScreen = document.getElementById("second-screen");
+  const thirdScreen = document.getElementById("third-screen");
+
+  if (!from && !to) {
+    setTimeout(() => {
+      toggleHidden(loadingScreen);
+      toggleHidden(firstScreen);
+    }, 1000);
+  } else if (from === 1) {
+    toggleHidden(firstScreen);
+    toggleHidden(loadingScreen);
+    console.log("passoau");
+
+    setTimeout(() => {
+      toggleHidden(loadingScreen);
+      toggleHidden(secondScreen);
+    }, 1000);
+  } else if (from === 2) {
+    toggleHidden(secondScreen);
+    toggleHidden(loadingScreen);
+
+    setTimeout(() => {
+      toggleHidden(loadingScreen);
+
+      if (to === 1) {
+        toggleHidden(firstScreen);
+      } else if (to === 3) {
+        toggleHidden(thirdScreen);
+      }
+    }, 1000);
+  } else if (from === 3) {
+    toggleHidden(thirdScreen);
+    toggleHidden(loadingScreen);
+
+    setTimeout(() => {
+      toggleHidden(loadingScreen);
+      toggleHidden(firstScreen);
+    }, 1000);
+  } else if (from === 3.1) {
+    const firstSection = document.getElementById("create-quizz-1");
+    const secondSection = document.getElementById("create-quizz-2");
+
+    toggleHidden(firstSection);
+    toggleHidden(loadingScreen);
+
+    setTimeout(() => {
+      toggleHidden(loadingScreen);
+      toggleHidden(secondSection);
+    }, 1000);
+  }
+}
+function toggleHidden(screen) {
+  screen.classList.toggle("hidden");
+}
 
 // quizz = {
 //   title:
