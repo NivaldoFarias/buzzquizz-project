@@ -142,10 +142,10 @@ function getQuizz(ID) {
   });
 }
 function selectCreatedQuizz() {
-  let createQuizz4 = document.getElementById("create-quizz-4");
   let secondScreen = document.getElementById("second-screen");
-  createQuizz4.classList.add("hidden");
-  secondScreen.classList.remove("hidden");
+
+  toggleLoadingScreen(3.4, 2);
+
   secondScreen.innerHTML = "";
   let id = document.querySelector("#create-quizz-4 article").id;
   const promise = axios.get(`${QUIZZ_API}/${id}`);
@@ -605,7 +605,6 @@ function postQuizz(quizz) {
     myQuizzes.push({ id: response.data.id, key: response.data.key });
     localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
 
-    let createQuizz3 = document.getElementById("create-quizz-3");
     let createQuizz4 = document.getElementById("create-quizz-4");
 
     createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
@@ -629,8 +628,7 @@ function postQuizz(quizz) {
     });
 
     setTimeout(() => {
-      createQuizz3.classList.add("hidden");
-      createQuizz4.classList.remove("hidden");
+      toggleLoadingScreen(3.3, 3.4);
     }, 300);
   });
 }
@@ -884,6 +882,19 @@ function toggleLoadingScreen(from, to) {
       const secondSection = document.getElementById("create-quizz-2");
       const thirdSection = document.getElementById("create-quizz-3");
 
+      toggleHidden(secondSection);
+      toggleHidden(thirdScreen);
+      toggleHidden(loadingScreen);
+
+      setTimeout(() => {
+        toggleHidden(loadingScreen);
+        toggleHidden(thirdScreen);
+        toggleHidden(thirdSection);
+      }, randomTimeOut());
+    } else if (from === 3.3) {
+      const thirdSection = document.getElementById("create-quizz-3");
+      const fourthSection = document.getElementById("create-quizz-4");
+
       toggleHidden(thirdSection);
       toggleHidden(thirdScreen);
       toggleHidden(loadingScreen);
@@ -891,10 +902,9 @@ function toggleLoadingScreen(from, to) {
       setTimeout(() => {
         toggleHidden(loadingScreen);
         toggleHidden(thirdScreen);
-        toggleHidden(secondSection);
+        toggleHidden(fourthSection);
       }, randomTimeOut());
-    } else if (from === 3.3) {
-      const thirdSection = document.getElementById("create-quizz-3");
+    } else if (from === 3.4) {
       const fourthSection = document.getElementById("create-quizz-4");
 
       toggleHidden(fourthSection);
@@ -902,9 +912,15 @@ function toggleLoadingScreen(from, to) {
       toggleHidden(loadingScreen);
 
       setTimeout(() => {
-        toggleHidden(loadingScreen);
-        toggleHidden(fourthScreen);
-        toggleHidden(thirdSection);
+        if (to === 1) {
+          toggleHidden(loadingScreen);
+          toggleHidden(thirdScreen);
+          toggleHidden(firstScreen);
+        } else if (to === 2) {
+          toggleHidden(loadingScreen);
+          toggleHidden(thirdScreen);
+          toggleHidden(secondScreen);
+        }
       }, randomTimeOut());
     }
   }
