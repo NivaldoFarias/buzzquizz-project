@@ -18,7 +18,7 @@ let quizz = {}
 
 let teste = 0;
 
-console.log("inicio da pagina");
+console.log("Page loaded");
 getAllQuizzes();
 
 function getMyQuizzesOnLocalStorage() {
@@ -417,20 +417,41 @@ function toggleCollapsibleElement(elementID, elementHeight) {
   });
 }
 
-// if (!document.getElementById("third-screen").classList.contains("hidden")) {
-  collapseElement();
-// }
-
-
 function openCreateQuizzWindow(){
   let firstScreen = document.getElementById("first-screen");
   let createQuizz1 = document.getElementById("create-quizz-1");
+
+  createQuizz1.innerHTML = `<p>Comece pelo Começo</p>
+  <div class="input-container">
+    <input id="title" type="text" placeholder="Título do seu quizz" />
+    <input
+      id="image"
+      type="text"
+      placeholder="URL da imagem do seu quizz"
+    />
+    <input
+      id="numOfQuestions"
+      type="text"
+      placeholder="Quantidade de perguntas do quizz"
+    />
+    <input
+      id="numOfLevels"
+      type="text"
+      placeholder="Quantidade de níveis do quizz"
+    />
+  </div>
+  <button class="restart-quizz-btn">
+    Prosseguir pra criar perguntas
+  </button>`
+
+  let createQuestionsBtn = document.querySelector("#create-quizz-1 button")
+  createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
+
   firstScreen.classList.add("hidden");
   createQuizz1.classList.remove("hidden");
 }
 
-let createQuestionsBtn = document.querySelector("#create-quizz-1 button")
-createQuestionsBtn.addEventListener("click",openCreateQuestionsWindow)
+
 
 function openCreateQuestionsWindow () {
   let createQuizz1 = document.getElementById("create-quizz-1");
@@ -606,9 +627,7 @@ function openCreateLevelsWindow () {
         createQuizz3.classList.remove("hidden");
         collapseElement()
       },300)
-    } else {
-      collapseElement()
-    }
+    } 
   }
   
   function isNumber(n) {
@@ -661,23 +680,42 @@ function openCreateLevelsWindow () {
         } 
       }
 
-      postQuizz(quizz);
+      // postQuizz(quizz);
 
       let createQuizz3 = document.getElementById("create-quizz-3");
-      let firstScreen = document.getElementById("first-screen");
+      let createQuizz4 = document.getElementById("create-quizz-4");
+
+      createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
+      <article>
+        <img src="${quizz.image}" class="cover" alt="imagem do quizz">
+        <div class="gradient"></div>
+        <p>${quizz.title}</p>
+      </article>
+      <button class="restart-quizz-btn">Acessar Quizz</button>
+      <button class="home-btn">Voltar para home</button>`
+
+      // COLOCAR O ID DO QUIZZ NO ID DO ARTICLE (response.data.id)
+
+
       setTimeout(() => {
-        location.reload()
-        // createQuizz3.classList.add("hidden");
-        // firstScreen.classList.remove("hidden");
-        // collapseElement()
-      },3000)
+        // location.reload()
+        createQuizz3.classList.add("hidden");
+        createQuizz4.classList.remove("hidden");
+      },300)
     } 
-    // else {
-    //   collapseElement()
-    // }
   }
   
   
+
+
+
+
+
+
+
+
+
+
   // postQuizz(quizz);
   // getAllQuizzes();
   
