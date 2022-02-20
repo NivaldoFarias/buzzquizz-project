@@ -838,11 +838,14 @@ function toggleLoadingScreen(from, to) {
   } else if (from === 1) {
     toggleHidden(firstScreen);
     toggleHidden(loadingScreen);
-    console.log("passoau");
 
     setTimeout(() => {
       toggleHidden(loadingScreen);
-      toggleHidden(secondScreen);
+      if (to === 2) {
+        toggleHidden(secondScreen);
+      } else if (to >= 3) {
+        toggleHidden(thirdScreen);
+      }
     }, 1000);
   } else if (from === 2) {
     toggleHidden(secondScreen);
