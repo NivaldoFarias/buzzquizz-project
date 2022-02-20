@@ -62,8 +62,6 @@ function loadQuizzes(quizzes) {
 }
 
 function checkMyQuizzesOnAPI(myQuizzesId) {
-  // retorna verdadeiro caso exista algum quizz na API salvo no LocalStorage
-  // e falso caso contrario
   let quizzesId = apiQuizzes.map((quizz) => quizz.id);
   for (id of quizzesId) {
     if (myQuizzesId.includes(id)) {
@@ -85,7 +83,6 @@ function renderAllQuizzes(quizzes) {
     ...document.querySelectorAll(".all-quizzes article"),
   ];
   all_QuizzesRenderedes.forEach((quizz) => {
-    // console.log(quizz);
     quizz.addEventListener("click", selectQuizz);
   });
 }
@@ -131,7 +128,6 @@ function renderUserQuizzes() {
     ...document.querySelectorAll(".user-quizzes article"),
   ];
   user_QuizzesRenderedes.forEach((quizz) => {
-    // console.log(quizz);
     quizz.addEventListener("click", selectQuizz);
   });
 }
@@ -153,7 +149,49 @@ function postQuizz(quizz) {
     // a chave precisa pro bônus
     myQuizzes.push({ id: response.data.id, key: response.data.key });
     localStorage.setItem("quizzes", JSON.stringify(myQuizzes));
-    getAllQuizzes();
+
+    let createQuizz3 = document.getElementById("create-quizz-3");
+    let createQuizz4 = document.getElementById("create-quizz-4");
+
+    createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
+    <article id="${response.data.id}">
+      <img src="${quizz.image}" class="cover" alt="imagem do quizz">
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>
+    <button class="restart-quizz-btn">Acessar Quizz</button>
+    <button class="home-btn">Voltar para home</button>`
+
+    let playQuizz =document.querySelector("#create-quizz-4 .restart-quizz-btn");
+    playQuizz.addEventListener("click", () => {
+      selectCreatedQuizz()
+    });
+    let home_btn = document.querySelector("#create-quizz-4 .home-btn");
+    home_btn.addEventListener("click", () => {
+      location.reload()
+    });
+
+    setTimeout(() => {
+      createQuizz3.classList.add("hidden");
+      createQuizz4.classList.remove("hidden");
+    },300)
+  });
+}
+
+function selectCreatedQuizz() {
+  let createQuizz4 = document.getElementById("create-quizz-4");
+  let secondScreen = document.getElementById("second-screen");
+  createQuizz4.classList.add("hidden");
+  secondScreen.classList.remove("hidden");
+  secondScreen.innerHTML = "";
+  let id = document.querySelector("#create-quizz-4 article").id
+  const promise = axios.get(`${QUIZZ_API}/${id}`);
+  promise.then((response) => {
+    renderQuizz(response.data);
+    currentQuizz = response.data;
+  });
+  promise.catch((error) => {
+    console.log(error.reponse.status);
   });
 }
 
@@ -169,13 +207,10 @@ function deleteQuizz(ID) {
 }
 
 function selectQuizz() {
-  // body
   let firstScreen = document.getElementById("first-screen");
   let secondScreen = document.getElementById("second-screen");
   firstScreen.classList.add("hidden");
   secondScreen.classList.remove("hidden");
-  // console.log(this.id);
-  // console.log(this);
   secondScreen.innerHTML = "";
   const promise = axios.get(`${QUIZZ_API}/${this.id}`);
   promise.then((response) => {
@@ -188,7 +223,10 @@ function selectQuizz() {
 }
 
 function renderQuizz(quizz) {
-  // console.log(quizz.data);
+    window.scrollTo({
+      top: 0,
+    });
+
   numberOfQuestions = quizz.questions.length;
   let secondScreen = document.getElementById("second-screen");
   secondScreen.innerHTML = "";
@@ -213,12 +251,8 @@ function renderQuizz(quizz) {
   hits = 0;
   moves = 0;
 
-  let home_btn = document.querySelector(".home-btn");
+  let home_btn = document.querySelector("#second-screen .home-btn");
   home_btn.addEventListener("click", () => {
-    // let firstScreen = document.getElementById("first-screen");
-    // let secondScreen = document.getElementById("second-screen");
-    // firstScreen.classList.remove("hidden");
-    // secondScreen.classList.add("hidden");
     location.reload()
   });
 
@@ -250,7 +284,7 @@ function renderQuestion(question, index) {
         ${question.title}
       </div>
       <div class="answers">
-        ${getAnswers(currentAnswers)}
+        ${renderAnswers(currentAnswers)}
       </div>
     </section>`;
     if(!["#fff","#ffffff","white"].includes(`${question.color}`.toLowerCase())){
@@ -258,13 +292,9 @@ function renderQuestion(question, index) {
     } else {
       document.querySelector(`#Q${index + 1}`).style.backgroundColor = "#EC362D"
     }
-  // currentAnswers.forEach(renderAnswer);
-
-  // secondScreen.innerHTML += `</div>
-  // </section>`;
 }
 
-function getAnswers(answers) {
+function renderAnswers(answers) {
   let content = "";
   for (answer of answers) {
     content += `<figure class="${answer.isCorrectAnswer}">
@@ -277,9 +307,6 @@ function getAnswers(answers) {
 }
 
 function selectAnswer() {
-  // body
-  // answerFigure.classList
-  // console.log(this.parentNode.children);
   let answers = this.parentNode;
   if (!answers.classList.contains("lock")) {
     moves++;
@@ -336,13 +363,6 @@ function selectAnswer() {
     }
   }
 }
-// function renderAnswer(answer) {
-//   let secondScreen = document.getElementById("second-screen");
-//   secondScreen.innerHTML += `<figure>
-//   <img src="${answer.image}" alt="Answer Image" />
-//   <figcaption>${answer.text}</figcaption>
-// </figure>`;
-// }
 
 function validURL(str) {
   let pattern = new RegExp(
@@ -364,15 +384,12 @@ function checkImage(url) {
     url.match(/^http[^\?]*.(jpg|jpeg|gif|png|tiff|bmp)(\?(.*))?$/gim) !== null
   );
 }
+
 function collapseElement() {
-  const createQuestions = document.getElementById("create-quizz-2");
-  // createQuestions.classList.contains("hidden")
-  if (true) {
     toggleCollapsibleElement("create-quizz-3", 430);
     toggleCollapsibleElement("create-quizz-2", 800);
-  } else {
-  }
 }
+
 function toggleCollapsibleElement(elementID, elementHeight) {
   const collapseButtons = Array.from(
     document.querySelectorAll(`#${elementID} .question-btn`)
@@ -530,6 +547,20 @@ function openCreateQuestionsWindow () {
   }
 }
 
+function isColor(str){
+  if (str.length!== 7 || str[0]!=="#"){
+    return false
+  } else {
+    let validChar = ["1","2","3","4","5","6","7","8","9","0","a","b","c","d","e","f"];
+    for (let i=1; i<str.length;i++){
+      if(!validChar.includes(str[i].toLowerCase())){
+        return false
+      }
+    }
+  }
+  return true
+}
+
 function createQuestionsValidation () {
   // body
   teste = parseInt(prompt("teste"))
@@ -539,6 +570,9 @@ function createQuestionsValidation () {
   for (let i=0; i<quizz.questions.length;i++){
     if(document.querySelector(`#QUESTION-${i+1} #question-title`).value.length<20){
       alert(`Texto da pergunta ${i+1}: no mínimo 20 caracteres`)
+      return false
+    } else if(!isColor(document.querySelector(`#QUESTION-${i+1} #question-color`).value)){
+      alert(`Cor da pergunta ${i+1}: deve ser uma cor em hexadecimal (começar em "#", seguida de 6 caracteres hexadecimais, ou seja, números ou letras de A a F)`);
       return false
     } else if (!document.querySelector(`#QUESTION-${i+1} #right-answer-text`).value){
       alert("Texto as resposta correta: não pode estar vazio")
@@ -635,7 +669,6 @@ function openCreateLevelsWindow () {
   }
   
   function createLevelsValidation () {
-    // body
     teste = parseInt(prompt("teste"))
     if(teste){
       return true
@@ -680,62 +713,22 @@ function openCreateLevelsWindow () {
         } 
       }
 
-      // postQuizz(quizz);
-
-      let createQuizz3 = document.getElementById("create-quizz-3");
-      let createQuizz4 = document.getElementById("create-quizz-4");
-
-      createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
-      <article>
-        <img src="${quizz.image}" class="cover" alt="imagem do quizz">
-        <div class="gradient"></div>
-        <p>${quizz.title}</p>
-      </article>
-      <button class="restart-quizz-btn">Acessar Quizz</button>
-      <button class="home-btn">Voltar para home</button>`
-
-      // COLOCAR O ID DO QUIZZ NO ID DO ARTICLE (response.data.id)
-
-
       setTimeout(() => {
-        // location.reload()
-        createQuizz3.classList.add("hidden");
-        createQuizz4.classList.remove("hidden");
+        postQuizz(quizz);
       },300)
     } 
   }
-  
-  
-
-
-
-
-
-
-
-
-
-
-  // postQuizz(quizz);
-  // getAllQuizzes();
-  
-  //         testes:
-  
-// const promise = axios.post(QUIZZ_API, quizz);
-// promise.then(getAllQuizzes)
-//AllQuizzes;
-
-
 
 // quizz = {
 //   title:
-//     "Só quem assistiu todos os filmes da Marvel vai gabaritar",
+//     // "Só quem assistiu todos os filmes da Marvel vai gabaritar",
+//     "juro que esse e o ultimo teste, nao aguento mais! misericordia!",
 //   image:
 //     "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Marvel_Logo.svg/1200px-Marvel_Logo.svg.png",
 //   questions: [
 //     {
 //       title: "Que ator é conhecido pelo seu papel como O Hulk?",
-//       color: "green",
+//       color: "#15E818",
 //       answers: [
 //         {
 //           text: "Mark Ruffalo",
@@ -753,7 +746,7 @@ function openCreateLevelsWindow () {
 //     },
 //     {
 //       title: "Qual é o nome do martelo encantado do Thor?",
-//       color: "blue",
+//       color: "#1565E8",
 //       answers: [
 //         {
 //           text: "Mjölnir",
@@ -770,7 +763,7 @@ function openCreateLevelsWindow () {
 //     },
 //     {
 //       title: "Em que ano foi lançado o primeiro filme do Homem de Ferro?",
-//       color: "red",
+//       color: "#E81515",
 //       answers: [
 //         {
 //           text: "2008",
@@ -796,7 +789,7 @@ function openCreateLevelsWindow () {
 //       minValue: 0,
 //     },
 //     {
-//       title: "Quase lá!",
+//       title: "Foi por pouco!",
 //       image:
 //         "https://observatoriodocinema.uol.com.br/wp-content/uploads/2021/02/homem-de-ferro-tony-divulgacao.jpg",
 //       text: "Você sabe bastante, mas precisa relembrar algo.",
