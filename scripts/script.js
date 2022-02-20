@@ -488,7 +488,6 @@ function openCreateLevelsWindow() {
       };
     }
 
-    let createQuizz2 = document.getElementById("create-quizz-2");
     let createQuizz3 = document.getElementById("create-quizz-3");
 
     createQuizz3.innerHTML = `<p>Agora, decida os níveis!</p>`;
@@ -516,8 +515,7 @@ function openCreateLevelsWindow() {
 
     console.log(quizz);
     setTimeout(() => {
-      createQuizz2.classList.add("hidden");
-      createQuizz3.classList.remove("hidden");
+      toggleLoadingScreen(3.2, 3.3);
       collapseElement();
     }, 300);
   }
@@ -834,7 +832,7 @@ function toggleLoadingScreen(from, to) {
     setTimeout(() => {
       toggleHidden(loadingScreen);
       toggleHidden(firstScreen);
-    }, 1000);
+    }, randomTimeOut());
   } else if (from === 1) {
     toggleHidden(firstScreen);
     toggleHidden(loadingScreen);
@@ -846,7 +844,7 @@ function toggleLoadingScreen(from, to) {
       } else if (to >= 3) {
         toggleHidden(thirdScreen);
       }
-    }, 1000);
+    }, randomTimeOut());
   } else if (from === 2) {
     toggleHidden(secondScreen);
     toggleHidden(loadingScreen);
@@ -859,30 +857,69 @@ function toggleLoadingScreen(from, to) {
       } else if (to === 3) {
         toggleHidden(thirdScreen);
       }
-    }, 1000);
-  } else if (from === 3) {
-    toggleHidden(thirdScreen);
-    toggleHidden(loadingScreen);
-
-    setTimeout(() => {
+    }, randomTimeOut());
+  } else if (from >= 3) {
+    if (from === 3) {
+      toggleHidden(thirdScreen);
       toggleHidden(loadingScreen);
-      toggleHidden(firstScreen);
-    }, 1000);
-  } else if (from === 3.1) {
-    const firstSection = document.getElementById("create-quizz-1");
-    const secondSection = document.getElementById("create-quizz-2");
 
-    toggleHidden(firstSection);
-    toggleHidden(loadingScreen);
+      setTimeout(() => {
+        toggleHidden(loadingScreen);
+        toggleHidden(firstScreen);
+      }, 1000);
+    } else if (from === 3.1) {
+      const firstSection = document.getElementById("create-quizz-1");
+      const secondSection = document.getElementById("create-quizz-2");
 
-    setTimeout(() => {
+      toggleHidden(firstSection);
+      toggleHidden(thirdScreen);
       toggleHidden(loadingScreen);
-      toggleHidden(secondSection);
-    }, 1000);
+
+      setTimeout(() => {
+        toggleHidden(loadingScreen);
+        toggleHidden(thirdScreen);
+        toggleHidden(secondSection);
+      }, randomTimeOut());
+    } else if (from === 3.2) {
+      const secondSection = document.getElementById("create-quizz-2");
+      const thirdSection = document.getElementById("create-quizz-3");
+
+      toggleHidden(thirdSection);
+      toggleHidden(thirdScreen);
+      toggleHidden(loadingScreen);
+
+      setTimeout(() => {
+        toggleHidden(loadingScreen);
+        toggleHidden(thirdScreen);
+        toggleHidden(secondSection);
+      }, randomTimeOut());
+    } else if (from === 3.3) {
+      const thirdSection = document.getElementById("create-quizz-3");
+      const fourthSection = document.getElementById("create-quizz-4");
+
+      toggleHidden(fourthSection);
+      toggleHidden(thirdScreen);
+      toggleHidden(loadingScreen);
+
+      setTimeout(() => {
+        toggleHidden(loadingScreen);
+        toggleHidden(fourthScreen);
+        toggleHidden(thirdSection);
+      }, randomTimeOut());
+    }
   }
 }
 function toggleHidden(screen) {
   screen.classList.toggle("hidden");
+}
+function randomTimeOut() {
+  let time = Math.floor(Math.random() * 2000);
+
+  console.log(`load time: ${time}ms`);
+  if (time < 400) {
+    time += 300;
+  }
+  return time;
 }
 
 // quizz = {
