@@ -8,10 +8,11 @@ let apiQuizzes = [];
 let quizzImgExists = [];
 let quizzTitleExists = [];
 
+let nOfValidPairs = [];
 let nQuestions = null;
 let containerHeight = 800;
+let minimumAnswers = [];
 let createQuizzValids = [];
-let createQuestionsInvalids = [];
 let btnIsEnabled = false;
 let heightToAdd = 0;
 let numberOfQuestions = 0;
@@ -1005,8 +1006,13 @@ function checkUserInput(screen, questionNumber) {
 
       title.addEventListener("focusout", () => {
         const content = title.nextElementSibling;
-        if (title.value.length < 20 || title.value.length > 60) {
+        if (
+          (title.value.length < 20 || title.value.length > 60) &&
+          title.value.length !== 0
+        ) {
           showAlertInput(title, content, 1);
+        } else if (title.value.length === 0) {
+          removeValidInputs(title);
         } else {
           hideAlertInput(title, content, 1);
         }
@@ -1014,8 +1020,10 @@ function checkUserInput(screen, questionNumber) {
       });
       image.addEventListener("input", () => {
         const content = image.nextElementSibling;
-        if (!validURL(image.value)) {
+        if (!validURL(image.value) && image.value.length !== 0) {
           showAlertInput(image, content, 1);
+        } else if (image.value.length === 0) {
+          removeValidInputs(image);
         } else {
           hideAlertInput(image, content, 1);
         }
@@ -1024,11 +1032,14 @@ function checkUserInput(screen, questionNumber) {
       numOfQuestions.addEventListener("input", () => {
         const content = numOfQuestions.nextElementSibling;
         if (
-          !isNumber(numOfQuestions.value) ||
-          numOfQuestions.value < 3 ||
-          numOfQuestions.value > 4
+          (!isNumber(numOfQuestions.value) ||
+            numOfQuestions.value < 3 ||
+            numOfQuestions.value > 4) &&
+          numOfQuestions.value !== 0
         ) {
           showAlertInput(numOfQuestions, content, 1);
+        } else if (numOfQuestions.value === 0) {
+          removeValidInputs(numOfQuestions);
         } else {
           hideAlertInput(numOfQuestions, content, 1);
         }
@@ -1036,8 +1047,13 @@ function checkUserInput(screen, questionNumber) {
       });
       numOfLevels.addEventListener("input", () => {
         const content = numOfLevels.nextElementSibling;
-        if (numOfLevels.value < 2 || numOfLevels.value > 10) {
+        if (
+          (numOfLevels.value < 2 || numOfLevels.value > 10) &&
+          numOfLevels.value !== 0
+        ) {
           showAlertInput(numOfLevels, content, 1);
+        } else if (numOfLevels.value === 0) {
+          removeValidInputs(numOfLevels);
         } else {
           hideAlertInput(numOfLevels, content, 1);
         }
@@ -1090,107 +1106,195 @@ function checkUserInput(screen, questionNumber) {
       question.title.addEventListener("focusout", () => {
         const content = question.title.nextElementSibling;
         if (
-          question.title.value.length < 20 ||
-          question.title.value.length > 60
+          (question.title.value.length < 20 ||
+            question.title.value.length > 60) &&
+          question.title.value.length !== 0
         ) {
           showAlertInput(question.title, content, 2, questionNumber);
+        } else if (question.title.value.length === 0) {
+          removeValidInputs(question.title);
         } else {
           hideAlertInput(question.title, content, 2, questionNumber);
-          updateBtn(2);
         }
+        updateBtn(2);
       });
       question.color.addEventListener("focusout", () => {
         const content = question.color.nextElementSibling;
-        if (!isColor(question.color.value)) {
+        if (
+          !isColor(question.color.value) &&
+          question.color.value.length !== 0
+        ) {
           showAlertInput(question.color, content, 2, questionNumber);
+        } else if (question.color.value.length === 0) {
+          removeValidInputs(question.color);
         } else {
           hideAlertInput(question.color, content, 2, questionNumber);
-          updateBtn(2);
         }
+        updateBtn(2);
       });
       rightAnswer.text.addEventListener("focusout", () => {
         const content = rightAnswer.text.nextElementSibling;
         if (
-          rightAnswer.text.value.length < 20 ||
-          rightAnswer.text.value.length > 60
+          (rightAnswer.text.value.length < 5 ||
+            rightAnswer.text.value.length > 60) &&
+          rightAnswer.text.value.length !== 0
         ) {
-          showAlertInput(rightAnswer.text, content, 2, questionNumber);
+          showAlertInput(rightAnswer.text, content, 2, questionNumber, true);
+        } else if (rightAnswer.text.value.length === 0) {
+          removeValidInputs(rightAnswer.text);
         } else {
-          hideAlertInput(rightAnswer.text, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(rightAnswer.text, content, 2, questionNumber, true);
         }
+        updateBtn(2);
       });
       rightAnswer.imageUrl.addEventListener("focusout", () => {
         const content = rightAnswer.imageUrl.nextElementSibling;
-        if (!validURL(rightAnswer.imageUrl.value)) {
-          showAlertInput(rightAnswer.imageUrl, content, 2, questionNumber);
+        if (
+          !validURL(rightAnswer.imageUrl.value) &&
+          rightAnswer.imageUrl.value.length !== 0
+        ) {
+          showAlertInput(
+            rightAnswer.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
+        } else if (rightAnswer.imageUrl.value.length === 0) {
+          removeValidInputs(rightAnswer.imageUrl);
         } else {
-          hideAlertInput(rightAnswer.imageUrl, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(
+            rightAnswer.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
         }
+        updateBtn(2);
       });
       wrongAnswer_1.text.addEventListener("focusout", () => {
         const content = wrongAnswer_1.text.nextElementSibling;
         if (
-          wrongAnswer_1.text.value.length < 20 ||
-          wrongAnswer_1.text.value.length > 60
+          (wrongAnswer_1.text.value.length < 5 ||
+            wrongAnswer_1.text.value.length > 60) &&
+          wrongAnswer_1.text.value.length !== 0
         ) {
-          showAlertInput(wrongAnswer_1.text, content, 2, questionNumber);
+          showAlertInput(wrongAnswer_1.text, content, 2, questionNumber, true);
+        } else if (wrongAnswer_1.text.value.length === 0) {
+          removeValidInputs(wrongAnswer_1.text);
         } else {
-          hideAlertInput(wrongAnswer_1.text, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(wrongAnswer_1.text, content, 2, questionNumber, true);
         }
+        updateBtn(2);
       });
       wrongAnswer_1.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_1.imageUrl.nextElementSibling;
-        if (!validURL(wrongAnswer_1.imageUrl.value)) {
-          showAlertInput(wrongAnswer_1.imageUrl, content, 2, questionNumber);
+        if (
+          !validURL(wrongAnswer_1.imageUrl.value) &&
+          wrongAnswer_1.imageUrl.value.length !== 0
+        ) {
+          showAlertInput(
+            wrongAnswer_1.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
+        } else if (wrongAnswer_1.imageUrl.value.length === 0) {
+          removeValidInputs(wrongAnswer_1.imageUrl);
         } else {
-          hideAlertInput(wrongAnswer_1.imageUrl, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(
+            wrongAnswer_1.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
         }
+        updateBtn(2);
       });
       wrongAnswer_2.text.addEventListener("focusout", () => {
         const content = wrongAnswer_2.text.nextElementSibling;
         if (
-          wrongAnswer_2.text.value.length < 20 ||
-          wrongAnswer_2.text.value.length > 60
+          (wrongAnswer_2.text.value.length < 5 ||
+            wrongAnswer_2.text.value.length > 60) &&
+          wrongAnswer_2.text.value.length !== 0
         ) {
-          showAlertInput(wrongAnswer_2.text, content, 2, questionNumber);
+          showAlertInput(wrongAnswer_2.text, content, 2, questionNumber, true);
+        } else if (wrongAnswer_2.text.value.length === 0) {
+          removeValidInputs(wrongAnswer_2.text);
         } else {
-          hideAlertInput(wrongAnswer_2.text, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(wrongAnswer_2.text, content, 2, questionNumber, true);
         }
+        updateBtn(2);
       });
       wrongAnswer_2.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_2.imageUrl.nextElementSibling;
-        if (!validURL(wrongAnswer_2.imageUrl.value)) {
-          showAlertInput(wrongAnswer_2.imageUrl, content, 2, questionNumber);
+        if (
+          !validURL(wrongAnswer_2.imageUrl.value) &&
+          wrongAnswer_2.imageUrl.value.length !== 0
+        ) {
+          showAlertInput(
+            wrongAnswer_2.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
+        } else if (wrongAnswer_2.imageUrl.value.length === 0) {
+          removeValidInputs(wrongAnswer_2.imageUrl);
         } else {
-          hideAlertInput(wrongAnswer_2.imageUrl, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(
+            wrongAnswer_2.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
         }
+        updateBtn(2);
       });
       wrongAnswer_3.text.addEventListener("focusout", () => {
         const content = wrongAnswer_3.text.nextElementSibling;
         if (
-          wrongAnswer_3.text.value.length < 20 ||
-          wrongAnswer_3.text.value.length > 60
+          (wrongAnswer_3.text.value.length < 5 ||
+            wrongAnswer_3.text.value.length > 60) &&
+          wrongAnswer_3.text.value.length !== 0
         ) {
-          showAlertInput(wrongAnswer_3.text, content, 2, questionNumber);
+          showAlertInput(wrongAnswer_3.text, content, 2, questionNumber, true);
+        } else if (wrongAnswer_3.text.value.length === 0) {
+          removeValidInputs(wrongAnswer_3.text);
         } else {
-          hideAlertInput(wrongAnswer_3.text, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(wrongAnswer_3.text, content, 2, questionNumber, true);
         }
+        updateBtn(2);
       });
       wrongAnswer_3.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_3.imageUrl.nextElementSibling;
-        if (!validURL(wrongAnswer_3.imageUrl.value)) {
-          showAlertInput(wrongAnswer_3.imageUrl, content, 2, questionNumber);
+        if (
+          !validURL(wrongAnswer_3.imageUrl.value) &&
+          wrongAnswer_3.imageUrl.value.length !== 0
+        ) {
+          showAlertInput(
+            wrongAnswer_3.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
+        } else if (wrongAnswer_3.imageUrl.value.length === 0) {
+          removeValidInputs(wrongAnswer_3.imageUrl);
         } else {
-          hideAlertInput(wrongAnswer_3.imageUrl, content, 2, questionNumber);
-          updateBtn(2);
+          hideAlertInput(
+            wrongAnswer_3.imageUrl,
+            content,
+            2,
+            questionNumber,
+            true
+          );
         }
+        updateBtn(2);
       });
 
       break;
@@ -1249,39 +1353,70 @@ function checkUserInput(screen, questionNumber) {
       window.reload();
   }
 }
-function showAlertInput(element, alertText, screen, questionNumber) {
-  if (screen === 2 && !createQuestionsInvalids.includes(element)) {
-    createQuestionsInvalids.push(element);
-    updateContainerHeight(+19, questionNumber);
-  }
-  if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
-    let index = createQuizzValids.indexOf(element);
-    createQuizzValids.splice(index, 1);
-  }
+function showAlertInput(element, alertText, screen, questionNumber, isAnswer) {
+  addMinimumAnswers(screen, element, questionNumber, isAnswer);
+  removeValidInputs(element);
 
   element.style.backgroundColor = "rgba(255, 233, 233, 1)";
   alertText.style.height = `19px`;
   alertText.style.overflow = "initial";
 }
-function hideAlertInput(element, alertText, screen, questionNumber) {
-  if (screen === 2 && createQuestionsInvalids.includes(element)) {
-    let index = createQuestionsInvalids.indexOf(element);
-    createQuestionsInvalids.splice(index, 1);
-
-    updateContainerHeight(-19, questionNumber);
-  }
-  if (!createQuizzValids.includes(element)) {
-    createQuizzValids.push(element);
-  }
+function hideAlertInput(element, alertText, screen, questionNumber, isAnswer) {
+  removeMinimumAnswers(screen, element, questionNumber, isAnswer);
+  addValidInputs(element);
 
   element.style.backgroundColor = "initial";
   alertText.style.height = null;
   alertText.style.overflow = "hidden";
 }
+function removeMinimumAnswers(screen, element, questionNumber, isAnswer) {
+  let filteredArr = minimumAnswers.filter(hasMinimum);
+  if (filteredArr.length === 2) {
+    nOfValidPairs.push(questionNumber);
+  }
+
+  if (screen === 2 && !minimumAnswers.includes(element) && isAnswer) {
+    minimumAnswers.push(questionNumber);
+    updateContainerHeight(+19, questionNumber);
+  }
+  function hasMinimum(number) {
+    return number === questionNumber;
+  }
+}
+function addValidInputs(element) {
+  if (!createQuizzValids.includes(element)) {
+    createQuizzValids.push(element);
+  }
+}
+function addMinimumAnswers(screen, element, questionNumber, isAnswer) {
+  let filteredArr = minimumAnswers.filter(hasMinimum);
+  if (filteredArr.length === 2) {
+    nOfValidPairs.push(questionNumber);
+  }
+
+  if (screen === 2 && minimumAnswers.includes(element) && isAnswer) {
+    if (nOfValidPairs.includes(questionNumber)) {
+      let indexNum = nOfValidPairs.indexOf(questionNumber);
+      nOfValidPairs.splice(indexNum, 1);
+    }
+
+    let index = minimumAnswers.indexOf(element);
+    minimumAnswers.splice(index, 1);
+    updateContainerHeight(-19, questionNumber);
+  }
+  function hasMinimum(number) {
+    return number === questionNumber;
+  }
+}
+function removeValidInputs(element) {
+  if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
+    let index = createQuizzValids.indexOf(element);
+    createQuizzValids.splice(index, 1);
+  }
+}
 function updateBtn(screen) {
   let btn = document.querySelector(`#create-quizz-${screen} .quizz-btn`);
 
-  console.log("passou", createQuizzValids.length);
   switch (screen) {
     case 1:
       if (createQuizzValids.length === 4) {
@@ -1296,7 +1431,10 @@ function updateBtn(screen) {
 
       break;
     case 2:
-      if (createQuizzValids.length >= nQuestions * 6) {
+      if (
+        createQuizzValids.length >= nQuestions * 6 &&
+        nOfValidPairs >= nQuestions
+      ) {
         btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
