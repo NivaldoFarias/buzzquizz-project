@@ -635,6 +635,10 @@ function postQuizz(quizz) {
     <button class="quizz-btn">Acessar Quizz</button>
     <button class="home-btn">Voltar para home</button>`;
 
+    let createdQuizz = document.querySelector("#create-quizz-4 article");
+    createdQuizz.addEventListener("click", () => {
+      selectCreatedQuizz();
+    });
     let playQuizz = document.querySelector("#create-quizz-4 .quizz-btn");
     playQuizz.addEventListener("click", () => {
       selectCreatedQuizz();
