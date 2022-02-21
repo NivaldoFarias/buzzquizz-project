@@ -8,9 +8,12 @@ let apiQuizzes = [];
 let quizzImgExists = [];
 let quizzTitleExists = [];
 
-let nOfValidPairs = [];
+let createQuestionsInvalids = [];
 let nQuestions = null;
-let containerHeight = 800;
+let containerHeight_1 = 800;
+let containerHeight_2 = 800;
+let containerHeight_3 = 800;
+let containerHeight_4 = 800;
 let minimumAnswers = [];
 let createQuizzValids = [];
 let btnIsEnabled = false;
@@ -734,16 +737,54 @@ function toggleCollapsibleElement(elementID) {
   collapseButtons.forEach((btn, index) => {
     checkUserInput("questions", index + 1);
     btn.addEventListener("click", function () {
-      this.classList.toggle("active");
-      const content = this.nextElementSibling;
-      if (content.style.height) {
-        this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = null;
-        content.style.overflow = "hidden";
+      if (index === 0) {
+        this.classList.toggle("active");
+        const content = this.nextElementSibling;
+        if (content.style.height) {
+          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = null;
+          content.style.overflow = "hidden";
+        } else {
+          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = `${containerHeight_1}px`;
+          content.style.overflow = "initial";
+        }
+      } else if (index === 1) {
+        this.classList.toggle("active");
+        const content = this.nextElementSibling;
+        if (content.style.height) {
+          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = null;
+          content.style.overflow = "hidden";
+        } else {
+          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = `${containerHeight_2}px`;
+          content.style.overflow = "initial";
+        }
+      } else if (index === 2) {
+        this.classList.toggle("active");
+        const content = this.nextElementSibling;
+        if (content.style.height) {
+          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = null;
+          content.style.overflow = "hidden";
+        } else {
+          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = `${containerHeight_3}px`;
+          content.style.overflow = "initial";
+        }
       } else {
-        this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = `${containerHeight}px`;
-        content.style.overflow = "initial";
+        this.classList.toggle("active");
+        const content = this.nextElementSibling;
+        if (content.style.height) {
+          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = null;
+          content.style.overflow = "hidden";
+        } else {
+          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+          content.style.height = `${containerHeight_4}px`;
+          content.style.overflow = "initial";
+        }
       }
     });
   });
@@ -767,13 +808,33 @@ function toggleCollapsibleElement(elementID) {
   });
 }
 function updateContainerHeight(value, questionNumber) {
-  let container = document.querySelector(
-    `#question-${questionNumber} .input-container`
-  );
-
-  container.style.height = `${parseInt(container.style.height) + value}px`;
-  containerHeight = parseInt(container.style.height);
+  if (questionNumber === 1) {
+    let container = document.querySelector(
+      `#question-${questionNumber} .input-container`
+    );
+    container.style.height = `${parseInt(container.style.height) + value}px`;
+    containerHeight_1 = parseInt(container.style.height);
+  } else if (questionNumber === 2) {
+    let container = document.querySelector(
+      `#question-${questionNumber} .input-container`
+    );
+    container.style.height = `${parseInt(container.style.height) + value}px`;
+    containerHeight_2 = parseInt(container.style.height);
+  } else if (questionNumber === 3) {
+    let container = document.querySelector(
+      `#question-${questionNumber} .input-container`
+    );
+    container.style.height = `${parseInt(container.style.height) + value}px`;
+    containerHeight_3 = parseInt(container.style.height);
+  } else {
+    let container = document.querySelector(
+      `#question-${questionNumber} .input-container`
+    );
+    container.style.height = `${parseInt(container.style.height) + value}px`;
+    containerHeight_4 = parseInt(container.style.height);
+  }
 }
+
 function finishQuizz() {
   if (createLevelsValidation()) {
     for (let i = 0; i < quizz.levels.length; i++) {
@@ -1358,16 +1419,24 @@ function checkUserInput(screen, questionNumber) {
       window.reload();
   }
 }
-function showAlertInput(element, alertText, screen, questionNumber, isAnswer) {
-  //addMinimumAnswers(screen, element, questionNumber, isAnswer);
+function showAlertInput(element, alertText, screen, questionNumber) {
+  if (screen === 2 && !createQuestionsInvalids.includes(element)) {
+    createQuestionsInvalids.push(element);
+    updateContainerHeight(+19, questionNumber);
+  }
   removeValidInputs(element);
 
   element.style.backgroundColor = "rgba(255, 233, 233, 1)";
   alertText.style.height = `19px`;
   alertText.style.overflow = "initial";
 }
-function hideAlertInput(element, alertText, screen, questionNumber, isAnswer) {
-  //removeMinimumAnswers(screen, element, questionNumber, isAnswer);
+function hideAlertInput(element, alertText, screen, questionNumber) {
+  if (screen === 2 && createQuestionsInvalids.includes(element)) {
+    let index = createQuestionsInvalids.indexOf(element);
+    createQuestionsInvalids.splice(index, 1);
+
+    updateContainerHeight(-19, questionNumber);
+  }
   addValidInputs(element);
 
   element.style.backgroundColor = "initial";
