@@ -290,6 +290,7 @@ function renderQuizz(quizz) {
   let restartQuizzBtn = document.querySelector(
     "#second-screen > button.quizz-btn"
   );
+  restartQuizzBtn.style.opacity = "1";
   restartQuizzBtn.addEventListener("click", () => {
     restartQuizzBtn.classList.add("clicked");
     setTimeout(function () {
@@ -522,12 +523,14 @@ function openCreateQuestionsWindow() {
             id="right-answer-text" 
             type="text" 
             placeholder="Resposta correta"
+            required
           />
           <div class="alert-text">O texto deve conter entre 5 e 60 caracteres</div>
           <input 
             id="right-answer-image"
             type="url" 
             placeholder="URL da imagem" 
+            required
           />
           <div class="alert-text">O valor informado não é uma URL válida</div>
           <p>Respostas incorretas</p>
@@ -536,12 +539,14 @@ function openCreateQuestionsWindow() {
               id="wrong-answer-text-1" 
               type="text" 
               placeholder="Resposta incorreta 1" 
+              required
             />
             <div class="alert-text">O texto deve conter entre 5 e 60 caracteres</div>
             <input 
               id="wrong-answer-image-1" 
               type="text" 
               placeholder="URL da imagem 1" 
+              required
             />
             <div class="alert-text">O valor informado não é uma URL válida</div>
           </div>
@@ -1354,7 +1359,7 @@ function checkUserInput(screen, questionNumber) {
   }
 }
 function showAlertInput(element, alertText, screen, questionNumber, isAnswer) {
-  addMinimumAnswers(screen, element, questionNumber, isAnswer);
+  //addMinimumAnswers(screen, element, questionNumber, isAnswer);
   removeValidInputs(element);
 
   element.style.backgroundColor = "rgba(255, 233, 233, 1)";
@@ -1362,50 +1367,16 @@ function showAlertInput(element, alertText, screen, questionNumber, isAnswer) {
   alertText.style.overflow = "initial";
 }
 function hideAlertInput(element, alertText, screen, questionNumber, isAnswer) {
-  removeMinimumAnswers(screen, element, questionNumber, isAnswer);
+  //removeMinimumAnswers(screen, element, questionNumber, isAnswer);
   addValidInputs(element);
 
   element.style.backgroundColor = "initial";
   alertText.style.height = null;
   alertText.style.overflow = "hidden";
 }
-function removeMinimumAnswers(screen, element, questionNumber, isAnswer) {
-  let filteredArr = minimumAnswers.filter(hasMinimum);
-  if (filteredArr.length === 2) {
-    nOfValidPairs.push(questionNumber);
-  }
-
-  if (screen === 2 && !minimumAnswers.includes(element) && isAnswer) {
-    minimumAnswers.push(questionNumber);
-    updateContainerHeight(+19, questionNumber);
-  }
-  function hasMinimum(number) {
-    return number === questionNumber;
-  }
-}
 function addValidInputs(element) {
   if (!createQuizzValids.includes(element)) {
     createQuizzValids.push(element);
-  }
-}
-function addMinimumAnswers(screen, element, questionNumber, isAnswer) {
-  let filteredArr = minimumAnswers.filter(hasMinimum);
-  if (filteredArr.length === 2) {
-    nOfValidPairs.push(questionNumber);
-  }
-
-  if (screen === 2 && minimumAnswers.includes(element) && isAnswer) {
-    if (nOfValidPairs.includes(questionNumber)) {
-      let indexNum = nOfValidPairs.indexOf(questionNumber);
-      nOfValidPairs.splice(indexNum, 1);
-    }
-
-    let index = minimumAnswers.indexOf(element);
-    minimumAnswers.splice(index, 1);
-    updateContainerHeight(-19, questionNumber);
-  }
-  function hasMinimum(number) {
-    return number === questionNumber;
   }
 }
 function removeValidInputs(element) {
@@ -1431,10 +1402,7 @@ function updateBtn(screen) {
 
       break;
     case 2:
-      if (
-        createQuizzValids.length >= nQuestions * 6 &&
-        nOfValidPairs >= nQuestions
-      ) {
+      if (createQuizzValids.length >= nQuestions * 6) {
         btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
