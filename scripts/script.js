@@ -18,6 +18,9 @@ let quizz = {};
 
 let teste = 0;
 
+let editingMode = false
+let ID_edit = 0
+
 console.log("Page loaded");
 getAllQuizzes();
 toggleLoadingScreen();
@@ -155,6 +158,9 @@ function renderUserQuizzes() {
 
   let trashBtns = [...document.querySelectorAll("#delete-btn")];
   trashBtns.forEach(trashBtn => trashBtn.addEventListener("click",deleteQuizz))
+
+  let editBtns = [...document.querySelectorAll("#edit-btn")];
+  editBtns.forEach(editBtn => editBtn.addEventListener("click",editQuizz))
 }
 function getQuizz(ID) {
   const promise = axios.get(`${QUIZZ_API}/${ID}`);
@@ -172,8 +178,9 @@ function selectCreatedQuizz() {
   let id = document.querySelector("#create-quizz-4 article").id;
   const promise = axios.get(`${QUIZZ_API}/${id}`);
   promise.then((response) => {
+    quizz = response.data;
+    currentQuizz = quizz
     renderQuizz(response.data);
-    currentQuizz = response.data;
   });
   promise.catch((error) => {
     console.log(error.reponse.status);
@@ -182,18 +189,72 @@ function selectCreatedQuizz() {
 function deleteQuizz(event) {
   event.stopPropagation()
   let confirmation = confirm("Deseja mesmo apagar este Quizz?")
-  let key = myQuizzes.filter((quizz) => quizz.id == this.parentNode.parentNode.id)[0].key;
-  const promise = axios.delete(`${QUIZZ_API}/${this.parentNode.parentNode.id}`, {
-    headers: { "Secret-Key": key },
-  });
+  if (confirmation){
+    let key = myQuizzes.filter((quizz) => quizz.id == this.parentNode.parentNode.id)[0].key;
+    const promise = axios.delete(`${QUIZZ_API}/${this.parentNode.parentNode.id}`, {
+      headers: { "Secret-Key": key },
+    });
+    promise.then((response) => {
+      console.log(response);
+      location.reload()
+    });
+    promise.catch((error) => {
+      console.log(error.reponse.status);
+    });
+  }    
+}
+function editQuizz(event) {
+  event.stopPropagation()
+  editingMode = true
+  console.log("edit quizz")
+  const promise = axios.get(`${QUIZZ_API}/${this.parentNode.parentNode.id}`);
   promise.then((response) => {
-    console.log(response);
-    location.reload()
+    quizz = response.data;
+    ID_edit = quizz.id
+    delete quizz.id
+    console.log(quizz);
+    openCreateQuizzWindow();
   });
   promise.catch((error) => {
     console.log(error.reponse.status);
   });
 }
+// function openEditQuizzWindow() {
+//   let createQuizz1 = document.getElementById("create-quizz-1");
+
+//   createQuizz1.innerHTML = `<p>Comece pelo Começo</p>
+//   <div class="input-container">
+//     <input id="title" type="text" placeholder="Título do seu quizz" />
+//     <input
+//       id="image"
+//       type="text"
+//       placeholder="URL da imagem do seu quizz"
+//     />
+//     <input
+//       id="numOfQuestions"
+//       type="text"
+//       placeholder="Quantidade de perguntas do quizz"
+//     />
+//     <input
+//       id="numOfLevels"
+//       type="text"
+//       placeholder="Quantidade de níveis do quizz"
+//     />
+//   </div>
+//   <button class="quizz-btn">
+//     Prosseguir pra criar perguntas
+//   </button>`;
+
+//   document
+
+//   let createQuestionsBtn = document.querySelector("#create-quizz-1 button");
+//   createQuestionsBtn.addEventListener("click", openEditQuestionsWindow);
+
+//   toggleLoadingScreen(1, 3);
+// }
+// function openEditQuestionsWindow() {
+//   console.log("openEditQuestionsWindow");
+// }
 function selectQuizz() {
   let secondScreen = document.getElementById("second-screen");
   toggleLoadingScreen(1, 2);
@@ -201,8 +262,8 @@ function selectQuizz() {
   secondScreen.innerHTML = "";
   const promise = axios.get(`${QUIZZ_API}/${this.id}`);
   promise.then((response) => {
-    renderQuizz(response.data);
     currentQuizz = response.data;
+    renderQuizz(currentQuizz);
   });
   promise.catch((error) => {
     console.log(error.reponse.status);
@@ -371,26 +432,33 @@ function openCreateQuizzWindow() {
 
   createQuizz1.innerHTML = `<p>Comece pelo Começo</p>
   <div class="input-container">
-    <input id="title" type="text" placeholder="Título do seu quizz" />
-    <input
-      id="image"
-      type="text"
-      placeholder="URL da imagem do seu quizz"
-    />
-    <input
-      id="numOfQuestions"
-      type="text"
-      placeholder="Quantidade de perguntas do quizz"
-    />
-    <input
-      id="numOfLevels"
-      type="text"
-      placeholder="Quantidade de níveis do quizz"
-    />
+  <input id="title" type="text" placeholder="Título do seu quizz" />
+  <input
+  id="image"
+  type="text"
+  placeholder="URL da imagem do seu quizz"
+  />
+  <input
+  id="numOfQuestions"
+  type="text"
+  placeholder="Quantidade de perguntas do quizz"
+  />
+  <input
+  id="numOfLevels"
+  type="text"
+  placeholder="Quantidade de níveis do quizz"
+  />
   </div>
   <button class="quizz-btn">
-    Prosseguir pra criar perguntas
+  Prosseguir pra criar perguntas
   </button>`;
+  
+  if (editingMode){
+    document.querySelector("#create-quizz-1 #title").value=quizz.title;
+    document.querySelector("#create-quizz-1 #image").value=quizz.image;
+    document.querySelector("#create-quizz-1 #numOfQuestions").value=quizz.questions.length;
+    document.querySelector("#create-quizz-1 #numOfLevels").value=quizz.levels.length;
+  }
 
   let createQuestionsBtn = document.querySelector("#create-quizz-1 button");
   createQuestionsBtn.addEventListener("click", openCreateQuestionsWindow);
@@ -419,21 +487,27 @@ function openCreateQuestionsWindow() {
   } else if (numOfLevels < 2) {
     alert("Quantidade de níveis: no mínimo 2 níveis");
   } else {
-    let questions = [];
-    questions.length = numOfQuestions;
-    let levels = [];
-    levels.length = numOfLevels;
+    if(editingMode){
+      quizz.title= title;
+      quizz.image=image;
+      quizz.questions.length=numOfQuestions;
+      quizz.levels.length=numOfLevels;
+    } else {
+      let questions = [];
+      questions.length = numOfQuestions;
+      let levels = [];
+      levels.length = numOfLevels;
 
-    quizz = {
-      title: title,
-      image: image,
-      questions: questions,
-      levels: levels,
-    };
-
+      quizz = {
+        title: title,
+        image: image,
+        questions: questions,
+        levels: levels,
+      };
+    }  
     createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`;
 
-    for (let i = 0; i < quizz.questions.length; i++) {
+    for (let i = 0; i < numOfQuestions; i++) {
       createQuizz2.innerHTML += `<article id="QUESTION-${i + 1}">
       <div class="question-btn">
       <p>Pergunta ${i + 1}</p>
@@ -463,12 +537,29 @@ function openCreateQuestionsWindow() {
       </article>`;
     }
 
+    
     createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
-
+    
     let createLevelsBtn = document.querySelector("#create-quizz-2 button");
     createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
-
+    
     setTimeout(() => {
+      if(editingMode){
+        for (let i = 0; i < numOfQuestions; i++){
+          if(quizz.questions[i]){
+            document.querySelector(`#QUESTION-${i + 1} #question-title`).value=quizz.questions[i].title;
+            document.querySelector(`#QUESTION-${i + 1} #question-color`).value=quizz.questions[i].color;
+            let rightAnswers = quizz.questions[i].answers.filter(answer => answer.isCorrectAnswer==true);
+            let wrongAnswers = quizz.questions[i].answers.filter(answer => answer.isCorrectAnswer==false);
+            document.querySelector(`#QUESTION-${i + 1} #right-answer-text`).value= rightAnswers[0].text;
+            document.querySelector(`#QUESTION-${i + 1} #right-answer-image`).value= rightAnswers[0].image;
+            for (let j = 0; j<wrongAnswers.length;j++){
+              document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-${j+1}`).value= wrongAnswers[j].text;
+              document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-${j+1}`).value= wrongAnswers[j].image;
+            }
+          }
+        }
+      }
       toggleLoadingScreen(3.1, 3.2);
       collapseElement();
       console.log(quizz);
@@ -508,6 +599,7 @@ function openCreateLevelsWindow() {
       let questionColor = document.querySelector(
         `#QUESTION-${i + 1} #question-color`
       ).value;
+
       quizz.questions[i] = {
         title: questionTitle,
         color: questionColor,
@@ -542,6 +634,16 @@ function openCreateLevelsWindow() {
 
     console.log(quizz);
     setTimeout(() => {
+      if(editingMode){
+        for (let i = 0; i < quizz.levels.length; i++){
+          if(quizz.levels[i]){
+            document.querySelector(`#LEVEL-${i + 1} #level-title`).value=quizz.levels[i].title;
+            document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value=quizz.levels[i].minValue;
+            document.querySelector(`#LEVEL-${i + 1} #level-image`).value=quizz.levels[i].image;
+            document.querySelector(`#LEVEL-${i + 1} #level-text`).value=quizz.levels[i].text;
+          }
+        }
+      }
       toggleLoadingScreen(3.2, 3.3);
       collapseElement();
     }, 300);
@@ -618,7 +720,11 @@ function finishQuizz() {
     }
 
     setTimeout(() => {
-      postQuizz(quizz);
+      if(editingMode){
+        postQuizzEdited(quizz,ID_edit)
+      }else{
+        postQuizz(quizz);
+      }
     }, 300);
   }
 }
@@ -658,10 +764,48 @@ function postQuizz(quizz) {
 
     setTimeout(() => {
       toggleLoadingScreen(3.3, 3.4);
+      quizz={}
     }, 300);
   });
 }
+function postQuizzEdited(quizz,ID_edit) {
+  let key = myQuizzes.filter((quizz) => quizz.id == ID_edit)[0].key;
+  const promise = axios.put(`${QUIZZ_API}/${ID_edit}`,quizz,{
+    headers: { "Secret-Key": key },
+  });
+  promise.then((response) => {
+    console.log(response);
 
+    let createQuizz4 = document.getElementById("create-quizz-4");
+
+    createQuizz4.innerHTML = `<p>Seu quizz está pronto!</p>
+    <article id="${response.data.id}">
+      <img src="${quizz.image}" class="cover" alt="imagem do quizz">
+      <div class="gradient"></div>
+      <p>${quizz.title}</p>
+    </article>
+    <button class="quizz-btn">Acessar Quizz</button>
+    <button class="home-btn">Voltar para home</button>`;
+
+    let createdQuizz = document.querySelector("#create-quizz-4 article");
+    createdQuizz.addEventListener("click", () => {
+      selectCreatedQuizz();
+    });
+    let playQuizz = document.querySelector("#create-quizz-4 .quizz-btn");
+    playQuizz.addEventListener("click", () => {
+      selectCreatedQuizz();
+    });
+    let home_btn = document.querySelector("#create-quizz-4 .home-btn");
+    home_btn.addEventListener("click", () => {
+      location.reload();
+    });
+
+    setTimeout(() => {
+      toggleLoadingScreen(3.3, 3.4);
+      quizz={}
+    }, 300);
+  });
+}
 /* Validation Functions */
 function createQuestionsValidation() {
   // body
