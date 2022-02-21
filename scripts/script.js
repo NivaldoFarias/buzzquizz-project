@@ -156,7 +156,9 @@ function renderUserQuizzes() {
   });
 
   let trashBtns = [...document.querySelectorAll("#delete-btn")];
-  trashBtns.forEach(trashBtn => trashBtn.addEventListener("click",deleteQuizz))
+  trashBtns.forEach((trashBtn) =>
+    trashBtn.addEventListener("click", deleteQuizz)
+  );
 }
 function getQuizz(ID) {
   const promise = axios.get(`${QUIZZ_API}/${ID}`);
@@ -182,15 +184,20 @@ function selectCreatedQuizz() {
   });
 }
 function deleteQuizz(event) {
-  event.stopPropagation()
-  let confirmation = confirm("Deseja mesmo apagar este Quizz?")
-  let key = myQuizzes.filter((quizz) => quizz.id == this.parentNode.parentNode.id)[0].key;
-  const promise = axios.delete(`${QUIZZ_API}/${this.parentNode.parentNode.id}`, {
-    headers: { "Secret-Key": key },
-  });
+  event.stopPropagation();
+  let confirmation = confirm("Deseja mesmo apagar este Quizz?");
+  let key = myQuizzes.filter(
+    (quizz) => quizz.id == this.parentNode.parentNode.id
+  )[0].key;
+  const promise = axios.delete(
+    `${QUIZZ_API}/${this.parentNode.parentNode.id}`,
+    {
+      headers: { "Secret-Key": key },
+    }
+  );
   promise.then((response) => {
     console.log(response);
-    location.reload()
+    location.reload();
   });
   promise.catch((error) => {
     console.log(error.reponse.status);
@@ -842,8 +849,9 @@ function hideAlertInput(element, alertText) {
   alertText.style.overflow = "hidden";
 }
 function showAlertInput(element, alertText) {
-  if (createQuizzValids.length > 0) {
-    createQuizzValids.pop();
+  if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
+    let index = createQuizzValids.indexOf(element);
+    createQuizzValids.splice(index, 1);
   }
 
   element.style.backgroundColor = "rgba(255, 233, 233, 1)";
@@ -851,11 +859,14 @@ function showAlertInput(element, alertText) {
   alertText.style.overflow = "initial";
 }
 function updateBtn() {
-  console.log(createQuizzValids.length);
+  let btn = document.querySelector("#create-quizz-1 .quizz-btn");
+
   if (createQuizzValids.length === 4) {
-    let btn = document.querySelector("#create-quizz-1 .quizz-btn");
     btn.disabled = false;
     btnIsEnabled = true;
+  } else if (!btn.disabled) {
+    btn.disabled = true;
+    btnIsEnabled = false;
   }
 }
 function validURL(str) {
@@ -1131,5 +1142,5 @@ function randomTimeOut() {
 //       minValue: 66,
 //     },
 //   ],
-// }; 
+// };
 /* postQuizz(quizz) */
