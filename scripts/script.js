@@ -8,6 +8,8 @@ let apiQuizzes = [];
 let quizzImgExists = [];
 let quizzTitleExists = [];
 
+let createQuizzValids = [];
+let btnIsEnabled = false;
 let numberOfQuestions = 0;
 let moves = 0;
 let hits = 0;
@@ -363,54 +365,56 @@ function openCreateQuizzWindow() {
 
   createQuizz1.innerHTML = `<p>Comece pelo Começo</p>
   <div class="input-container">
-    <input id="title" type="text" placeholder="Título do seu quizz" />
+    <input 
+      id="title" 
+      type="text" 
+      placeholder="Título do seu quizz" 
+    />
+    <div class="alert-text">O título deve conter entre 20 e 60 caracteres</div>
     <input
       id="image"
-      type="text"
+      type="url"
       placeholder="URL da imagem do seu quizz"
     />
+    <div class="alert-text">O valor informado não é uma URL válida</div>
     <input
       id="numOfQuestions"
-      type="text"
+      type="number"
       placeholder="Quantidade de perguntas do quizz"
     />
+    <div class="alert-text">O quizz deve ter no mínimo 3 perguntas</div>
     <input
       id="numOfLevels"
-      type="text"
+      type="number"
       placeholder="Quantidade de níveis do quizz"
     />
+    <div class="alert-text">O quizz deve ter no mínimo 2 níveis</div>
   </div>
-  <button class="quizz-btn">
+  <button class="quizz-btn" disabled>
     Prosseguir pra criar perguntas
   </button>`;
 
-  let createQuestionsBtn = document.querySelector("#create-quizz-1 button");
-  createQuestionsBtn.addEventListener("click", openCreateQuestionsWindow);
+  let quizzBtn = document.querySelector("#create-quizz-1 > button");
+  quizzBtn.addEventListener("click", () => {
+    quizzBtn.classList.add("clicked");
+    openCreateQuestionsWindow();
+  });
 
   toggleLoadingScreen(1, 3);
 }
 function openCreateQuestionsWindow() {
-  let createQuizz1 = document.getElementById("create-quizz-1");
-  let createQuizz2 = document.getElementById("create-quizz-2");
+  if (btnIsEnabled) {
+    let createQuizz2 = document.getElementById("create-quizz-2");
 
-  let title = document.querySelector("#create-quizz-1 #title").value;
-  let image = document.querySelector("#create-quizz-1 #image").value;
-  let numOfQuestions = document.querySelector(
-    "#create-quizz-1 #numOfQuestions"
-  ).value;
-  let numOfLevels = document.querySelector(
-    "#create-quizz-1 #numOfLevels"
-  ).value;
+    let title = document.querySelector("#create-quizz-1 #title").value;
+    let image = document.querySelector("#create-quizz-1 #image").value;
+    let numOfQuestions = document.querySelector(
+      "#create-quizz-1 #numOfQuestions"
+    ).value;
+    let numOfLevels = document.querySelector(
+      "#create-quizz-1 #numOfLevels"
+    ).value;
 
-  if (title.length < 20 || title.length > 65) {
-    alert("Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres");
-  } else if (!validURL(image)) {
-    alert("URL da Imagem: deve ter formato de URL e ser uma imagem");
-  } else if (numOfQuestions < 3) {
-    alert("Quantidade de perguntas: no mínimo 3 perguntas");
-  } else if (numOfLevels < 2) {
-    alert("Quantidade de níveis: no mínimo 2 níveis");
-  } else {
     let questions = [];
     questions.length = numOfQuestions;
     let levels = [];
@@ -464,7 +468,7 @@ function openCreateQuestionsWindow() {
       toggleLoadingScreen(3.1, 3.2);
       collapseElement();
       console.log(quizz);
-    }, 300);
+    }, 400);
   }
 }
 function openCreateLevelsWindow() {
@@ -767,6 +771,81 @@ function createLevelsValidation() {
   }
   return true;
 }
+function checkUserInput() {
+  let title = document.querySelector("#create-quizz-1 #title");
+  let image = document.querySelector("#create-quizz-1 #image");
+  let numOfQuestions = document.querySelector(
+    "#create-quizz-1 #numOfQuestions"
+  );
+  let numOfLevels = document.querySelector("#create-quizz-1 #numOfLevels");
+
+  title.addEventListener("focusout", () => {
+    const content = title.nextElementSibling;
+    if (title.value.length < 20 || title.value.length > 60) {
+      showAlertInput(title, content);
+    } else {
+      hideAlertInput(title, content);
+      updateBtn();
+    }
+  });
+  image.addEventListener("focusout", () => {
+    const content = image.nextElementSibling;
+    if (!validURL(image.value)) {
+      showAlertInput(image, content);
+    } else {
+      hideAlertInput(image, content);
+      updateBtn();
+    }
+  });
+  numOfQuestions.addEventListener("focusout", () => {
+    const content = numOfQuestions.nextElementSibling;
+    if (
+      !isNumber(numOfQuestions.value) ||
+      numOfQuestions.value < 3 ||
+      numOfQuestions.value > 4
+    ) {
+      showAlertInput(numOfQuestions, content);
+    } else {
+      hideAlertInput(numOfQuestions, content);
+      updateBtn();
+    }
+  });
+  numOfLevels.addEventListener("focusout", () => {
+    const content = numOfLevels.nextElementSibling;
+    if (numOfLevels.value < 2 || numOfLevels.value > 10) {
+      showAlertInput(numOfLevels, content);
+    } else {
+      hideAlertInput(numOfLevels, content);
+      updateBtn();
+    }
+  });
+}
+function hideAlertInput(element, alertText) {
+  if (!createQuizzValids.includes(element)) {
+    createQuizzValids.push(element);
+  }
+
+  element.style.backgroundColor = "initial";
+  alertText.style.height = null;
+  alertText.style.overflow = "hidden";
+}
+function showAlertInput(element, alertText) {
+  if (createQuizzValids.length > 0) {
+    createQuizzValids.pop();
+  }
+
+  element.style.backgroundColor = "rgba(255, 233, 233, 1)";
+  alertText.style.height = `19px`;
+  alertText.style.overflow = "initial";
+}
+function updateBtn() {
+  console.log(createQuizzValids.length);
+  if (createQuizzValids.length === 4) {
+    let btn = document.querySelector("#create-quizz-1 .quizz-btn");
+    btn.disabled = false;
+    btnIsEnabled = true;
+  }
+}
 function validURL(str) {
   let pattern = new RegExp(
     "^(https?:\\/\\/)?" + // protocol
@@ -858,6 +937,7 @@ function toggleLoadingScreen(from, to) {
         toggleHidden(secondScreen);
       } else if (to >= 3) {
         toggleHidden(thirdScreen);
+        checkUserInput();
       }
     }, randomTimeOut());
   } else if (from === 2) {
