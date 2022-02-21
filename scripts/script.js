@@ -852,6 +852,7 @@ function postQuizzEdited(quizz, ID_edit) {
     }, 300);
   });
 }
+
 /* Validation Functions */
 function createQuestionsValidation() {
   // body
@@ -986,7 +987,7 @@ function checkUserInput() {
       updateBtn();
     }
   });
-  image.addEventListener("focusout", () => {
+  image.addEventListener("input", () => {
     const content = image.nextElementSibling;
     if (!validURL(image.value)) {
       showAlertInput(image, content);
@@ -995,7 +996,7 @@ function checkUserInput() {
       updateBtn();
     }
   });
-  numOfQuestions.addEventListener("focusout", () => {
+  numOfQuestions.addEventListener("input", () => {
     const content = numOfQuestions.nextElementSibling;
     if (
       !isNumber(numOfQuestions.value) ||
@@ -1008,7 +1009,7 @@ function checkUserInput() {
       updateBtn();
     }
   });
-  numOfLevels.addEventListener("focusout", () => {
+  numOfLevels.addEventListener("input", () => {
     const content = numOfLevels.nextElementSibling;
     if (numOfLevels.value < 2 || numOfLevels.value > 10) {
       showAlertInput(numOfLevels, content);
@@ -1042,9 +1043,11 @@ function updateBtn() {
 
   if (createQuizzValids.length === 4) {
     btn.disabled = false;
+    btn.style.opacity = "1";
     btnIsEnabled = true;
   } else if (!btn.disabled) {
     btn.disabled = true;
+    btn.style.opacity = "0.5";
     btnIsEnabled = false;
   }
 }

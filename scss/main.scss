@@ -746,6 +746,7 @@ main {
   text-transform: uppercase;
   color: $default-red;
 
+  opacity: 0.5;
   transition: all 0.3s ease-in-out 0s;
 
   border: 1px solid $default-red;
@@ -755,6 +756,7 @@ main {
 .quizz-btn.clicked {
   left: 4px;
   top: 4px;
+
   box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;
 }
 ::placeholder {

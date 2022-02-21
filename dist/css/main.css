@@ -977,6 +977,7 @@ main {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #ec362d;
+  opacity: 0.5;
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
   border: 1px solid #ec362d;
