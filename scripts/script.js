@@ -8,8 +8,12 @@ let apiQuizzes = [];
 let quizzImgExists = [];
 let quizzTitleExists = [];
 
+let nQuestions = null;
+let containerHeight = 800;
 let createQuizzValids = [];
+let createQuestionsInvalids = [];
 let btnIsEnabled = false;
+let heightToAdd = 0;
 let numberOfQuestions = 0;
 let moves = 0;
 let hits = 0;
@@ -423,13 +427,13 @@ function openCreateQuizzWindow() {
     <div class="alert-text">O valor informado não é uma URL válida</div>
     <input
       id="numOfQuestions"
-      type="number"
+      type="text"
       placeholder="Quantidade de perguntas do quizz"
     />
     <div class="alert-text">O quizz deve ter no mínimo 3 perguntas</div>
     <input
       id="numOfLevels"
-      type="number"
+      type="text"
       placeholder="Quantidade de níveis do quizz"
     />
     <div class="alert-text">O quizz deve ter no mínimo 2 níveis</div>
@@ -457,6 +461,8 @@ function openCreateQuizzWindow() {
 }
 function openCreateQuestionsWindow() {
   if (btnIsEnabled) {
+    createQuizzValids = [];
+
     let createQuizz2 = document.getElementById("create-quizz-2");
 
     let title = document.querySelector("#create-quizz-1 #title").value;
@@ -488,6 +494,7 @@ function openCreateQuestionsWindow() {
     }
     createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`;
 
+    nQuestions = numOfQuestions;
     for (let i = 0; i < numOfQuestions; i++) {
       createQuizz2.innerHTML += `
       <article id="question-${i + 1}">
@@ -571,8 +578,11 @@ function openCreateQuestionsWindow() {
 
     createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
 
-    let createLevelsBtn = document.querySelector("#create-quizz-2 button");
-    createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
+    let quizzBtn = document.querySelector("#create-quizz-2 button");
+    quizzBtn.addEventListener("click", () => {
+      quizzBtn.classList.add("clicked");
+      openCreateLevelssWindow();
+    });
 
     setTimeout(() => {
       if (editingMode) {
@@ -607,12 +617,11 @@ function openCreateQuestionsWindow() {
       }
       toggleLoadingScreen(3.1, 3.2);
       collapseElement();
-      console.log(quizz);
     }, 400);
   }
 }
 function openCreateLevelsWindow() {
-  if (createQuestionsValidation()) {
+  if (btnIsEnabled) {
     for (let i = 0; i < quizz.questions.length; i++) {
       let answers = [];
       let rightAnswer = {
@@ -675,9 +684,11 @@ function openCreateLevelsWindow() {
     createQuizz3.innerHTML += `<button class="quizz-btn">Finalizar Quizz</button>`;
 
     let finishBtn = document.querySelector("#create-quizz-3 button");
-    finishBtn.addEventListener("click", finishQuizz);
+    finishBtn.addEventListener("click", () => {
+      finishBtn.classList.add("clicked");
+      finishQuizz();
+    });
 
-    console.log(quizz);
     setTimeout(() => {
       if (editingMode) {
         for (let i = 0; i < quizz.levels.length; i++) {
@@ -699,10 +710,10 @@ function openCreateLevelsWindow() {
   }
 }
 function collapseElement() {
-  toggleCollapsibleElement("create-quizz-3", 430);
-  toggleCollapsibleElement("create-quizz-2", 800);
+  toggleCollapsibleElement("create-quizz-2");
+  toggleCollapsibleElement("create-quizz-3");
 }
-function toggleCollapsibleElement(elementID, elementHeight) {
+function toggleCollapsibleElement(elementID) {
   const collapseButtons = Array.from(
     document.querySelectorAll(`#${elementID} .question-btn`)
   );
@@ -710,9 +721,9 @@ function toggleCollapsibleElement(elementID, elementHeight) {
     document.querySelectorAll(".input-container ion-icon")
   );
 
-  collapseButtons.forEach((btn) => {
+  collapseButtons.forEach((btn, index) => {
+    checkUserInput("questions", index + 1);
     btn.addEventListener("click", function () {
-      console.log("eventlistener");
       this.classList.toggle("active");
       const content = this.nextElementSibling;
       if (content.style.height) {
@@ -721,7 +732,7 @@ function toggleCollapsibleElement(elementID, elementHeight) {
         content.style.overflow = "hidden";
       } else {
         this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-        content.style.height = `${elementHeight}px`;
+        content.style.height = `${containerHeight}px`;
         content.style.overflow = "initial";
       }
     });
@@ -744,6 +755,14 @@ function toggleCollapsibleElement(elementID, elementHeight) {
       });
     });
   });
+}
+function updateContainerHeight(value, questionNumber) {
+  let container = document.querySelector(
+    `#question-${questionNumber} .input-container`
+  );
+
+  container.style.height = `${parseInt(container.style.height) + value}px`;
+  containerHeight = parseInt(container.style.height);
 }
 function finishQuizz() {
   if (createLevelsValidation()) {
@@ -973,7 +992,7 @@ function createLevelsValidation() {
   }
   return true;
 }
-function checkUserInput(screen) {
+function checkUserInput(screen, questionNumber) {
   switch (screen) {
     case "quizz":
       let title = document.querySelector("#create-quizz-1 #title");
@@ -986,18 +1005,18 @@ function checkUserInput(screen) {
       title.addEventListener("focusout", () => {
         const content = title.nextElementSibling;
         if (title.value.length < 20 || title.value.length > 60) {
-          showAlertInput(title, content);
+          showAlertInput(title, content, 1);
         } else {
-          hideAlertInput(title, content);
+          hideAlertInput(title, content, 1);
           updateBtn(1);
         }
       });
       image.addEventListener("input", () => {
         const content = image.nextElementSibling;
         if (!validURL(image.value)) {
-          showAlertInput(image, content);
+          showAlertInput(image, content, 1);
         } else {
-          hideAlertInput(image, content);
+          hideAlertInput(image, content, 1);
           updateBtn(1);
         }
       });
@@ -1008,18 +1027,18 @@ function checkUserInput(screen) {
           numOfQuestions.value < 3 ||
           numOfQuestions.value > 4
         ) {
-          showAlertInput(numOfQuestions, content);
+          showAlertInput(numOfQuestions, content, 1);
         } else {
-          hideAlertInput(numOfQuestions, content);
+          hideAlertInput(numOfQuestions, content, 1);
           updateBtn(1);
         }
       });
       numOfLevels.addEventListener("input", () => {
         const content = numOfLevels.nextElementSibling;
         if (numOfLevels.value < 2 || numOfLevels.value > 10) {
-          showAlertInput(numOfLevels, content);
+          showAlertInput(numOfLevels, content, 1);
         } else {
-          hideAlertInput(numOfLevels, content);
+          hideAlertInput(numOfLevels, content, 1);
           updateBtn(1);
         }
       });
@@ -1027,24 +1046,44 @@ function checkUserInput(screen) {
       break;
     case "questions":
       let question = {
-        title: document.querySelector(`#question-1 #question-title`),
-        color: document.querySelector(`#question-1 #question-color`),
+        title: document.querySelector(
+          `#question-${questionNumber} #question-title`
+        ),
+        color: document.querySelector(
+          `#question-${questionNumber} #question-color`
+        ),
       };
       let rightAnswer = {
-        text: document.querySelector(`#question-1 #right-answer-text`),
-        imageUrl: document.querySelector(`#question-1 #right-answer-image`),
+        text: document.querySelector(
+          `#question-${questionNumber} #right-answer-text`
+        ),
+        imageUrl: document.querySelector(
+          `#question-${questionNumber} #right-answer-image`
+        ),
       };
       let wrongAnswer_1 = {
-        text: document.querySelector(`#question-1 #wrong-answer-text-1`),
-        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-1`),
+        text: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-text-1`
+        ),
+        imageUrl: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-image-1`
+        ),
       };
       let wrongAnswer_2 = {
-        text: document.querySelector(`#question-1 #wrong-answer-text-2`),
-        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-2`),
+        text: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-text-2`
+        ),
+        imageUrl: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-image-2`
+        ),
       };
       let wrongAnswer_3 = {
-        text: document.querySelector(`#question-1 #wrong-answer-text-3`),
-        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-3`),
+        text: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-text-3`
+        ),
+        imageUrl: document.querySelector(
+          `#question-${questionNumber} #wrong-answer-image-3`
+        ),
       };
 
       question.title.addEventListener("focusout", () => {
@@ -1053,18 +1092,18 @@ function checkUserInput(screen) {
           question.title.value.length < 20 ||
           question.title.value.length > 60
         ) {
-          showAlertInput(question.title, content);
+          showAlertInput(question.title, content, 2, questionNumber);
         } else {
-          hideAlertInput(question.title, content);
+          hideAlertInput(question.title, content, 2, questionNumber);
           updateBtn(2);
         }
       });
       question.color.addEventListener("focusout", () => {
         const content = question.color.nextElementSibling;
         if (!isColor(question.color.value)) {
-          showAlertInput(question.color, content);
+          showAlertInput(question.color, content, 2, questionNumber);
         } else {
-          hideAlertInput(question.color, content);
+          hideAlertInput(question.color, content, 2, questionNumber);
           updateBtn(2);
         }
       });
@@ -1074,18 +1113,18 @@ function checkUserInput(screen) {
           rightAnswer.text.value.length < 20 ||
           rightAnswer.text.value.length > 60
         ) {
-          showAlertInput(rightAnswer.text, content);
+          showAlertInput(rightAnswer.text, content, 2, questionNumber);
         } else {
-          hideAlertInput(rightAnswer.text, content);
+          hideAlertInput(rightAnswer.text, content, 2, questionNumber);
           updateBtn(2);
         }
       });
       rightAnswer.imageUrl.addEventListener("focusout", () => {
         const content = rightAnswer.imageUrl.nextElementSibling;
         if (!validURL(rightAnswer.imageUrl.value)) {
-          showAlertInput(rightAnswer.imageUrl, content);
+          showAlertInput(rightAnswer.imageUrl, content, 2, questionNumber);
         } else {
-          hideAlertInput(rightAnswer.imageUrl, content);
+          hideAlertInput(rightAnswer.imageUrl, content, 2, questionNumber);
           updateBtn(2);
         }
       });
@@ -1095,18 +1134,18 @@ function checkUserInput(screen) {
           wrongAnswer_1.text.value.length < 20 ||
           wrongAnswer_1.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_1.text, content);
+          showAlertInput(wrongAnswer_1.text, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_1.text, content);
+          hideAlertInput(wrongAnswer_1.text, content, 2, questionNumber);
           updateBtn(2);
         }
       });
       wrongAnswer_1.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_1.imageUrl.nextElementSibling;
         if (!validURL(wrongAnswer_1.imageUrl.value)) {
-          showAlertInput(wrongAnswer_1.imageUrl, content);
+          showAlertInput(wrongAnswer_1.imageUrl, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_1.imageUrl, content);
+          hideAlertInput(wrongAnswer_1.imageUrl, content, 2, questionNumber);
           updateBtn(2);
         }
       });
@@ -1116,18 +1155,18 @@ function checkUserInput(screen) {
           wrongAnswer_2.text.value.length < 20 ||
           wrongAnswer_2.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_2.text, content);
+          showAlertInput(wrongAnswer_2.text, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_2.text, content);
+          hideAlertInput(wrongAnswer_2.text, content, 2, questionNumber);
           updateBtn(2);
         }
       });
       wrongAnswer_2.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_2.imageUrl.nextElementSibling;
         if (!validURL(wrongAnswer_2.imageUrl.value)) {
-          showAlertInput(wrongAnswer_2.imageUrl, content);
+          showAlertInput(wrongAnswer_2.imageUrl, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_2.imageUrl, content);
+          hideAlertInput(wrongAnswer_2.imageUrl, content, 2, questionNumber);
           updateBtn(2);
         }
       });
@@ -1137,18 +1176,18 @@ function checkUserInput(screen) {
           wrongAnswer_3.text.value.length < 20 ||
           wrongAnswer_3.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_3.text, content);
+          showAlertInput(wrongAnswer_3.text, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_3.text, content);
+          hideAlertInput(wrongAnswer_3.text, content, 2, questionNumber);
           updateBtn(2);
         }
       });
       wrongAnswer_3.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_3.imageUrl.nextElementSibling;
         if (!validURL(wrongAnswer_3.imageUrl.value)) {
-          showAlertInput(wrongAnswer_3.imageUrl, content);
+          showAlertInput(wrongAnswer_3.imageUrl, content, 2, questionNumber);
         } else {
-          hideAlertInput(wrongAnswer_3.imageUrl, content);
+          hideAlertInput(wrongAnswer_3.imageUrl, content, 2, questionNumber);
           updateBtn(2);
         }
       });
@@ -1209,7 +1248,11 @@ function checkUserInput(screen) {
       window.reload();
   }
 }
-function showAlertInput(element, alertText) {
+function showAlertInput(element, alertText, screen, questionNumber) {
+  if (screen === 2 && !createQuestionsInvalids.includes(element)) {
+    createQuestionsInvalids.push(element);
+    updateContainerHeight(+19, questionNumber);
+  }
   if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
     let index = createQuizzValids.indexOf(element);
     createQuizzValids.splice(index, 1);
@@ -1219,7 +1262,13 @@ function showAlertInput(element, alertText) {
   alertText.style.height = `19px`;
   alertText.style.overflow = "initial";
 }
-function hideAlertInput(element, alertText) {
+function hideAlertInput(element, alertText, screen, questionNumber) {
+  if (screen === 2 && createQuestionsInvalids.includes(element)) {
+    let index = createQuestionsInvalids.indexOf(element);
+    createQuestionsInvalids.splice(index, 1);
+
+    updateContainerHeight(-19, questionNumber);
+  }
   if (!createQuizzValids.includes(element)) {
     createQuizzValids.push(element);
   }
@@ -1231,14 +1280,46 @@ function hideAlertInput(element, alertText) {
 function updateBtn(screen) {
   let btn = document.querySelector(`#create-quizz-${screen} .quizz-btn`);
 
-  if (createQuizzValids.length === 4) {
-    btn.disabled = false;
-    btn.style.opacity = "1";
-    btnIsEnabled = true;
-  } else if (!btn.disabled) {
-    btn.disabled = true;
-    btn.style.opacity = "0.5";
-    btnIsEnabled = false;
+  switch (screen) {
+    case 1:
+      if (createQuizzValids.length === 4) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btnIsEnabled = true;
+      } else if (!btn.disabled) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btnIsEnabled = false;
+      }
+
+      break;
+    case 2:
+      if (createQuizzValids.length >= nQuestions * 6) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btnIsEnabled = true;
+      } else if (!btn.disabled) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btnIsEnabled = false;
+      }
+
+      break;
+    case 3:
+      if (createQuizzValids.length === 12) {
+        btn.disabled = false;
+        btn.style.opacity = "1";
+        btnIsEnabled = true;
+      } else if (!btn.disabled) {
+        btn.disabled = true;
+        btn.style.opacity = "0.5";
+        btnIsEnabled = false;
+      }
+
+      break;
+    default:
+      console.log("erro ao atuializar botao");
+      window.reload();
   }
 }
 function validURL(str) {
@@ -1332,7 +1413,7 @@ function toggleLoadingScreen(from, to) {
         toggleHidden(secondScreen);
       } else if (to >= 3) {
         toggleHidden(thirdScreen);
-        checkUserInput("quizz");
+        checkUserInput("quizz", null);
       }
     }, randomTimeOut());
   } else if (from === 2) {
@@ -1369,8 +1450,6 @@ function toggleLoadingScreen(from, to) {
         toggleHidden(loadingScreen);
         toggleHidden(thirdScreen);
         toggleHidden(secondSection);
-
-        checkUserInput("questions");
       }, randomTimeOut());
     } else if (from === 3.2) {
       const secondSection = document.getElementById("create-quizz-2");

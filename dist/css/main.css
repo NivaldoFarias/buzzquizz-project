@@ -343,7 +343,7 @@ main {
 
 #create-quizz-2 .input-container {
   position: relative;
-  gap: 14px;
+  gap: 7px;
   padding: 0 19px;
   height: 0;
   width: 100%;
@@ -381,7 +381,7 @@ main {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  gap: 14px;
+  gap: 7px;
   margin-bottom: 18px;
   height: auto;
   width: 100%;
