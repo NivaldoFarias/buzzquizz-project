@@ -20,8 +20,8 @@ let quizz = {};
 
 let teste = 0;
 
-let editingMode = false
-let ID_edit = 0
+let editingMode = false;
+let ID_edit = 0;
 
 console.log("Page loaded");
 getAllQuizzes();
@@ -159,10 +159,12 @@ function renderUserQuizzes() {
   });
 
   let trashBtns = [...document.querySelectorAll("#delete-btn")];
-  trashBtns.forEach(trashBtn => trashBtn.addEventListener("click",deleteQuizz))
+  trashBtns.forEach((trashBtn) =>
+    trashBtn.addEventListener("click", deleteQuizz)
+  );
 
   let editBtns = [...document.querySelectorAll("#edit-btn")];
-  editBtns.forEach(editBtn => editBtn.addEventListener("click",editQuizz))
+  editBtns.forEach((editBtn) => editBtn.addEventListener("click", editQuizz));
 }
 function getQuizz(ID) {
   const promise = axios.get(`${QUIZZ_API}/${ID}`);
@@ -181,7 +183,7 @@ function selectCreatedQuizz() {
   const promise = axios.get(`${QUIZZ_API}/${id}`);
   promise.then((response) => {
     quizz = response.data;
-    currentQuizz = quizz
+    currentQuizz = quizz;
     renderQuizz(response.data);
   });
   promise.catch((error) => {
@@ -189,31 +191,36 @@ function selectCreatedQuizz() {
   });
 }
 function deleteQuizz(event) {
-  event.stopPropagation()
-  let confirmation = confirm("Deseja mesmo apagar este Quizz?")
-  if (confirmation){
-    let key = myQuizzes.filter((quizz) => quizz.id == this.parentNode.parentNode.id)[0].key;
-    const promise = axios.delete(`${QUIZZ_API}/${this.parentNode.parentNode.id}`, {
-      headers: { "Secret-Key": key },
-    });
+  event.stopPropagation();
+  let confirmation = confirm("Deseja mesmo apagar este Quizz?");
+  if (confirmation) {
+    let key = myQuizzes.filter(
+      (quizz) => quizz.id == this.parentNode.parentNode.id
+    )[0].key;
+    const promise = axios.delete(
+      `${QUIZZ_API}/${this.parentNode.parentNode.id}`,
+      {
+        headers: { "Secret-Key": key },
+      }
+    );
     promise.then((response) => {
       console.log(response);
-      location.reload()
+      location.reload();
     });
     promise.catch((error) => {
       console.log(error.reponse.status);
     });
-  }    
+  }
 }
 function editQuizz(event) {
-  event.stopPropagation()
-  editingMode = true
-  console.log("edit quizz")
+  event.stopPropagation();
+  editingMode = true;
+  console.log("edit quizz");
   const promise = axios.get(`${QUIZZ_API}/${this.parentNode.parentNode.id}`);
   promise.then((response) => {
     quizz = response.data;
-    ID_edit = quizz.id
-    delete quizz.id
+    ID_edit = quizz.id;
+    delete quizz.id;
     console.log(quizz);
     openCreateQuizzWindow();
   });
@@ -276,6 +283,7 @@ function selectQuizz() {
 function renderQuizz(quizz) {
   window.scrollTo({
     top: 0,
+    behavior: "smooth",
   });
 
   numberOfQuestions = quizz.questions.length;
@@ -310,8 +318,11 @@ function renderQuizz(quizz) {
     location.reload();
   });
 
-  let restartQuizzBtn = document.querySelector(".quizz-btn");
+  let restartQuizzBtn = document.querySelector(
+    "#second-screen > button.quizz-btn"
+  );
   restartQuizzBtn.addEventListener("click", () => {
+    restartQuizzBtn.classList.add("clicked");
     setTimeout(function () {
       renderQuizz(currentQuizz);
       window.scrollTo({
@@ -416,14 +427,14 @@ function selectAnswer() {
           top: document.body.scrollHeight,
           behavior: "smooth",
         });
-      }, 2000);
+      }, 200);
     } else {
       setTimeout(() => {
         window.scrollBy({
           top: this.parentElement.parentElement.offsetHeight + 24,
           behavior: "smooth",
         });
-      }, 2000);
+      }, 200);
     }
   }
 }
@@ -462,12 +473,14 @@ function openCreateQuizzWindow() {
   <button class="quizz-btn" disabled>
     Prosseguir pra criar perguntas
   </button>`;
-  
-  if (editingMode){
-    document.querySelector("#create-quizz-1 #title").value=quizz.title;
-    document.querySelector("#create-quizz-1 #image").value=quizz.image;
-    document.querySelector("#create-quizz-1 #numOfQuestions").value=quizz.questions.length;
-    document.querySelector("#create-quizz-1 #numOfLevels").value=quizz.levels.length;
+
+  if (editingMode) {
+    document.querySelector("#create-quizz-1 #title").value = quizz.title;
+    document.querySelector("#create-quizz-1 #image").value = quizz.image;
+    document.querySelector("#create-quizz-1 #numOfQuestions").value =
+      quizz.questions.length;
+    document.querySelector("#create-quizz-1 #numOfLevels").value =
+      quizz.levels.length;
   }
 
   let quizzBtn = document.querySelector("#create-quizz-1 > button");
@@ -491,37 +504,37 @@ function openCreateQuestionsWindow() {
       "#create-quizz-1 #numOfLevels"
     ).value;
 
-  if (title.length < 20 || title.length > 65) {
-    alert("Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres");
-  } else if (!validURL(image)) {
-    alert("URL da Imagem: deve ter formato de URL e ser uma imagem");
-  } else if (numOfQuestions < 3) {
-    alert("Quantidade de perguntas: no mínimo 3 perguntas");
-  } else if (numOfLevels < 2) {
-    alert("Quantidade de níveis: no mínimo 2 níveis");
-  } else {
-    if(editingMode){
-      quizz.title= title;
-      quizz.image=image;
-      quizz.questions.length=numOfQuestions;
-      quizz.levels.length=numOfLevels;
+    if (title.length < 20 || title.length > 65) {
+      alert("Título do quizz: deve ter no mínimo 20 e no máximo 65 caracteres");
+    } else if (!validURL(image)) {
+      alert("URL da Imagem: deve ter formato de URL e ser uma imagem");
+    } else if (numOfQuestions < 3) {
+      alert("Quantidade de perguntas: no mínimo 3 perguntas");
+    } else if (numOfLevels < 2) {
+      alert("Quantidade de níveis: no mínimo 2 níveis");
     } else {
-      let questions = [];
-      questions.length = numOfQuestions;
-      let levels = [];
-      levels.length = numOfLevels;
+      if (editingMode) {
+        quizz.title = title;
+        quizz.image = image;
+        quizz.questions.length = numOfQuestions;
+        quizz.levels.length = numOfLevels;
+      } else {
+        let questions = [];
+        questions.length = numOfQuestions;
+        let levels = [];
+        levels.length = numOfLevels;
 
-      quizz = {
-        title: title,
-        image: image,
-        questions: questions,
-        levels: levels,
-      };
-    }  
-    createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`;
+        quizz = {
+          title: title,
+          image: image,
+          questions: questions,
+          levels: levels,
+        };
+      }
+      createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`;
 
-    for (let i = 0; i < numOfQuestions; i++) {
-      createQuizz2.innerHTML += `<article id="QUESTION-${i + 1}">
+      for (let i = 0; i < numOfQuestions; i++) {
+        createQuizz2.innerHTML += `<article id="QUESTION-${i + 1}">
       <div class="question-btn">
       <p>Pergunta ${i + 1}</p>
       <ion-icon name="create-outline"></ion-icon>
@@ -548,37 +561,52 @@ function openCreateQuestionsWindow() {
       <ion-icon name="chevron-up"></ion-icon>
       </div>
       </article>`;
-    }
+      }
 
-    
-    createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
-    
-    let createLevelsBtn = document.querySelector("#create-quizz-2 button");
-    createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
-    
-    setTimeout(() => {
-      if(editingMode){
-        for (let i = 0; i < numOfQuestions; i++){
-          if(quizz.questions[i]){
-            document.querySelector(`#QUESTION-${i + 1} #question-title`).value=quizz.questions[i].title;
-            document.querySelector(`#QUESTION-${i + 1} #question-color`).value=quizz.questions[i].color;
-            let rightAnswers = quizz.questions[i].answers.filter(answer => answer.isCorrectAnswer==true);
-            let wrongAnswers = quizz.questions[i].answers.filter(answer => answer.isCorrectAnswer==false);
-            document.querySelector(`#QUESTION-${i + 1} #right-answer-text`).value= rightAnswers[0].text;
-            document.querySelector(`#QUESTION-${i + 1} #right-answer-image`).value= rightAnswers[0].image;
-            for (let j = 0; j<wrongAnswers.length;j++){
-              document.querySelector(`#QUESTION-${i + 1} #wrong-answer-text-${j+1}`).value= wrongAnswers[j].text;
-              document.querySelector(`#QUESTION-${i + 1} #wrong-answer-image-${j+1}`).value= wrongAnswers[j].image;
+      createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
+
+      let createLevelsBtn = document.querySelector("#create-quizz-2 button");
+      createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
+
+      setTimeout(() => {
+        if (editingMode) {
+          for (let i = 0; i < numOfQuestions; i++) {
+            if (quizz.questions[i]) {
+              document.querySelector(
+                `#QUESTION-${i + 1} #question-title`
+              ).value = quizz.questions[i].title;
+              document.querySelector(
+                `#QUESTION-${i + 1} #question-color`
+              ).value = quizz.questions[i].color;
+              let rightAnswers = quizz.questions[i].answers.filter(
+                (answer) => answer.isCorrectAnswer == true
+              );
+              let wrongAnswers = quizz.questions[i].answers.filter(
+                (answer) => answer.isCorrectAnswer == false
+              );
+              document.querySelector(
+                `#QUESTION-${i + 1} #right-answer-text`
+              ).value = rightAnswers[0].text;
+              document.querySelector(
+                `#QUESTION-${i + 1} #right-answer-image`
+              ).value = rightAnswers[0].image;
+              for (let j = 0; j < wrongAnswers.length; j++) {
+                document.querySelector(
+                  `#QUESTION-${i + 1} #wrong-answer-text-${j + 1}`
+                ).value = wrongAnswers[j].text;
+                document.querySelector(
+                  `#QUESTION-${i + 1} #wrong-answer-image-${j + 1}`
+                ).value = wrongAnswers[j].image;
+              }
             }
           }
         }
-      }
-      toggleLoadingScreen(3.1, 3.2);
-      collapseElement();
-      console.log(quizz);
-    }, 400);
+        toggleLoadingScreen(3.1, 3.2);
+        collapseElement();
+        console.log(quizz);
+      }, 400);
+    }
   }
-}
 }
 function openCreateLevelsWindow() {
   if (createQuestionsValidation()) {
@@ -648,13 +676,17 @@ function openCreateLevelsWindow() {
 
     console.log(quizz);
     setTimeout(() => {
-      if(editingMode){
-        for (let i = 0; i < quizz.levels.length; i++){
-          if(quizz.levels[i]){
-            document.querySelector(`#LEVEL-${i + 1} #level-title`).value=quizz.levels[i].title;
-            document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value=quizz.levels[i].minValue;
-            document.querySelector(`#LEVEL-${i + 1} #level-image`).value=quizz.levels[i].image;
-            document.querySelector(`#LEVEL-${i + 1} #level-text`).value=quizz.levels[i].text;
+      if (editingMode) {
+        for (let i = 0; i < quizz.levels.length; i++) {
+          if (quizz.levels[i]) {
+            document.querySelector(`#LEVEL-${i + 1} #level-title`).value =
+              quizz.levels[i].title;
+            document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value =
+              quizz.levels[i].minValue;
+            document.querySelector(`#LEVEL-${i + 1} #level-image`).value =
+              quizz.levels[i].image;
+            document.querySelector(`#LEVEL-${i + 1} #level-text`).value =
+              quizz.levels[i].text;
           }
         }
       }
@@ -734,9 +766,9 @@ function finishQuizz() {
     }
 
     setTimeout(() => {
-      if(editingMode){
-        postQuizzEdited(quizz,ID_edit)
-      }else{
+      if (editingMode) {
+        postQuizzEdited(quizz, ID_edit);
+      } else {
         postQuizz(quizz);
       }
     }, 300);
@@ -778,13 +810,13 @@ function postQuizz(quizz) {
 
     setTimeout(() => {
       toggleLoadingScreen(3.3, 3.4);
-      quizz={}
+      quizz = {};
     }, 300);
   });
 }
-function postQuizzEdited(quizz,ID_edit) {
+function postQuizzEdited(quizz, ID_edit) {
   let key = myQuizzes.filter((quizz) => quizz.id == ID_edit)[0].key;
-  const promise = axios.put(`${QUIZZ_API}/${ID_edit}`,quizz,{
+  const promise = axios.put(`${QUIZZ_API}/${ID_edit}`, quizz, {
     headers: { "Secret-Key": key },
   });
   promise.then((response) => {
@@ -816,7 +848,7 @@ function postQuizzEdited(quizz,ID_edit) {
 
     setTimeout(() => {
       toggleLoadingScreen(3.3, 3.4);
-      quizz={}
+      quizz = {};
     }, 300);
   });
 }
