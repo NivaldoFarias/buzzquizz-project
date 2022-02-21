@@ -420,6 +420,17 @@ main {
   font-size: 50px;
   color: #fff;
 }
+.alert-text {
+  height: 0px;
+  width: 341px;
+
+  font-size: 16px;
+  font-weight: 300;
+  align-self: flex-start;
+  color: $default-red;
+
+  overflow: hidden;
+}
 .cover {
   object-fit: cover;
   height: inherit;
@@ -741,7 +752,7 @@ main {
   box-shadow: $default-red 4px 4px 0px 0px;
   background-color: rgb(255, 255, 255);
 }
-.quizz-btn:hover {
+.quizz-btn.clicked {
   left: 4px;
   top: 4px;
   box-shadow: rgb(255, 255, 255) 0px 0px 0px 0px;

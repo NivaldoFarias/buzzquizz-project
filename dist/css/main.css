@@ -581,6 +581,17 @@ main {
   color: #fff;
 }
 
+.alert-text {
+  height: 0px;
+  width: 341px;
+  font-size: 16px;
+  font-weight: 300;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  color: #ec362d;
+  overflow: hidden;
+}
+
 .cover {
   -o-object-fit: cover;
      object-fit: cover;
@@ -974,7 +985,7 @@ main {
   background-color: white;
 }
 
-.quizz-btn:hover {
+.quizz-btn.clicked {
   left: 4px;
   top: 4px;
   -webkit-box-shadow: white 0px 0px 0px 0px;
