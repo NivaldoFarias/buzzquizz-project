@@ -8,16 +8,8 @@ let apiQuizzes = [];
 let quizzImgExists = [];
 let quizzTitleExists = [];
 
-let createQuestionsInvalids = [];
-let nQuestions = null;
-let containerHeight_1 = 800;
-let containerHeight_2 = 800;
-let containerHeight_3 = 800;
-let containerHeight_4 = 800;
-let minimumAnswers = [];
 let createQuizzValids = [];
 let btnIsEnabled = false;
-let heightToAdd = 0;
 let numberOfQuestions = 0;
 let moves = 0;
 let hits = 0;
@@ -30,6 +22,8 @@ let teste = 0;
 
 let editingMode = false;
 let ID_edit = 0;
+
+let section = 0
 
 console.log("Page loaded");
 getAllQuizzes();
@@ -127,7 +121,7 @@ function printQuizz(quizzesArray, quizz, typeOfQuizz) {
       <div class="gradient"></div>
       <p>${quizz.title}</p>
     </article>`;
-  } else if (typeOfQuizz === "all" && !myQuizzesId.includes(quizz.id)) {
+  } else if (typeOfQuizz === "all") {
     quizzesArray.innerHTML += `
     <article id="${quizz.id}">
       <img 
@@ -293,7 +287,6 @@ function renderQuizz(quizz) {
   let restartQuizzBtn = document.querySelector(
     "#second-screen > button.quizz-btn"
   );
-  restartQuizzBtn.style.opacity = "1";
   restartQuizzBtn.addEventListener("click", () => {
     restartQuizzBtn.classList.add("clicked");
     setTimeout(function () {
@@ -432,13 +425,13 @@ function openCreateQuizzWindow() {
     <div class="alert-text">O valor informado não é uma URL válida</div>
     <input
       id="numOfQuestions"
-      type="text"
+      type="number"
       placeholder="Quantidade de perguntas do quizz"
     />
     <div class="alert-text">O quizz deve ter no mínimo 3 perguntas</div>
     <input
       id="numOfLevels"
-      type="text"
+      type="number"
       placeholder="Quantidade de níveis do quizz"
     />
     <div class="alert-text">O quizz deve ter no mínimo 2 níveis</div>
@@ -465,10 +458,8 @@ function openCreateQuizzWindow() {
   toggleLoadingScreen(1, 3);
 }
 function openCreateQuestionsWindow() {
+  section =2
   if (btnIsEnabled) {
-    btnIsEnabled = false;
-    createQuizzValids = [];
-
     let createQuizz2 = document.getElementById("create-quizz-2");
 
     let title = document.querySelector("#create-quizz-1 #title").value;
@@ -500,7 +491,6 @@ function openCreateQuestionsWindow() {
     }
     createQuizz2.innerHTML = `<p>Crie suas perguntas</p>`;
 
-    nQuestions = numOfQuestions;
     for (let i = 0; i < numOfQuestions; i++) {
       createQuizz2.innerHTML += `
       <article id="question-${i + 1}">
@@ -526,14 +516,12 @@ function openCreateQuestionsWindow() {
             id="right-answer-text" 
             type="text" 
             placeholder="Resposta correta"
-            required
           />
           <div class="alert-text">O texto deve conter entre 5 e 60 caracteres</div>
           <input 
             id="right-answer-image"
             type="url" 
             placeholder="URL da imagem" 
-            required
           />
           <div class="alert-text">O valor informado não é uma URL válida</div>
           <p>Respostas incorretas</p>
@@ -542,14 +530,12 @@ function openCreateQuestionsWindow() {
               id="wrong-answer-text-1" 
               type="text" 
               placeholder="Resposta incorreta 1" 
-              required
             />
             <div class="alert-text">O texto deve conter entre 5 e 60 caracteres</div>
             <input 
               id="wrong-answer-image-1" 
               type="text" 
               placeholder="URL da imagem 1" 
-              required
             />
             <div class="alert-text">O valor informado não é uma URL válida</div>
           </div>
@@ -588,12 +574,8 @@ function openCreateQuestionsWindow() {
 
     createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
 
-    let quizzBtn = document.querySelector("#create-quizz-2 button");
-    quizzBtn.disabled = true;
-    quizzBtn.addEventListener("click", () => {
-      quizzBtn.classList.add("clicked");
-      openCreateLevelsWindow();
-    });
+    let createLevelsBtn = document.querySelector("#create-quizz-2 button");
+    createLevelsBtn.addEventListener("click", openCreateLevelsWindow);
 
     setTimeout(() => {
       if (editingMode) {
@@ -628,13 +610,13 @@ function openCreateQuestionsWindow() {
       }
       toggleLoadingScreen(3.1, 3.2);
       collapseElement();
+      console.log(quizz);
     }, 400);
   }
 }
 function openCreateLevelsWindow() {
-  if (btnIsEnabled) {
-    btnIsEnabled = false;
-
+  section = 3
+  if (createQuestionsValidation()) {
     for (let i = 0; i < quizz.questions.length; i++) {
       let answers = [];
       let rightAnswer = {
@@ -697,11 +679,9 @@ function openCreateLevelsWindow() {
     createQuizz3.innerHTML += `<button class="quizz-btn">Finalizar Quizz</button>`;
 
     let finishBtn = document.querySelector("#create-quizz-3 button");
-    finishBtn.addEventListener("click", () => {
-      finishBtn.classList.add("clicked");
-      finishQuizz();
-    });
+    finishBtn.addEventListener("click", finishQuizz);
 
+    console.log(quizz);
     setTimeout(() => {
       if (editingMode) {
         for (let i = 0; i < quizz.levels.length; i++) {
@@ -723,10 +703,10 @@ function openCreateLevelsWindow() {
   }
 }
 function collapseElement() {
-  toggleCollapsibleElement("create-quizz-2");
-  toggleCollapsibleElement("create-quizz-3");
+  toggleCollapsibleElement("create-quizz-3", 430);
+  toggleCollapsibleElement("create-quizz-2", 800);
 }
-function toggleCollapsibleElement(elementID) {
+function toggleCollapsibleElement(elementID, elementHeight) {
   const collapseButtons = Array.from(
     document.querySelectorAll(`#${elementID} .question-btn`)
   );
@@ -734,57 +714,19 @@ function toggleCollapsibleElement(elementID) {
     document.querySelectorAll(".input-container ion-icon")
   );
 
-  collapseButtons.forEach((btn, index) => {
-    checkUserInput("questions", index + 1);
+  collapseButtons.forEach((btn) => {
     btn.addEventListener("click", function () {
-      if (index === 0) {
-        this.classList.toggle("active");
-        const content = this.nextElementSibling;
-        if (content.style.height) {
-          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = null;
-          content.style.overflow = "hidden";
-        } else {
-          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_1}px`;
-          content.style.overflow = "initial";
-        }
-      } else if (index === 1) {
-        this.classList.toggle("active");
-        const content = this.nextElementSibling;
-        if (content.style.height) {
-          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = null;
-          content.style.overflow = "hidden";
-        } else {
-          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_2}px`;
-          content.style.overflow = "initial";
-        }
-      } else if (index === 2) {
-        this.classList.toggle("active");
-        const content = this.nextElementSibling;
-        if (content.style.height) {
-          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = null;
-          content.style.overflow = "hidden";
-        } else {
-          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_3}px`;
-          content.style.overflow = "initial";
-        }
+      console.log("eventlistener");
+      this.classList.toggle("active");
+      const content = this.nextElementSibling;
+      if (content.style.height) {
+        this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = null;
+        content.style.overflow = "hidden";
       } else {
-        this.classList.toggle("active");
-        const content = this.nextElementSibling;
-        if (content.style.height) {
-          this.style.boxShadow = "0px 0px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = null;
-          content.style.overflow = "hidden";
-        } else {
-          this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_4}px`;
-          content.style.overflow = "initial";
-        }
+        this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
+        content.style.height = `${elementHeight}px`;
+        content.style.overflow = "initial";
       }
     });
   });
@@ -807,34 +749,6 @@ function toggleCollapsibleElement(elementID) {
     });
   });
 }
-function updateContainerHeight(value, questionNumber) {
-  if (questionNumber === 1) {
-    let container = document.querySelector(
-      `#question-${questionNumber} .input-container`
-    );
-    container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_1 = parseInt(container.style.height);
-  } else if (questionNumber === 2) {
-    let container = document.querySelector(
-      `#question-${questionNumber} .input-container`
-    );
-    container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_2 = parseInt(container.style.height);
-  } else if (questionNumber === 3) {
-    let container = document.querySelector(
-      `#question-${questionNumber} .input-container`
-    );
-    container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_3 = parseInt(container.style.height);
-  } else {
-    let container = document.querySelector(
-      `#question-${questionNumber} .input-container`
-    );
-    container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_4 = parseInt(container.style.height);
-  }
-}
-
 function finishQuizz() {
   if (createLevelsValidation()) {
     for (let i = 0; i < quizz.levels.length; i++) {
@@ -947,50 +861,49 @@ function postQuizzEdited(quizz, ID_edit) {
 }
 
 /* Validation Functions */
-/* function createQuestionsValidation() {
+function createQuestionsValidation() {
   // body
-  
+  teste = parseInt(prompt("teste"));
+  if (teste) {
+    return true;
+  }
   for (let i = 0; i < quizz.questions.length; i++) {
     if (
       document.querySelector(`#question-${i + 1} #question-title`).value
         .length < 20
     ) {
-      alert(`Texto da pergunta ${i + 1}: no mínimo 20 caracteres`);
+      
       return false;
     } else if (
       !isColor(
         document.querySelector(`#question-${i + 1} #question-color`).value
       )
     ) {
-      alert(
-        `Cor da pergunta ${
-          i + 1
-        }: deve ser uma cor em hexadecimal (começar em "#", seguida de 6 caracteres hexadecimais, ou seja, números ou letras de A a F)`
-      );
+      
       return false;
     } else if (
       !document.querySelector(`#question-${i + 1} #right-answer-text`).value
     ) {
-      alert("Texto as resposta correta: não pode estar vazio");
+      
       return false;
     } else if (
       !validURL(
         document.querySelector(`#question-${i + 1} #right-answer-image`).value
       )
     ) {
-      alert("URL da imagem de resposta correta: deve ter formato de URL");
+      
       return false;
     } else if (
       !document.querySelector(`#question-${i + 1} #wrong-answer-text-1`).value
     ) {
-      alert("Texto da resposta incorreta 1: não pode estar vazio");
+      
       return false;
     } else if (
       !validURL(
         document.querySelector(`#question-${i + 1} #wrong-answer-image-1`).value
       )
     ) {
-      alert("URL das imagem de resposta incorreta 1: deve ter formato de URL");
+      
       return false;
     } else if (
       document.querySelector(`#question-${i + 1} #wrong-answer-text-2`).value &&
@@ -998,7 +911,7 @@ function postQuizzEdited(quizz, ID_edit) {
         document.querySelector(`#question-${i + 1} #wrong-answer-image-2`).value
       )
     ) {
-      alert("URL das imagem de resposta incorreta 2: deve ter formato de URL");
+      
       return false;
     } else if (
       document.querySelector(`#question-${i + 1} #wrong-answer-text-3`).value &&
@@ -1006,12 +919,12 @@ function postQuizzEdited(quizz, ID_edit) {
         document.querySelector(`#question-${i + 1} #wrong-answer-image-3`).value
       )
     ) {
-      alert("URL das imagem de resposta incorreta 3: deve ter formato de URL");
+      
       return false;
     }
   }
   return true;
-} */
+}
 function createLevelsValidation() {
   teste = parseInt(prompt("teste"));
   if (teste) {
@@ -1021,12 +934,12 @@ function createLevelsValidation() {
     if (
       document.querySelector(`#LEVEL-${i + 1} #level-title`).value.length < 10
     ) {
-      alert(`Título do nível ${i + 1}: mínimo de 10 caracteres`);
+      
       return false;
     } else if (
       !isNumber(document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value)
     ) {
-      alert(`% de acerto mínima do nivel ${i + 1}: deve ser um numero inteiro`);
+      
       return false;
     } else if (
       Number(document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value) <
@@ -1034,17 +947,17 @@ function createLevelsValidation() {
       Number(document.querySelector(`#LEVEL-${i + 1} #level-minValue`).value) >
         100
     ) {
-      alert(`% de acerto mínima do nivel ${i + 1}: um número entre 0 e 100`);
+      
       return false;
     } else if (
       !validURL(document.querySelector(`#LEVEL-${i + 1} #level-image`).value)
     ) {
-      alert(`URL da imagem do nível ${i + 1}: deve ter formato de URL`);
+      
       return false;
     } else if (
       document.querySelector(`#LEVEL-${i + 1} #level-text`).value.length < 30
     ) {
-      alert(`Descrição do nível ${i + 1}: mínimo de 30 caracteres`);
+      
       return false;
     }
   }
@@ -1060,7 +973,7 @@ function createLevelsValidation() {
   }
   return true;
 }
-function checkUserInput(screen, questionNumber) {
+function checkUserInput(screen) {
   switch (screen) {
     case "quizz":
       let title = document.querySelector("#create-quizz-1 #title");
@@ -1072,295 +985,172 @@ function checkUserInput(screen, questionNumber) {
 
       title.addEventListener("focusout", () => {
         const content = title.nextElementSibling;
-        if (
-          (title.value.length < 20 || title.value.length > 60) &&
-          title.value.length !== 0
-        ) {
-          showAlertInput(title, content, 1);
-        } else if (title.value.length === 0) {
-          removeValidInputs(title);
+        if (title.value.length < 5 || title.value.length > 60) {
+          showAlertInput(title, content);
         } else {
-          hideAlertInput(title, content, 1);
+          hideAlertInput(title, content);
+          updateBtn(1);
         }
-        updateBtn(1);
       });
       image.addEventListener("input", () => {
         const content = image.nextElementSibling;
-        if (!validURL(image.value) && image.value.length !== 0) {
-          showAlertInput(image, content, 1);
-        } else if (image.value.length === 0) {
-          removeValidInputs(image);
+        if (!validURL(image.value)) {
+          showAlertInput(image, content);
         } else {
-          hideAlertInput(image, content, 1);
+          hideAlertInput(image, content);
+          updateBtn(1);
         }
-        updateBtn(1);
       });
       numOfQuestions.addEventListener("input", () => {
         const content = numOfQuestions.nextElementSibling;
         if (
-          (!isNumber(numOfQuestions.value) ||
-            numOfQuestions.value < 3 ||
-            numOfQuestions.value > 4) &&
-          numOfQuestions.value !== 0
+          !isNumber(numOfQuestions.value) ||
+          numOfQuestions.value < 3 ||
+          numOfQuestions.value > 4
         ) {
-          showAlertInput(numOfQuestions, content, 1);
-        } else if (numOfQuestions.value === 0) {
-          removeValidInputs(numOfQuestions);
+          showAlertInput(numOfQuestions, content);
         } else {
-          hideAlertInput(numOfQuestions, content, 1);
+          hideAlertInput(numOfQuestions, content);
+          updateBtn(1);
         }
-        updateBtn(1);
       });
       numOfLevels.addEventListener("input", () => {
         const content = numOfLevels.nextElementSibling;
-        if (
-          (numOfLevels.value < 2 || numOfLevels.value > 10) &&
-          numOfLevels.value !== 0
-        ) {
-          showAlertInput(numOfLevels, content, 1);
-        } else if (numOfLevels.value === 0) {
-          removeValidInputs(numOfLevels);
+        if (numOfLevels.value < 2 || numOfLevels.value > 10) {
+          showAlertInput(numOfLevels, content);
         } else {
-          hideAlertInput(numOfLevels, content, 1);
+          hideAlertInput(numOfLevels, content);
+          updateBtn(1);
         }
-        updateBtn(1);
       });
 
       break;
     case "questions":
       let question = {
-        title: document.querySelector(
-          `#question-${questionNumber} #question-title`
-        ),
-        color: document.querySelector(
-          `#question-${questionNumber} #question-color`
-        ),
+        title: document.querySelector(`#question-1 #question-title`),
+        color: document.querySelector(`#question-1 #question-color`),
       };
       let rightAnswer = {
-        text: document.querySelector(
-          `#question-${questionNumber} #right-answer-text`
-        ),
-        imageUrl: document.querySelector(
-          `#question-${questionNumber} #right-answer-image`
-        ),
+        text: document.querySelector(`#question-1 #right-answer-text`),
+        imageUrl: document.querySelector(`#question-1 #right-answer-image`),
       };
       let wrongAnswer_1 = {
-        text: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-text-1`
-        ),
-        imageUrl: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-image-1`
-        ),
+        text: document.querySelector(`#question-1 #wrong-answer-text-1`),
+        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-1`),
       };
       let wrongAnswer_2 = {
-        text: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-text-2`
-        ),
-        imageUrl: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-image-2`
-        ),
+        text: document.querySelector(`#question-1 #wrong-answer-text-2`),
+        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-2`),
       };
       let wrongAnswer_3 = {
-        text: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-text-3`
-        ),
-        imageUrl: document.querySelector(
-          `#question-${questionNumber} #wrong-answer-image-3`
-        ),
+        text: document.querySelector(`#question-1 #wrong-answer-text-3`),
+        imageUrl: document.querySelector(`#question-1 #wrong-answer-image-3`),
       };
 
       question.title.addEventListener("focusout", () => {
         const content = question.title.nextElementSibling;
         if (
-          (question.title.value.length < 20 ||
-            question.title.value.length > 60) &&
-          question.title.value.length !== 0
+          question.title.value.length < 20 ||
+          question.title.value.length > 60
         ) {
-          showAlertInput(question.title, content, 2, questionNumber);
-        } else if (question.title.value.length === 0) {
-          removeValidInputs(question.title);
+          showAlertInput(question.title, content);
         } else {
-          hideAlertInput(question.title, content, 2, questionNumber);
+          hideAlertInput(question.title, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       question.color.addEventListener("focusout", () => {
         const content = question.color.nextElementSibling;
-        if (
-          !isColor(question.color.value) &&
-          question.color.value.length !== 0
-        ) {
-          showAlertInput(question.color, content, 2, questionNumber);
-        } else if (question.color.value.length === 0) {
-          removeValidInputs(question.color);
+        if (!isColor(question.color.value)) {
+          showAlertInput(question.color, content);
         } else {
-          hideAlertInput(question.color, content, 2, questionNumber);
+          hideAlertInput(question.color, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       rightAnswer.text.addEventListener("focusout", () => {
         const content = rightAnswer.text.nextElementSibling;
         if (
-          (rightAnswer.text.value.length < 5 ||
-            rightAnswer.text.value.length > 60) &&
-          rightAnswer.text.value.length !== 0
+          rightAnswer.text.value.length < 20 ||
+          rightAnswer.text.value.length > 60
         ) {
-          showAlertInput(rightAnswer.text, content, 2, questionNumber, true);
-        } else if (rightAnswer.text.value.length === 0) {
-          removeValidInputs(rightAnswer.text);
+          showAlertInput(rightAnswer.text, content);
         } else {
-          hideAlertInput(rightAnswer.text, content, 2, questionNumber, true);
+          hideAlertInput(rightAnswer.text, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       rightAnswer.imageUrl.addEventListener("focusout", () => {
         const content = rightAnswer.imageUrl.nextElementSibling;
-        if (
-          !validURL(rightAnswer.imageUrl.value) &&
-          rightAnswer.imageUrl.value.length !== 0
-        ) {
-          showAlertInput(
-            rightAnswer.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
-        } else if (rightAnswer.imageUrl.value.length === 0) {
-          removeValidInputs(rightAnswer.imageUrl);
+        if (!validURL(rightAnswer.imageUrl.value)) {
+          showAlertInput(rightAnswer.imageUrl, content);
         } else {
-          hideAlertInput(
-            rightAnswer.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
+          hideAlertInput(rightAnswer.imageUrl, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_1.text.addEventListener("focusout", () => {
         const content = wrongAnswer_1.text.nextElementSibling;
         if (
-          (wrongAnswer_1.text.value.length < 5 ||
-            wrongAnswer_1.text.value.length > 60) &&
-          wrongAnswer_1.text.value.length !== 0
+          wrongAnswer_1.text.value.length < 20 ||
+          wrongAnswer_1.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_1.text, content, 2, questionNumber, true);
-        } else if (wrongAnswer_1.text.value.length === 0) {
-          removeValidInputs(wrongAnswer_1.text);
+          showAlertInput(wrongAnswer_1.text, content);
         } else {
-          hideAlertInput(wrongAnswer_1.text, content, 2, questionNumber, true);
+          hideAlertInput(wrongAnswer_1.text, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_1.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_1.imageUrl.nextElementSibling;
-        if (
-          !validURL(wrongAnswer_1.imageUrl.value) &&
-          wrongAnswer_1.imageUrl.value.length !== 0
-        ) {
-          showAlertInput(
-            wrongAnswer_1.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
-        } else if (wrongAnswer_1.imageUrl.value.length === 0) {
-          removeValidInputs(wrongAnswer_1.imageUrl);
+        if (!validURL(wrongAnswer_1.imageUrl.value)) {
+          showAlertInput(wrongAnswer_1.imageUrl, content);
         } else {
-          hideAlertInput(
-            wrongAnswer_1.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
+          hideAlertInput(wrongAnswer_1.imageUrl, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_2.text.addEventListener("focusout", () => {
         const content = wrongAnswer_2.text.nextElementSibling;
         if (
-          (wrongAnswer_2.text.value.length < 5 ||
-            wrongAnswer_2.text.value.length > 60) &&
-          wrongAnswer_2.text.value.length !== 0
+          wrongAnswer_2.text.value.length < 20 ||
+          wrongAnswer_2.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_2.text, content, 2, questionNumber, true);
-        } else if (wrongAnswer_2.text.value.length === 0) {
-          removeValidInputs(wrongAnswer_2.text);
+          showAlertInput(wrongAnswer_2.text, content);
         } else {
-          hideAlertInput(wrongAnswer_2.text, content, 2, questionNumber, true);
+          hideAlertInput(wrongAnswer_2.text, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_2.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_2.imageUrl.nextElementSibling;
-        if (
-          !validURL(wrongAnswer_2.imageUrl.value) &&
-          wrongAnswer_2.imageUrl.value.length !== 0
-        ) {
-          showAlertInput(
-            wrongAnswer_2.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
-        } else if (wrongAnswer_2.imageUrl.value.length === 0) {
-          removeValidInputs(wrongAnswer_2.imageUrl);
+        if (!validURL(wrongAnswer_2.imageUrl.value)) {
+          showAlertInput(wrongAnswer_2.imageUrl, content);
         } else {
-          hideAlertInput(
-            wrongAnswer_2.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
+          hideAlertInput(wrongAnswer_2.imageUrl, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_3.text.addEventListener("focusout", () => {
         const content = wrongAnswer_3.text.nextElementSibling;
         if (
-          (wrongAnswer_3.text.value.length < 5 ||
-            wrongAnswer_3.text.value.length > 60) &&
-          wrongAnswer_3.text.value.length !== 0
+          wrongAnswer_3.text.value.length < 20 ||
+          wrongAnswer_3.text.value.length > 60
         ) {
-          showAlertInput(wrongAnswer_3.text, content, 2, questionNumber, true);
-        } else if (wrongAnswer_3.text.value.length === 0) {
-          removeValidInputs(wrongAnswer_3.text);
+          showAlertInput(wrongAnswer_3.text, content);
         } else {
-          hideAlertInput(wrongAnswer_3.text, content, 2, questionNumber, true);
+          hideAlertInput(wrongAnswer_3.text, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
       wrongAnswer_3.imageUrl.addEventListener("focusout", () => {
         const content = wrongAnswer_3.imageUrl.nextElementSibling;
-        if (
-          !validURL(wrongAnswer_3.imageUrl.value) &&
-          wrongAnswer_3.imageUrl.value.length !== 0
-        ) {
-          showAlertInput(
-            wrongAnswer_3.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
-        } else if (wrongAnswer_3.imageUrl.value.length === 0) {
-          removeValidInputs(wrongAnswer_3.imageUrl);
+        if (!validURL(wrongAnswer_3.imageUrl.value)) {
+          showAlertInput(wrongAnswer_3.imageUrl, content);
         } else {
-          hideAlertInput(
-            wrongAnswer_3.imageUrl,
-            content,
-            2,
-            questionNumber,
-            true
-          );
+          hideAlertInput(wrongAnswer_3.imageUrl, content);
+          updateBtn(2);
         }
-        updateBtn(2);
       });
 
       break;
@@ -1419,40 +1209,24 @@ function checkUserInput(screen, questionNumber) {
       window.reload();
   }
 }
-function showAlertInput(element, alertText, screen, questionNumber) {
-  if (screen === 2 && !createQuestionsInvalids.includes(element)) {
-    createQuestionsInvalids.push(element);
-    updateContainerHeight(+19, questionNumber);
+function showAlertInput(element, alertText) {
+  if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
+    let index = createQuizzValids.indexOf(element);
+    createQuizzValids.splice(index, 1);
   }
-  removeValidInputs(element);
 
   element.style.backgroundColor = "rgba(255, 233, 233, 1)";
   alertText.style.height = `19px`;
   alertText.style.overflow = "initial";
 }
-function hideAlertInput(element, alertText, screen, questionNumber) {
-  if (screen === 2 && createQuestionsInvalids.includes(element)) {
-    let index = createQuestionsInvalids.indexOf(element);
-    createQuestionsInvalids.splice(index, 1);
-
-    updateContainerHeight(-19, questionNumber);
+function hideAlertInput(element, alertText) {
+  if (!createQuizzValids.includes(element)) {
+    createQuizzValids.push(element);
   }
-  addValidInputs(element);
 
   element.style.backgroundColor = "initial";
   alertText.style.height = null;
   alertText.style.overflow = "hidden";
-}
-function addValidInputs(element) {
-  if (!createQuizzValids.includes(element)) {
-    createQuizzValids.push(element);
-  }
-}
-function removeValidInputs(element) {
-  if (createQuizzValids.length > 0 && createQuizzValids.includes(element)) {
-    let index = createQuizzValids.indexOf(element);
-    createQuizzValids.splice(index, 1);
-  }
 }
 function updateBtn(screen) {
   let btn = document.querySelector(`#create-quizz-${screen} .quizz-btn`);
@@ -1483,15 +1257,36 @@ function updateBtn(screen) {
 
       break;
     case 3:
-      if (createQuizzValids.length === 12) {
-        btn.disabled = false;
+      if (section ==2){
+        if(createQuestionsValidation()){
+          btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
-      } else if (!btn.disabled) {
-        btn.disabled = true;
+        } else {
+          btn.disabled = true;
         btn.style.opacity = "0.5";
         btnIsEnabled = false;
       }
+    } else if (section ==3){
+      if(createLevelsValidation()){
+        btn.disabled = false;
+      btn.style.opacity = "1";
+      btnIsEnabled = true;
+      } else {
+        btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btnIsEnabled = false;
+      }
+    }
+      // if (createQuizzValids.length === 12) {
+      //   btn.disabled = false;
+      //   btn.style.opacity = "1";
+      //   btnIsEnabled = true;
+      // } else if (!btn.disabled) {
+      //   btn.disabled = true;
+      //   btn.style.opacity = "0.5";
+      //   btnIsEnabled = false;
+      // }
 
       break;
     default:
@@ -1590,7 +1385,7 @@ function toggleLoadingScreen(from, to) {
         toggleHidden(secondScreen);
       } else if (to >= 3) {
         toggleHidden(thirdScreen);
-        checkUserInput("quizz", null);
+        checkUserInput("quizz");
       }
     }, randomTimeOut());
   } else if (from === 2) {
@@ -1627,6 +1422,8 @@ function toggleLoadingScreen(from, to) {
         toggleHidden(loadingScreen);
         toggleHidden(thirdScreen);
         toggleHidden(secondSection);
+
+        checkUserInput("questions");
       }, randomTimeOut());
     } else if (from === 3.2) {
       const secondSection = document.getElementById("create-quizz-2");
