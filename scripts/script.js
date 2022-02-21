@@ -461,6 +461,7 @@ function openCreateQuizzWindow() {
 }
 function openCreateQuestionsWindow() {
   if (btnIsEnabled) {
+    btnIsEnabled = false;
     createQuizzValids = [];
 
     let createQuizz2 = document.getElementById("create-quizz-2");
@@ -579,9 +580,10 @@ function openCreateQuestionsWindow() {
     createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
 
     let quizzBtn = document.querySelector("#create-quizz-2 button");
+    quizzBtn.disabled = true;
     quizzBtn.addEventListener("click", () => {
       quizzBtn.classList.add("clicked");
-      openCreateLevelssWindow();
+      openCreateLevelsWindow();
     });
 
     setTimeout(() => {
@@ -622,6 +624,8 @@ function openCreateQuestionsWindow() {
 }
 function openCreateLevelsWindow() {
   if (btnIsEnabled) {
+    btnIsEnabled = false;
+
     for (let i = 0; i < quizz.questions.length; i++) {
       let answers = [];
       let rightAnswer = {
@@ -876,12 +880,9 @@ function postQuizzEdited(quizz, ID_edit) {
 }
 
 /* Validation Functions */
-function createQuestionsValidation() {
+/* function createQuestionsValidation() {
   // body
-  teste = parseInt(prompt("teste"));
-  if (teste) {
-    return true;
-  }
+  
   for (let i = 0; i < quizz.questions.length; i++) {
     if (
       document.querySelector(`#question-${i + 1} #question-title`).value
@@ -943,7 +944,7 @@ function createQuestionsValidation() {
     }
   }
   return true;
-}
+} */
 function createLevelsValidation() {
   teste = parseInt(prompt("teste"));
   if (teste) {
@@ -1008,8 +1009,8 @@ function checkUserInput(screen, questionNumber) {
           showAlertInput(title, content, 1);
         } else {
           hideAlertInput(title, content, 1);
-          updateBtn(1);
         }
+        updateBtn(1);
       });
       image.addEventListener("input", () => {
         const content = image.nextElementSibling;
@@ -1017,8 +1018,8 @@ function checkUserInput(screen, questionNumber) {
           showAlertInput(image, content, 1);
         } else {
           hideAlertInput(image, content, 1);
-          updateBtn(1);
         }
+        updateBtn(1);
       });
       numOfQuestions.addEventListener("input", () => {
         const content = numOfQuestions.nextElementSibling;
@@ -1030,8 +1031,8 @@ function checkUserInput(screen, questionNumber) {
           showAlertInput(numOfQuestions, content, 1);
         } else {
           hideAlertInput(numOfQuestions, content, 1);
-          updateBtn(1);
         }
+        updateBtn(1);
       });
       numOfLevels.addEventListener("input", () => {
         const content = numOfLevels.nextElementSibling;
@@ -1039,8 +1040,8 @@ function checkUserInput(screen, questionNumber) {
           showAlertInput(numOfLevels, content, 1);
         } else {
           hideAlertInput(numOfLevels, content, 1);
-          updateBtn(1);
         }
+        updateBtn(1);
       });
 
       break;
@@ -1280,6 +1281,7 @@ function hideAlertInput(element, alertText, screen, questionNumber) {
 function updateBtn(screen) {
   let btn = document.querySelector(`#create-quizz-${screen} .quizz-btn`);
 
+  console.log("passou", createQuizzValids.length);
   switch (screen) {
     case 1:
       if (createQuizzValids.length === 4) {
