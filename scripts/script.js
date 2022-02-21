@@ -123,7 +123,7 @@ function printQuizz(quizzesArray, quizz, typeOfQuizz) {
       <div class="gradient"></div>
       <p>${quizz.title}</p>
     </article>`;
-  } else if (typeOfQuizz === "all") {
+  } else if (typeOfQuizz === "all" && !myQuizzesId.includes(quizz.id)) {
     quizzesArray.innerHTML += `
     <article id="${quizz.id}">
       <img 
