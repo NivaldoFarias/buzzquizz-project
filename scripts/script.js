@@ -179,7 +179,8 @@ function selectCreatedQuizz() {
     console.log(error.reponse.status);
   });
 }
-function deleteQuizz() {
+function deleteQuizz(event) {
+  event.stopPropagation()
   let confirmation = confirm("Deseja mesmo apagar este Quizz?")
   let key = myQuizzes.filter((quizz) => quizz.id == this.parentNode.parentNode.id)[0].key;
   const promise = axios.delete(`${QUIZZ_API}/${this.parentNode.parentNode.id}`, {
