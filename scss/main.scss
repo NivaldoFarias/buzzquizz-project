@@ -77,6 +77,8 @@ main {
     width: $default-box-width;
     border-radius: $default-border-radius;
   }
+  .gradient:hover {
+  }
 }
 #first-screen .user-quizzes {
   @include flex-column();

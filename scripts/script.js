@@ -10,10 +10,8 @@ let quizzTitleExists = [];
 
 let createQuestionsInvalids = [];
 let nQuestions = null;
-let containerHeight_1 = 800;
-let containerHeight_2 = 800;
-let containerHeight_3 = 800;
-let containerHeight_4 = 800;
+let questionsContainerHeight = [800, 800, 800, 800];
+let levelsContainerHeight = [440, 440, 440, 440];
 let minimumAnswers = [];
 let createQuizzValids = [];
 let btnIsEnabled = false;
@@ -443,7 +441,7 @@ function openCreateQuizzWindow() {
     />
     <div class="alert-text">O quizz deve ter no mínimo 2 níveis</div>
   </div>
-  <button class="quizz-btn" disabled>
+  <button class="quizz-btn disabled" disabled>
     Prosseguir pra criar perguntas
   </button>`;
 
@@ -586,7 +584,7 @@ function openCreateQuestionsWindow() {
       </article>`;
     }
 
-    createQuizz2.innerHTML += `<button class="quizz-btn">Prosseguir pra criar níveis</button>`;
+    createQuizz2.innerHTML += `<button class="quizz-btn disabled">Prosseguir pra criar níveis</button>`;
 
     let quizzBtn = document.querySelector("#create-quizz-2 button");
     quizzBtn.disabled = true;
@@ -694,7 +692,7 @@ function openCreateLevelsWindow() {
       </article>`;
     }
 
-    createQuizz3.innerHTML += `<button class="quizz-btn">Finalizar Quizz</button>`;
+    createQuizz3.innerHTML += `<button class="quizz-btn disabled">Finalizar Quizz</button>`;
 
     let finishBtn = document.querySelector("#create-quizz-3 button");
     finishBtn.addEventListener("click", () => {
@@ -746,7 +744,7 @@ function toggleCollapsibleElement(elementID) {
           content.style.overflow = "hidden";
         } else {
           this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_1}px`;
+          content.style.height = `${questionsContainerHeight[0]}px`;
           content.style.overflow = "initial";
         }
       } else if (index === 1) {
@@ -758,7 +756,7 @@ function toggleCollapsibleElement(elementID) {
           content.style.overflow = "hidden";
         } else {
           this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_2}px`;
+          content.style.height = `${questionsContainerHeight[1]}px`;
           content.style.overflow = "initial";
         }
       } else if (index === 2) {
@@ -770,7 +768,7 @@ function toggleCollapsibleElement(elementID) {
           content.style.overflow = "hidden";
         } else {
           this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_3}px`;
+          content.style.height = `${questionsContainerHeight[2]}px`;
           content.style.overflow = "initial";
         }
       } else {
@@ -782,7 +780,7 @@ function toggleCollapsibleElement(elementID) {
           content.style.overflow = "hidden";
         } else {
           this.style.boxShadow = "0px -3px 10px rgba(0, 0, 0, 0.1)";
-          content.style.height = `${containerHeight_4}px`;
+          content.style.height = `${questionsContainerHeight[3]}px`;
           content.style.overflow = "initial";
         }
       }
@@ -813,28 +811,27 @@ function updateContainerHeight(value, questionNumber) {
       `#question-${questionNumber} .input-container`
     );
     container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_1 = parseInt(container.style.height);
+    questionsContainerHeight[0] = parseInt(container.style.height);
   } else if (questionNumber === 2) {
     let container = document.querySelector(
       `#question-${questionNumber} .input-container`
     );
     container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_2 = parseInt(container.style.height);
+    questionsContainerHeight[1] = parseInt(container.style.height);
   } else if (questionNumber === 3) {
     let container = document.querySelector(
       `#question-${questionNumber} .input-container`
     );
     container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_3 = parseInt(container.style.height);
+    questionsContainerHeight[2] = parseInt(container.style.height);
   } else {
     let container = document.querySelector(
       `#question-${questionNumber} .input-container`
     );
     container.style.height = `${parseInt(container.style.height) + value}px`;
-    containerHeight_4 = parseInt(container.style.height);
+    questionsContainerHeight[3] = parseInt(container.style.height);
   }
 }
-
 function finishQuizz() {
   if (createLevelsValidation()) {
     for (let i = 0; i < quizz.levels.length; i++) {
@@ -1460,10 +1457,12 @@ function updateBtn(screen) {
   switch (screen) {
     case 1:
       if (createQuizzValids.length === 4) {
+        btn.classList.remove("disabled");
         btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
       } else if (!btn.disabled) {
+        btn.classList.add("disabled");
         btn.disabled = true;
         btn.style.opacity = "0.5";
         btnIsEnabled = false;
@@ -1472,10 +1471,12 @@ function updateBtn(screen) {
       break;
     case 2:
       if (createQuizzValids.length >= nQuestions * 6) {
+        btn.classList.remove("disabled");
         btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
       } else if (!btn.disabled) {
+        btn.classList.add("disabled");
         btn.disabled = true;
         btn.style.opacity = "0.5";
         btnIsEnabled = false;
@@ -1484,10 +1485,12 @@ function updateBtn(screen) {
       break;
     case 3:
       if (createQuizzValids.length === 12) {
+        btn.classList.remove("disabled");
         btn.disabled = false;
         btn.style.opacity = "1";
         btnIsEnabled = true;
       } else if (!btn.disabled) {
+        btn.classList.add("disabled");
         btn.disabled = true;
         btn.style.opacity = "0.5";
         btnIsEnabled = false;
@@ -1687,6 +1690,9 @@ function randomTimeOut() {
   }
   return time;
 }
+document.querySelector("header span").addEventListener("click", () => {
+  location.reload();
+});
 
 //  quizz = {
 //   title:
