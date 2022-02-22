@@ -12,11 +12,6 @@ body {
   width: 100vw;
   overflow-y: scroll;
   background-color: #fafafa;
-  /* @media screen and (min-height: 980px) {
-    #first-screen {
-      overflow-y: auto;
-    }
-  } */
 }
 
 header {
@@ -35,12 +30,16 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  font-size: 37px;
-  font-weight: 700;
-  color: white;
   background-color: #ec362d;
   -webkit-box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
           box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+header span {
+  font-size: 37px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
 }
 
 main {
@@ -86,6 +85,7 @@ main {
   height: -moz-fit-content;
   height: fit-content;
   width: 340px;
+  cursor: pointer;
 }
 
 #first-screen article > img {
@@ -208,6 +208,7 @@ main {
   font-weight: 400;
   text-align: center;
   color: white;
+  cursor: default;
 }
 
 #second-screen article .gradient {
@@ -252,6 +253,7 @@ main {
       -ms-flex-align: center;
           align-items: center;
   height: 89px;
+  cursor: default;
   font-size: 20px;
   font-weight: 700;
 }
@@ -677,6 +679,7 @@ main {
   line-height: 24px;
   color: #b9b9b9;
   text-align: center;
+  cursor: default;
 }
 
 .no-quizz-available > button {
@@ -687,6 +690,10 @@ main {
   border-radius: 50px;
   font-size: 20px;
   color: #ec362d;
+}
+
+.no-quizz-available > button:hover {
+  cursor: pointer;
 }
 
 @media screen and (min-width: 480px) {
@@ -720,6 +727,7 @@ main {
   -ms-flex-item-align: start;
       align-self: flex-start;
   text-decoration: none;
+  cursor: default;
 }
 
 @media screen and (min-width: 480px) {
@@ -784,11 +792,13 @@ main {
 .quizz-question figure img {
   height: 113px;
   width: 163px;
+  cursor: pointer;
 }
 
 .quizz-question figure figcaption {
   height: 22px;
   overflow: hidden;
+  cursor: default;
 }
 
 .quizz-question .question {
@@ -809,6 +819,7 @@ main {
   text-align: center;
   word-break: break-all;
   color: white;
+  cursor: default;
 }
 
 .quizz-question .answers {
@@ -896,6 +907,7 @@ main {
   font-weight: 700;
   text-align: center;
   color: white;
+  cursor: default;
   background-color: #ec362d;
 }
 
@@ -910,6 +922,7 @@ main {
   line-height: 20px;
   font-weight: 700;
   word-wrap: break-word;
+  cursor: default;
 }
 
 @media screen and (max-width: 375px) {
@@ -966,6 +979,10 @@ main {
   background-color: inherit;
 }
 
+.home-btn:hover {
+  cursor: pointer;
+}
+
 .quizz-btn {
   position: relative;
   left: 0px;
@@ -977,6 +994,7 @@ main {
   letter-spacing: 2px;
   text-transform: uppercase;
   color: #ec362d;
+  cursor: pointer;
   opacity: 0.5;
   -webkit-transition: all 0.3s ease-in-out 0s;
   transition: all 0.3s ease-in-out 0s;
@@ -984,6 +1002,10 @@ main {
   -webkit-box-shadow: #ec362d 4px 4px 0px 0px;
           box-shadow: #ec362d 4px 4px 0px 0px;
   background-color: white;
+}
+
+.quizz-btn.disabled {
+  cursor: default;
 }
 
 .quizz-btn.clicked {
