@@ -8,12 +8,6 @@ body {
 
   overflow-y: scroll;
   background-color: rgb(250, 250, 250);
-
-  /* @media screen and (min-height: 980px) {
-    #first-screen {
-      overflow-y: auto;
-    }
-  } */
 }
 header {
   position: fixed;
@@ -28,12 +22,14 @@ header {
   justify-content: center;
   align-items: center;
 
-  font-size: 37px;
-  font-weight: 700;
-  color: white;
-
   background-color: $default-red;
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  span {
+    font-size: 37px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+  }
 }
 main {
   @include flex-column();
@@ -56,6 +52,7 @@ main {
   position: relative;
   height: fit-content;
   width: $default-box-width;
+  cursor: pointer;
 
   > img {
     height: $default-box-height;
@@ -156,6 +153,7 @@ main {
     font-weight: $font-weight-regular;
     text-align: center;
     color: white;
+    cursor: default;
   }
   .gradient {
     height: inherit;
@@ -183,6 +181,7 @@ main {
     align-items: center;
 
     height: 89px;
+    cursor: default;
 
     font-size: $default-font-size;
     font-weight: 700;
@@ -511,6 +510,7 @@ main {
     line-height: 24px;
     color: rgba(185, 185, 185, 1);
     text-align: center;
+    cursor: default;
   }
   > button {
     height: 40px;
@@ -522,6 +522,9 @@ main {
 
     font-size: $default-font-size;
     color: $default-red;
+  }
+  > button:hover {
+    cursor: pointer;
   }
   @media screen and (min-width: 480px) {
     width: 100%;
@@ -542,6 +545,7 @@ main {
     font-weight: 700;
     align-self: flex-start;
     text-decoration: none;
+    cursor: default;
   }
   @media screen and (min-width: 480px) {
     flex-direction: row;
@@ -585,10 +589,12 @@ main {
   figure img {
     height: 113px;
     width: 163px;
+    cursor: pointer;
   }
   figure figcaption {
     height: 22px;
     overflow: hidden;
+    cursor: default;
   }
   .question {
     display: flex;
@@ -604,6 +610,7 @@ main {
     text-align: center;
     word-break: break-all;
     color: white;
+    cursor: default;
   }
   .answers {
     display: grid;
@@ -672,6 +679,7 @@ main {
     font-weight: 700;
     text-align: center;
     color: white;
+    cursor: default;
 
     background-color: $default-red;
   }
@@ -685,6 +693,7 @@ main {
     line-height: 20px;
     font-weight: 700;
     word-wrap: break-word;
+    cursor: default;
   }
   @media screen and (max-width: 375px) {
     width: 100%;
@@ -731,6 +740,9 @@ main {
 
   border-style: none;
   background-color: inherit;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .quizz-btn {
   position: relative;
@@ -746,12 +758,16 @@ main {
   text-transform: uppercase;
   color: $default-red;
 
+  cursor: pointer;
   opacity: 0.5;
   transition: all 0.3s ease-in-out 0s;
 
   border: 1px solid $default-red;
   box-shadow: $default-red 4px 4px 0px 0px;
   background-color: rgb(255, 255, 255);
+}
+.quizz-btn.disabled {
+  cursor: default;
 }
 .quizz-btn.clicked {
   left: 4px;
