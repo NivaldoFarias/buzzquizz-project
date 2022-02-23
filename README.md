@@ -35,6 +35,8 @@
     <a href="https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/js/script.js"><strong>JS code»</strong></a>
 </div>
 
+![Banner](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/dist/img/protejo6-buzzquizz-full.png?raw=true)
+
 <!-- ABOUT THE PROJECT -->
 
 <!-- ## Requirements
