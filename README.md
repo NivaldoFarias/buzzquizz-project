@@ -24,7 +24,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-### Built With
+## Built With
 
 ![HTML5](https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white)
 ![Sass](https://img.shields.io/badge/Sass-CC6699?style=for-the-badge&logo=sass&logoColor=white)
@@ -107,7 +107,7 @@
 
 <!-- Study Playlist -->
 
-### Study Playlist
+## Study Playlist
 
 In this section I included all Youtube content I used or refered to while studying for this project. Keep in mind that most of these videos contain information that was not previously studied during class, which may affect some parts of the code that contain these _extras_.
 
@@ -115,7 +115,7 @@ In this section I included all Youtube content I used or refered to while studyi
 
 <!-- CONTACT -->
 
-### Contact
+## Contact
 
 [![LinkedIn][linkedin-shield]][linkedin-url]
 [![Slack][slack-shield]][slack-url]
@@ -127,11 +127,3 @@ In this section I included all Youtube content I used or refered to while studyi
 [linkedin-url]: https://www.linkedin.com/in/nivaldofarias/
 [slack-shield]: https://img.shields.io/badge/Slack-4A154B?style=for-the-badge&logo=slack&logoColor=white
 [slack-url]: https://driventurmas.slack.com/team/U02T6V2D8D8/
-
-### Contributors
-
-<a href="https://github.com/NivaldoFarias/projeto6-buzzquizz/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=NivaldoFarias/projeto6-buzzquizz" />
-</a>
-
-##### Made with [contrib.rocks](https://contrib.rocks).
