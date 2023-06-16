@@ -1,26 +1,12 @@
-<div id="top"></div>
-
-<!-- PROJECT LOGO -->
-
-<br />
-<div align="center">
-  <a href="https://github.com/NivaldoFarias/projeto6-buzzquizz">
-    <img src="dist\img\buzzfeed-logo.png" alt="Logo" width="150">
-  </a>
-
-<h3 align="center">BuzzQuizz</h3>
-  <h6 align="center">WIP</h6>
-  <p align="center">
-    Web Development Project using HTML, SCSS and JS
-    <br />
-    <a href="https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/index.html"><strong>HTML code»</strong></a>
-    -
-    <a href="https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/scss/main.scss"><strong>SCSS code»</strong></a>
-    -
-    <a href="https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/js/script.js"><strong>JS code»</strong></a>
-</div>
-
 ![Banner](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/dist/img/protejo6-buzzquizz-full.png?raw=true)
+
+## About the project
+
+Web Development Project using HTML, SCSS and JS
+
+- [**HTML code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/index.html)
+- [**SCSS code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/scss/main.scss)
+- [**JS code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/js/script.js)
 
 <!-- ABOUT THE PROJECT -->
 
