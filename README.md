@@ -1,5 +1,7 @@
 ![Banner](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/dist/img/protejo6-buzzquizz-full.png?raw=true)
 
+<!-- ABOUT THE PROJECT -->
+
 ## About the project
 
 Web Development Project using HTML, SCSS and JS
@@ -7,8 +9,6 @@ Web Development Project using HTML, SCSS and JS
 - [**HTML code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/index.html)
 - [**SCSS code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/scss/main.scss)
 - [**JS code»**](https://github.com/NivaldoFarias/projeto6-buzzquizz/blob/main/js/script.js)
-
-<!-- ABOUT THE PROJECT -->
 
 ## Built With
 
